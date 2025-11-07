@@ -50,6 +50,15 @@
             margin: 0 10px;
         }
     </style>
+    <script>
+        function blockChinaAccess() {
+            var userLang = navigator.language || navigator.userLanguage; 
+            if (userLang.startsWith('zh')) {
+                document.body.innerHTML = '<h1>抱歉，您的訪問受到限制。</h1>';
+            }
+        }
+        window.onload = blockChinaAccess;
+    </script>
 </head>
 <body>
 
@@ -75,9 +84,8 @@
         <li>專案3：描述專案的內容和形式</li>
     </ul>
 </section>
-    
+
 <footer>
-    
     <p>聯絡方式: <a href="mailto:Tung@jzking.tw">Tung@jzking.tw</a></p>
     <h3>社群平台</h3>
     <ul class="social-links">
@@ -85,10 +93,9 @@
         <li><a href="https://www.ganjingworld.com/zh-TW/@Tung" target="_blank">乾淨世界</a></li>
         <li><a href="https://twitter.com/jzking_tw" target="_blank">Twitter</a></li>
         <li><a href="https://www.instagram.com/tung_talk/" target="_blank">Instagram</a></li>
-        <li><a href="https://lin.ee/GQlQZAE" target="_blank">Line
-        </a></li>
-        </p>&copy; 2025 沈落寒<p>
+        <li><a href="https://lin.ee/GQlQZAE" target="_blank">Line</a></li>
     </ul>
+    <p>&copy; 2025 沈落寒</p>
 </footer>
 
 </body>
