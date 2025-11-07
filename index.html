@@ -51,13 +51,14 @@
         }
     </style>
     <script>
-        function blockChinaAccess() {
-            var userLang = navigator.language || navigator.userLanguage; 
-            if (userLang.startsWith('zh')) {
-                document.body.innerHTML = '<h1>抱歉，您的訪問受到限制。</h1>';
+        function blockMainlandChinaAccess() {
+            // Simple User-Agent check for China (this is a naive approach)
+            var userAgent = navigator.userAgent;
+            if (userAgent.includes("China") || userAgent.includes("CN")) {
+                document.body.innerHTML = '<h1>抱歉，此網站不支援中國大陸的訪問。</h1>';
             }
         }
-        window.onload = blockChinaAccess;
+        window.onload = blockMainlandChinaAccess;
     </script>
 </head>
 <body>
