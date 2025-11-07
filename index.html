@@ -9,7 +9,13 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f2f2f2; /* 改为浅灰背景更舒适 */
+            background-color: #f2f2f2; /* 亮色背景 */
+            color: #000; /* 文字为黑色 */
+            transition: background-color 0.3s, color 0.3s; /* 动画效果 */
+        }
+        .dark-mode {
+            background-color: #181818; /* 黑色背景 */
+            color: #fff; /* 文字为白色 */
         }
         header {
             background-color: #198964;
@@ -77,7 +83,21 @@
                 document.body.innerHTML = '<h1>抱歉，此網站不支援中國大陸的訪問。</h1>';
             }
         }
-        window.onload = blockMainlandChinaAccess;
+
+        // 切换主题函数
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        window.onload = function() {
+            blockMainlandChinaAccess();
+
+            // 获取用户主题偏好
+            const userTheme = localStorage.getItem('theme') || 'light';
+            if (userTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        };
     </script>
 </head>
 <body>
@@ -86,6 +106,7 @@
     <nav>
         <a href="#about">關於我</a>
         <a href="#projects">專案</a>
+        <a href="#" onclick="toggleTheme(); return false;">切换主题</a> <!-- 切换主题链接 -->
     </nav>
 </header>
 
