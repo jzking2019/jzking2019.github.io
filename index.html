@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF+8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>沈落寒</title>
     <style>
@@ -9,32 +9,42 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1;
+            background-color: #f2f2f2; /* 改为浅灰背景更舒适 */
         }
         header {
             background-color: #198964;
             color: white;
-            padding: 10px 0;
+            padding: 20px 0;
             text-align: center;
+            border-bottom: 5px solid #0d5c3d; /* 添加下边框 */
         }
         nav {
             margin: 20px 0;
         }
         nav a {
             margin: 0 15px;
-            color: #198964;
+            color: #fff;
             text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* 悬停时变化 */
         }
         section {
             padding: 20px;
             background-color: white;
             margin: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        section h2 {
+            color: #198964; /* 小节标题颜色 */
         }
         footer {
             text-align: center;
-            padding: 10px 0;
+            padding: 20px 0;
             background-color: #198964;
             color: white;
             position: fixed;
@@ -44,15 +54,23 @@
         .social-links {
             list-style-type: none;
             padding: 0;
+            display: flex; /* 使用 flexbox */
+            justify-content: center; /* 居中对齐 */
         }
         .social-links li {
-            display: inline;
             margin: 0 10px;
+        }
+        .social-links img {
+            width: 30px; /* 增大图标 */
+            height: 30px;
+            transition: transform 0.3s;
+        }
+        .social-links img:hover {
+            transform: scale(1.1); /* 悬停时放大效果 */
         }
     </style>
     <script>
         function blockMainlandChinaAccess() {
-            // Simple User-Agent check for China (this is a naive approach)
             var userAgent = navigator.userAgent;
             if (userAgent.includes("China") || userAgent.includes("CN")) {
                 document.body.innerHTML = '<h1>抱歉，此網站不支援中國大陸的訪問。</h1>';
@@ -91,32 +109,32 @@
     <ul class="social-links">
         <li>
             <a href="https://www.youtube.com/@Tung_talk" target="_blank">
-                <img src="https://duckduckgo.com/assets/icons/favicons/youtube.2x.png" alt="YouTube" style="width: 20px; height: 20px; vertical-align: middle;">
+                <img src="https://duckduckgo.com/assets/icons/favicons/youtube.2x.png" alt="YouTube">
             </a>
         </li>
         <li>
             <a href="https://www.ganjingworld.com/zh-TW/@Tung" target="_blank">
-                <img src="https://external-content.duckduckgo.com/ip3/www.ganjingworld.com.ico" alt="干净世界" style="width: 20px; height: 20px; vertical-align: middle;">
+                <img src="https://external-content.duckduckgo.com/ip3/www.ganjingworld.com.ico" alt="干净世界">
             </a>
         </li>
         <li>
-            <a href="https://twitter.com/jzking_tw" target="_blank">
-                <img src="https://external-content.duckduckgo.com/ip3/twitter.com.ico" alt="Twitter" style="width: 20px; height: 20px; vertical-align: middle;">
+                        <a href="https://twitter.com/jzking_tw" target="_blank">
+                <img src="https://external-content.duckduckgo.com/ip3/twitter.com.ico" alt="Twitter">
             </a>
         </li>
         <li>
             <a href="https://www.instagram.com/tung_talk/" target="_blank">
-                <img src="https://external-content.duckduckgo.com/ip3/www.instagram.com.ico" alt="Instagram" style="width: 20px; height: 20px; vertical-align: middle;">
+                <img src="https://external-content.duckduckgo.com/ip3/www.instagram.com.ico" alt="Instagram">
             </a>
         </li>
         <li>
             <a href="https://lin.ee/GQlQZAE" target="_blank">
-                <img src="https://external-content.duckduckgo.com/ip3/line.me.ico" alt="Line" style="width: 20px; height: 20px; vertical-align: middle;">
+                <img src="https://external-content.duckduckgo.com/ip3/line.me.ico" alt="Line">
             </a>
         </li>
         <li>
             <a href="mailto:Tung@jzking.tw" target="_blank">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMjMuMjQ5IDMuODJILjc1djE2LjM2aDIyLjV6Ii8+PHBhdGggZmlsbD0iI2JiZDhmZiIgZD0iTTIwLjk5OSAxOC4xMzZIMy4wMDFMLjc1MSAyMC4xOEgyMy4yNXoiLz48cGF0aCBzdHJva2U9IiMwOTJmNjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNMjMuMjQ5IDMuODJMMTIgMTUuMzc0TC43NTEgMy44MTltMCAxNi4zNjJsOC4yODMtNy42N205LjkzMiAwbDguMjgzIDcuNjciIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIHN0cm9rZT0iIzA5MmY2MyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMy4yNDkgMy44MkguNzV2MTYuMzZoMjIuNXoiIHN0cm9rZS13aWR0aD0iMSIvPjwvZz48L3N2Zz4=" alt="Email" style="width: 20px; height: 20px; vertical-align: middle;">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJN...
             </a>
         </li>
     </ul>
@@ -124,3 +142,4 @@
 
 </body>
 </html>
+
