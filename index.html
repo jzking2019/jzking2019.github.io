@@ -24,6 +24,10 @@
             text-align: center;
             border-bottom: 5px solid #0d5c3d; /* 添加下边框 */
         }
+        .dark-mode header {
+            background-color: #2d2d2d; /* 暗黑模式下的头部背景 */
+            border-bottom: 5px solid #1a1a1a; /* 暗黑模式下的边框 */
+        }
         nav {
             margin: 20px 0;
             text-align: center; /* 中央對齊菜單 */
@@ -46,8 +50,15 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
+        .dark-mode section {
+            background-color: #242424; /* 暗黑模式下的内容背景 */
+            color: #fff; /* 内容文字为白色 */
+        }
         section h2 {
             color: #198964; /* 小节标题颜色 */
+        }
+        .dark-mode section h2 {
+            color: #ffffff; /* 暗黑模式下小节标题为白色 */
         }
         footer {
             text-align: center;
@@ -57,6 +68,9 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+        }
+        .dark-mode footer {
+            background-color: #2d2d2d; /* 暗黑模式下的脚部背景 */
         }
         .social-links {
             list-style-type: none;
@@ -84,9 +98,16 @@
             }
         }
 
-        // 切换主题函数
         function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+
+            // 保存用户的主题偏好
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
         }
 
         window.onload = function() {
@@ -96,7 +117,7 @@
             const userTheme = localStorage.getItem('theme') || 'light';
             if (userTheme === 'dark') {
                 document.body.classList.add('dark-mode');
-            }
+                       }
         };
     </script>
 </head>
@@ -154,7 +175,7 @@
         </li>
         <li>
             <a href="mailto:Tung@jzking.tw" target="_blank">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMjMuMjQ5IDMuODJILjc1djE2LjM2aDIyLjV6Ii8+PHBhdGggZmlsbD0iI2JiZDhmZiIgZD0iTTIwLjk5OSAxOC4xMzZIMy4wMDFMLjc1MSAyMC4xOEgyMy4yNXoiLz48cGF0aCBzdHJva2U9IiMwOTJmNjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNMjMuMjQ5IDMuODJMMTIgMTUuMzc0TC43NTEgMy44MTltMCAxNi4zNjJsOC4yODMtNy42N205LjkzMiAwbDguMjgzIDcuNjciIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIHN0cm9rZT0iIzA5MmY2MyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMy4yNDkgMy44MkguNzV2MTYuMzZoMjIuNXoiIHN0cm9rZS13aWR0aD0iMSIvPjwvZz48L3N2Zz4=" alt="Email" style="width: 20px; height: 20px; vertical-align: middle;">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMjMuMjQ5IDMuODJILjc1djE2LjM2aDIyLjV6Ii8+PHBhdGggZmlsbD0iI2JiZDhmZiIgZD0iTTIwLjk5OSAxOC4xMzZIMy4wMDFMLjc1MSAyMC4xOEgyMy4yNXoiLz48cGF0aCBzdHJva2U9IiMwOTJmNjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNMjMuMjQ5IDMuODJMMTIgMTUuMzc0TC43NTEgMy44MTltMCAxNi4zNjJsOC4yODMtNy42N205LjkzMiAwbDguMjgzIDcuNjciIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIHN0cm9rZT0iIzA5MmY2MyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMy4yNDkgMy44MkguNzV2MTYuMzZoMjIuNXoiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIHN0cm9rZT0iIzA5MmY2MyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMy4yNDkgMy44MkguNzV2MTYuMzZoMjIuNXoiIHN0cm9rZS13aWR0aD0iMSIvPjwvZz48L3N2Zz4=" alt="Email" style="width: 20px; height: 20px; vertical-align: middle;">
             </a>
         </li>
     </ul>
