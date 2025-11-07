@@ -208,8 +208,15 @@
             }
         }
 
+        function updateCopyrightYear() {
+            const yearSpan = document.getElementById('current-year');
+            const currentYear = new Date().getFullYear();
+            yearSpan.textContent = currentYear;
+        }
+
         window.onload = function() {
             blockMainlandChinaAccess();
+            updateCopyrightYear(); // Update the copyright year on page load
 
             // 获取用户主题偏好
             const userTheme = localStorage.getItem('theme') || 'light';
@@ -282,7 +289,7 @@
 </section>
 
 <footer>
-    <p>&copy; 2025 沈落寒</p>
+    <p>&copy; <span id="current-year"></span> 沈落寒</p>
     <ul class="social-links">
         <li>
             <a href="https://www.youtube.com/@Tung_talk" target="_blank">
