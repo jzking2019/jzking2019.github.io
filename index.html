@@ -140,14 +140,68 @@
 <section id="blog">
     <h2>部落格</h2>
     <p>在這裡，我會分享我的最新文章與見解，涵蓋各種話題，包括技術、生活和旅行等。敬請期待！</p>
-    <ul>
-        <li><a href="https://www.ganjingworld.com/s/8Q4kBxQjAm" target="_blank">玩光遇四年了，該退遊了</a></li>
-        <li><a href="https://www.ganjingworld.com/s/0kKkGRJyz4" target="_blank">放下才是智慧，才有可能做真正重要的事</a></li>
-        <li><a href="https://www.ganjingworld.com/s/ZZkZpZGR1l" target="_blank">離開虛擬刺激，我找回了清醒與自由</a></li>
-        <li><a href="https://www.ganjingworld.com/s/20Q0X4vbvv" target="_blank">二四年詩集</a></li>
-    </ul>
+    <div class="blog-posts">
+        <div class="post">
+            <a href="https://www.ganjingworld.com/s/8Q4kBxQjAm" target="_blank">
+                <img src="https://image3-us-west.cloudokyo.cloud/image/v2/3e/f6/a3/3ef6a30b-5feb-4aed-97a9-439a3a22a65f/1280.jpg" alt="玩光遇四年了，該退遊了">
+                <h3>玩光遇四年了，該退遊了</h3>
+            </a>
+        </div>
+        <div class="post">
+            <a href="https://www.ganjingworld.com/s/0kKkGRJyz4" target="_blank">
+                <img src="https://image3-us-west.cloudokyo.cloud/image/v2/df/b6/0b/dfb60b37-a774-4eb2-9cb0-06b71925a008/1280.jpg" alt="放下才是智慧，才有可能做真正重要的事">
+                <h3>放下才是智慧，才有可能做真正重要的事</h3>
+            </a>
+        </div>
+        <div class="post">
+            <a href="https://www.ganjingworld.com/s/ZZkZpZGR1l" target="_blank">
+                <img src="https://image5-us-west.cloudokyo.cloud/image/v2/2a/f9/e1/2af9e104-9696-4bc9-9fce-8edef705c9b6/1280.jpg" alt="離開虛擬刺激，我找回了清醒與自由">
+                <h3>離開虛擬刺激，我找回了清醒與自由</h3>
+            </a>
+        </div>
+        <div class="post">
+            <a href="https://www.ganjingworld.com/s/20Q0X4vbvv" target="_blank">
+                <img src="https://image1-us-east.cloudokyo.cloud/image/v2/ce/cc/b5/ceccb5f8-ba0f-40aa-ae8d-068f8a9de16c/1280.jpg" alt="二四年詩集">
+                <h3>二四年詩集</h3>
+            </a>
+        </div>
+    </div>
 </section>
 
+<style>
+    .blog-posts {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+    
+    .post {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        margin: 10px;
+        width: calc(25% - 20px); /* 4個項目在同一行 */
+        overflow: hidden; /* 隱藏溢出部分 */
+        text-align: center;
+    }
+
+    .post img {
+        width: 100%;
+        height: auto; /* 自動調整高度以保持比率 */
+    }
+
+    .post h3 {
+        color: #198964; /* 標題顏色 */
+        padding: 10px;
+        margin: 0;
+    }
+
+    .post a {
+        text-decoration: none; /* 移除連結下劃線 */
+        color: #000; /* 文字顏色 */
+    }
+</style>
 
 <section id="projects">
     <h2>專案</h2>
