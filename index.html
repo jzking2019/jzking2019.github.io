@@ -181,25 +181,38 @@
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         margin: 10px;
-        width: calc(25% - 20px); /* 4個項目在同一行 */
-        overflow: hidden; /* 隱藏溢出部分 */
+        width: calc(25% - 20px);
+        overflow: hidden;
         text-align: center;
     }
 
     .post img {
         width: 100%;
-        height: auto; /* 自動調整高度以保持比率 */
+        height: 170px; /* 固定圖片高度以確保比例統一 */
+        object-fit: cover; /* 確保圖片填滿而不變形 */
     }
 
     .post h3 {
-        color: #198964; /* 標題顏色 */
         padding: 10px;
         margin: 0;
     }
 
     .post a {
-        text-decoration: none; /* 移除連結下劃線 */
-        color: #000; /* 文字顏色 */
+        text-decoration: none;
+        color: #000; /* 預設文字顏色 */
+    }
+
+    /* 暗黑模式 */
+    .dark-mode .post {
+        background: #242424; /* 暗背景 */
+    }
+
+    .dark-mode .post h3 {
+        color: #fff; /* 暗模式下的標題顏色 */
+    }
+
+    .dark-mode .post a {
+        color: #ffffff; /* 暗模式下的文字顏色 */
     }
 </style>
 
