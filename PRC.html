@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -11,63 +10,43 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <style>
-        html,
-        body {
-            height: 100%;
+        body, html {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0; /* 添加背景色以便于调试 */
-        }
-
-        .fullscreen-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-top: 56.25%; /* 16:9 比例 */
-            max-width: 100vw; /* 限制最大宽度 */
-            border-radius: 0;
+            height: 100%;
             overflow: hidden;
         }
-
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        #container {
+            position: relative;
             width: 100%;
             height: 100%;
+            padding-top: 56.2225%; /* 這是為了保持 16:9 的比例 */
+            box-shadow: 0 2px 8px 0 rgba(63, 69, 81, 0.16);
+            margin: 1.6em 0 0 0;
+            overflow: hidden;
+            border-radius: 8px;
+            will-change: transform;
+        }
+        #iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
             border: none;
-            transform: scale(1); /* 默认为1，后续可通过媒体查询调整 */
-        }
-
-        @media (max-width: 768px) {
-            .fullscreen-container {
-                transform: scale(2.5); /* 放大250% */
-                transform-origin: top left; /* 确保放大后内容从左上角开始显示 */
-                width: 40%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .fullscreen-container {
-                transform: scale(2.5);
-                width: 50%;
-            }
+            padding: 0;
+            margin: 0;
         }
     </style>
 </head>
-
 <body>
 
-    <div class="fullscreen-container">
-        <iframe loading="lazy"
-            src="https://www.canva.cn/design/DAG4GOgBeoA/nPkU1Gu-9zYqbGK7fxWcbA/view?embed"
-            allowfullscreen>
-        </iframe>
-    </div>
+<div id="container">
+    <iframe loading="lazy" id="iframe"
+        src="https://www.canva.cn/design/DAG4GOgBeoA/nPkU1Gu-9zYqbGK7fxWcbA/view?embed" 
+        allowfullscreen="allowfullscreen" allow="fullscreen">
+    </iframe>
+</div>
 
 </body>
-
 </html>
