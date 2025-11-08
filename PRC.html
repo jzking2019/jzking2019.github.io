@@ -15,23 +15,34 @@
             padding: 0;
             height: 100%;
             display: flex;
-            flex-direction: column; /* 使用彈性盒布局 */
-            align-items: center; /* 居中對齊 */
-            justify-content: center; /* 垂直居中 */
-            background-color: white; /* 設置背景色 */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: white; /* 默认背景色 */
+            color: black; /* 默认文字颜色 */
         }
         footer {
             text-align: center;
-            margin: 0; /* 移除外邊距 */
+            margin: 0;
             font-size: 1rem;
-            padding: 1em 0; /* 添加一些內邊距 */
-            background-color: transparent; /* 設置背景透明 */
-            color: black; /* 設置文字顏色 */
+            padding: 1em 0;
+            background-color: transparent;
         }
         .message {
             text-align: center;
-            font-size: 2rem; /* 增加字體大小 */
-            margin: 1em 0; 
+            font-size: 2rem;
+            margin: 1em 0;
+        }
+        
+        /* 针对暗色模式的样式 */
+        @media (prefers-color-scheme: dark) {
+            body, html {
+                background-color: black; /* 暗色模式时的背景色 */
+                color: white; /* 暗色模式时的文字颜色 */
+            }
+            footer {
+                color: white; /* 暗色模式中footer文字颜色 */
+            }
         }
     </style>
 </head>
