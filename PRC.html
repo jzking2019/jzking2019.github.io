@@ -19,6 +19,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #f0f0f0; /* 添加背景色以便于调试 */
         }
 
         .fullscreen-container {
@@ -27,9 +28,8 @@
             height: 0;
             padding-top: 56.25%; /* 16:9 比例 */
             max-width: 100vw; /* 限制最大宽度 */
-            box-shadow: 0 2px 8px 0 rgba(63, 69, 81, 0.16);
-            overflow: hidden;
             border-radius: 0;
+            overflow: hidden;
         }
 
         iframe {
@@ -39,20 +39,21 @@
             width: 100%;
             height: 100%;
             border: none;
+            transform: scale(1); /* 默认为1，后续可通过媒体查询调整 */
         }
 
         @media (max-width: 768px) {
             .fullscreen-container {
                 transform: scale(2.5); /* 放大250% */
                 transform-origin: top left; /* 确保放大后内容从左上角开始显示 */
-                width: 40%; /* 限制放大的宽度以适应屏幕 */
+                width: 40%;
             }
         }
 
         @media (max-width: 480px) {
             .fullscreen-container {
                 transform: scale(2.5);
-                width: 50%; /* 更小的设备可能需要调整宽度 */
+                width: 50%;
             }
         }
     </style>
