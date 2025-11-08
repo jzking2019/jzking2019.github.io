@@ -220,15 +220,21 @@
         }
 
         window.onload = function() {
-            blockMainlandChinaAccess();
-            updateCopyrightYear(); // Update the copyright year on page load
+    checkAccess();
+    updateCopyrightYear(); // Update the copyright year on page load
 
-            // 获取用户主题偏好
-            const userTheme = localStorage.getItem('theme') || 'light';
-            if (userTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-            }
-        };
+    // 获取用户主题偏好
+    const userTheme = localStorage.getItem('theme') || 'light';
+    if (userTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        // 檢查用戶的顏色模式偏好
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+            document.body.classList.add('dark-mode');
+        }
+    }
+};
     </script>
 </head>
 <body>
