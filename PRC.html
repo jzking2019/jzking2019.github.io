@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>网页维护中 - 沈落寒</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%; /* 16:9 比例 */
+            max-width: 100vw; /* 限制最大宽度 */
+            box-shadow: 0 2px 8px 0 rgba(63, 69, 81, 0.16);
+            overflow: hidden;
+            border-radius: 0;
+        }
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .fullscreen-container {
+                transform: scale(2.5); /* 放大250% */
+                transform-origin: top left; /* 确保放大后内容从左上角开始显示 */
+                width: 40%; /* 限制放大的宽度以适应屏幕 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .fullscreen-container {
+                transform: scale(2.5);
+                width: 50%; /* 更小的设备可能需要调整宽度 */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="fullscreen-container">
+        <iframe loading="lazy"
+            src="https://www.canva.cn/design/DAG4GOgBeoA/nPkU1Gu-9zYqbGK7fxWcbA/view?embed"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+</body>
+
+</html>
