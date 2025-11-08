@@ -14,17 +14,18 @@
             margin: 0;
             padding: 0;
             height: 100%;
+            display: flex;
+            flex-direction: column; /* 使用彈性盒布局 */
             overflow: hidden;
             background-color: white; /* 設置背景色，以防止黑框 */
         }
         #container {
-            position: absolute; /* 設置為絕對定位 */
-            top: 0;
-            left: 0;
-            width: 100%; /* 確保全寬 */
-            height: 100%; /* 確保全高 */
+            flex: 1; /* 讓容器佔用剩餘空間 */
+            position: relative; /* 相對定位以支持絕對定位的子元素 */
+            width: 100%; 
+            height: 100%;
             overflow: hidden; 
-            border-radius: 0; /* 無邊角圓 */
+            border-radius: 0; 
         }
         #iframe {
             position: absolute;
@@ -40,8 +41,8 @@
             text-align: center;
             margin: 1em 0;
             font-size: 1rem;
-            position: relative; /* 相對於正常流動 */
-            z-index: 10; /* 放置在上方 */
+            /* 用相對定位來固定底部 */
+            padding: 1em 0; /* 添加一些內邊距 */
         }
     </style>
 </head>
