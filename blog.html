@@ -145,6 +145,54 @@
             }
         }
     </style>
+        <script>
+        async function checkAccess() {
+            try {
+                const response = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=fc63e8edf7884c8a8f7662af23899450'); // 替换为你的实际 API
+                const data = await response.json();
+                if (data.country_code === 'CN') { // 检查是否为中国
+                    window.location.href = 'PRC.html'; // 跳转至 PRC.html
+                }
+            } catch (error) {
+                console.error('Error fetching IP data:', error);
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+
+            // 保存用户的主题偏好
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function updateCopyrightYear() {
+            const yearSpan = document.getElementById('current-year');
+            const currentYear = new Date().getFullYear();
+            yearSpan.textContent = currentYear;
+        }
+
+        window.onload = function() {
+    checkAccess();
+    updateCopyrightYear(); // Update the copyright year on page load
+
+    // 获取用户主题偏好
+    const userTheme = localStorage.getItem('theme') || 'light';
+    if (userTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        // 檢查用戶的顏色模式偏好
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+            document.body.classList.add('dark-mode');
+        }
+    }
+};
+    </script>
 </head>
 <body>
     <header>
@@ -154,11 +202,13 @@
         </nav>
     </header>
 
+<section>    
     <div>
         <h2>部落格</h2>
         <p>在這裡，我會分享我的最新文章與見解，涵蓋各種話題，包括學習、生活和旅行等。敬請期待！</p>
     </div>
-
+</section>
+    
     <div class="blog-posts">
         <div class="post">
             <a href="https://www.ganjingworld.com/s/xr42yE7B4n" target="_blank">
