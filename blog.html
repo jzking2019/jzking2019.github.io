@@ -108,9 +108,9 @@
             overflow: hidden;
         }
         .post img {
-            width: 200px; /* Fixed width for consistency */
-            aspect-ratio: 16 / 9; /* Consistent aspect ratio */
-            object-fit: cover; /* Ensure image fills space without distortion */
+            width: 200px;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
         }
         .post h3 {
             flex: 1;
@@ -118,6 +118,7 @@
             margin: 0;
             display: flex;
             align-items: center;
+            margin-left: 10px; /* Added margin to create a small gap between image and title */
         }
         .post a {
             text-decoration: none;
@@ -139,9 +140,12 @@
                 flex-direction: row;
             }
             .post img {
-                width: 150px; /* Smaller width on mobile */
-                aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+                width: 150px;
+                aspect-ratio: 16 / 9;
                 height: auto;
+            }
+            .post h3 {
+                margin-left: 8px; /* Slightly smaller margin on mobile for better spacing */
             }
         }
     </style>
