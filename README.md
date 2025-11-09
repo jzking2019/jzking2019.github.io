@@ -1,4 +1,5 @@
 # [落寒的個人網站正式上線了~](https://www.ganjingworld.com/s/ZZ2R9JnYZG)
+![image](https://image5-us-west.cloudokyo.cloud/image/v3/f1/56/68/f156684f-fbc2-4b59-8d8f-65a49f3e4a71/1280.jpg)
 到今天為止，在不斷編寫及不斷調試並修復目前所發現的bug下，落寒的個人網站正式推出！
 
 此網站有以下四大亮點：
