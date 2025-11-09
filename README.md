@@ -41,5 +41,3 @@
 如果在使用體驗上有什麼問題或建議，歡迎大家反饋！
 
 反饋郵箱：Tung@jzking.tw
-
-原文連結：https://www.ganjingworld.com/s/ZZ2R9JnYZG
