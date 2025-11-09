@@ -24,87 +24,9 @@
             background-color: #181818;
             color: #fff;
         }
-        header {
-            background-color: #198964;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            border-bottom: 5px solid #0d5c3d;
-        }
-        .dark-mode header {
-            background-color: #2d2d2d;
-            border-bottom: 5px solid #1a1a1a;
-        }
-        nav {
-            margin: 20px 0;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 15px;
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        nav a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        section {
-            padding: 20px;
-            background-color: white;
-            margin: 20px auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            max-width: 800px; /* 限制 section 的最大寬度 */
-        }
-        .dark-mode section {
-            background-color: #242424;
-            color: #fff;
-        }
-        section h2 {
-            color: #198964;
-        }
-        .dark-mode section h2 {
-            color: #ffffff;
-        }
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            background-color: #198964;
-            color: white;
-            position: relative;
-            margin-top: 40px;
-        }
-        .dark-mode footer {
-            background-color: #2d2d2d;
-        }
-        .social-links {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .social-links li {
-            margin: 10px;
-        }
-        .social-links img {
-            width: 30px;
-            height: 30px;
-            transition: transform 0.3s;
-        }
-        .social-links img:hover {
-            transform: scale(1.1);
-        }
-        .blog-posts {
-            display: flex;
-            flex-direction: column;
-            margin: 20px 0;
-        }
         .post {
             display: flex;
-            flex-direction: row;
+            flex-direction: row; /* 確保在大屏幕上呈現為行排 */
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -112,55 +34,27 @@
             overflow: hidden;
         }
         .post img {
-            width: 200px;
-            aspect-ratio: 16 / 9;
-            object-fit: cover;
+            width: 200px; /* 固定圖片寬度 */
+            height: auto; /* 自適應高度 */
+            object-fit: cover; /* 保持圖片比例 */
         }
         .post h3 {
-            flex: 1;
+            flex: 1; /* 讓標題擴展以填滿剩餘空間 */
             padding: 10px;
             margin: 0;
             display: flex;
-            align
-            align-items: center;
-            margin-left: 10px; /* Added margin to create a small gap between image and title */
-        }
-        .post a {
-            text-decoration: none;
-            color: #000;
-            display: flex;
-            width: 100%;
-        }
-        .dark-mode .post {
-            background: #242424;
-        }
-        .dark-mode .post h3 {
-            color: #fff;
-        }
-        .dark-mode .post a {
-            color: #ffffff;
+            align-items: center; /* 垂直居中標題 */
         }
         @media (max-width: 768px) {
-            header {
-                padding: 10px 0; /* 減少標題區域的內邊距 */
-            }
-            nav a {
-                margin: 0 8px; /* 減小導航鏈接的邊距 */
-                padding: 8px 10px; /* 減小內邊距 */
-            }
-            section {
-                margin: 10px; /* 減小區塊的外邊距 */
-                padding: 15px; /* 減小內邊距 */
-            }
             .post {
-                flex-direction: column; /* 在行動裝置上將文章內容垂直排列 */
+                flex-direction: column; /* 行動裝置上內容垂直排列 */
             }
             .post img {
-                width: 100%; /* 圖片自適應寬度 */
-                height: auto; /* 自適應高 */
+                width: 100%; /* 圖片在行動裝置上自適應寬度 */
+                height: auto; 
             }
             .post h3 {
-                margin-left: 0; /* 除去需設置的左邊距 */
+                margin-top: 10px; /* 增加標題的上邊距，以便與圖像分開 */
                 padding: 10px; /* 增加內邊距以增強可讀性 */
             }
         }
