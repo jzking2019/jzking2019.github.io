@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>部落格 - 沈落寒</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/apple-touch-icon.png">
@@ -10,59 +10,409 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <style>
-        body, html {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: white; /* 默认背景色 */
-            color: black; /* 默认文字颜色 */
+            background-color: #f2f2f2; /* 亮色背景 */
+            color: #000; /* 文字为黑色 */
+            transition: background-color 0.3s, color 0.3s; /* 动画效果 */
+        }
+        .dark-mode {
+            background-color: #181818; /* 黑色背景 */
+            color: #fff; /* 文字为白色 */
+        }
+        header {
+            background-color: #198964;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 5px solid #0d5c3d; /* 添加下边框 */
+        }
+        .dark-mode header {
+            background-color: #2d2d2d; /* 暗黑模式下的头部背景 */
+            border-bottom: 5px solid #1a1a1a; /* 暗黑模式下的边框 */
+        }
+        nav {
+            margin: 20px 0;
+            text-align: center; /* 中央對齊菜單 */
+        }
+        nav a {
+            margin: 0 15px;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* 悬停时变化 */
+        }
+        section {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .dark-mode section {
+            background-color: #242424; /* 暗黑模式下的内容背景 */
+            color: #fff; /* 内容文字为白色 */
+        }
+        section h2 {
+            color: #198964; /* 小节标题颜色 */
+        }
+        .dark-mode section h2 {
+            color: #ffffff; /* 暗黑模式下小节标题为白色 */
         }
         footer {
             text-align: center;
+            padding: 30px 0;
+            background-color: #198964;
+            color: white;
+            position: relative;
+            margin-top: 40px;
+        }
+        .dark-mode footer {
+            background-color: #2d2d2d; /* 暗黑模式下的脚部背景 */
+        }
+        .social-links {
+            list-style-type: none;
+            padding: 0;
+            display: flex; /* 使用 flexbox */
+            justify-content: center; /* 居中对齐 */
+            flex-wrap: wrap; /* 允许换行以适应小屏幕 */
+        }
+        .social-links li {
+            margin: 10px;
+        }
+        .social-links img {
+            width: 30px; /* 增大图标 */
+            height: 30px;
+            transition: transform 0.3s;
+        }
+        .social-links img:hover {
+            transform: scale(1.1); /* 悬停时放大效果 */
+        }
+        .blog-posts {
+            display: flex;
+            flex
+
+        .blog-posts {
+            display: flex;
+            flex-direction: column; /* 让每一篇文章垂直排列 */
+            margin: 20px 0;
+        }
+
+        .post {
+            display: flex; /* 使用flexbox进行布局 */
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            overflow: hidden; /* 隐藏溢出内容 */
+        }
+
+        .post img {
+            width: 150px; /* 固定图片宽度以确保比例统一 */
+            height: 100%; /* 高度自适应 */
+            object-fit: cover; /* 确保图片填满而不变形 */
+        }
+
+        .post h3 {
+            flex: 1; /* 让标题自适应空间 */
+            padding: 10px;
             margin: 0;
-            font-size: 1rem;
-            padding: 1em 0;
-            background-color: transparent;
+            display: flex;
+            align-items: center; /* 垂直居中对齐 */
         }
-        .message {
-            text-align: center;
-            font-size: 2rem;
-            margin: 1em 0;
+
+        .post a {
+            text-decoration: none;
+            color: #000; /* 默认文字颜色 */
+            display: flex; /* 使a标签也使用flexbox */
         }
-        
-        /* 针对暗色模式的样式 */
-        @media (prefers-color-scheme: dark) {
-            body, html {
-                background-color: black; /* 暗色模式时的背景色 */
-                color: white; /* 暗色模式时的文字颜色 */
+
+        /* 暗黑模式 */
+        .dark-mode .post {
+            background: #242424; /* 暗背景 */
+        }
+
+        .dark-mode .post h3 {
+            color: #fff; /* 暗模式下的标题颜色 */
+        }
+
+        .dark-mode .post a {
+            color: #ffffff; /* 暗模式下的文字颜色 */
+        }
+
+        /* 响应式设计 - 媒体查询 */
+        @media (max-width: 768px) {
+            .blog-posts {
+                flex-direction: column; /* 移动设备上每一篇文章依旧垂直排列 */
             }
-            footer {
-                color: white; /* 暗色模式中footer文字颜色 */
+            .post {
+                flex-direction: row; /* 移动设备上仍旧保持左图右文 */
+            }
+            .post img {
+                width: 100%; /* 图片在移动设备上宽度占满 */
+                height: auto; /* 高度自适应 */
             }
         }
     </style>
 </head>
 <body>
 
-<div class="message">
-    <h1>即將推出！</h1>
-    <p> 我們目前正在對網站做一些改進，敬請期待！</p>
-    <p>We are currently making some improvements to the website. Please stay tuned!</p>
-</div>
+<header>
+    <nav>
+        <a href="index.html">返回首頁</a>
+        <a href="#" onclick="toggleTheme(); return false;">切換主題</a>
+    </nav>
+</header>
+
+<section>
+    <h2>部落格</h2>
+    <p>在這裡，我會分享我的最新文章與見解，涵蓋各種話題，包括學習、生活和旅行等。敬請期待！</p>
+</section>
+
+<section>
+            <a href="https://www.ganjingworld.com/s/xr42yE7B4n" target="_blank">
+                <img src="https://image1-us-east.cloudokyo.cloud/image/v2/fe/7f/a6/fe7fa697-76f3-446a-87c1-2291a4478181/480.jpg" alt="落寒的vlog：開完大食會，離開陪伴我們三年的母校">
+                <h3>落寒的vlog：開完大食會，離開陪伴我們三年的母校</h3>
+            </a>
+</section>
+
+<section>
+            <a href="https://www.ganjingworld.com/s/8Q4kBxQjAm" target="_blank">
+                <img src="https://image3-us-west.cloudokyo.cloud/image/v2/3e/f6/a3/3ef6a30b-5feb-4aed-97a9-439a3a22a65f/1280.jpg" alt="玩光遇四年了，該退遊了">
+                <h3>玩光遇四年了，該退遊了</h3>
+            </a>
+</section>
+
+<section>
+            <a href="https://www.ganjingworld.com/s/0kKkGRJyz4" target="_blank">
+                <img src="https://image3-us-west.cloudokyo.cloud/image/v2/df/b6/0b/dfb60b37-a774-4eb2-9cb0-06b71925a008/1280.jpg" alt="放下才是智慧，才有可能做真正重要的事">
+                <h3>放下才是智慧，才有可能做真正重要的事</h3>
+            </a>
+</section>
+
+<section>
+            <a href="https://www.ganjingworld.com/s/ZZkZpZGR1l" target="_blank">
+                <img src="https://image5-us-west.cloudokyo.cloud/image/v2/2a/f9/e1/2af9e104-9696-4bc9-9fce-8edef705c9b6/1280.jpg" alt="離開虛擬刺激，我找回了清醒與自由">
+                <h3>離開虛擬刺激，我找回了清醒與自由</h3>
+            </a>
+</section>
+
+<section>
+            <a href="https://www.ganjingworld.com/s/20Q0X4vbvv" target="_blank">
+                <img src="https://image1-us-east.cloudokyo.cloud/image/v2/ce/cc/b5/ceccb5f8-ba0f-40aa-ae8d-068f8a9de16c/1280.jpg" alt="二四年詩集">
+                <h3>二四年詩集</h3>
+            </a>
+</section>
 
 <footer>
+    <ul class="social-links">
+        <li>
+            <a href="https://www.youtube.com/@Tung_talk" target="_blank">
+                <img src="https://duckduckgo.com/assets/icons/favicons/youtube.2x.png" alt="YouTube">
+            </a>
+        </li>
+        <li>
+            <a href="https://www.ganjingworld.com/zh-TW/@Tung" target="_blank">
+                <img src="https://external-content.duckduckgo.com/ip3/www.ganjingworld.com.ico" alt="乾淨世界">
+            </a>
+        </li>
+        <li>
+            <a href="https://twitter.com/jzking_tw" target="_blank">
+                <img src="https://external-content.duckduckgo.com/ip3/about.x.com.ico" alt="Twitter">
+            </a>
+        </li>
+                <li>
+            <a href="mailto:Tung@jzking.tw" target="_blank">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMjMuMjQ5IDMuODJILjc1djE2LjM2aDIyLjV6Ii8+PHBhdGggZmlsbD0iI2JiZDhmZiIgZD0iTTIwLjk5OSAxOC4xMzZIMy4wMDFMLjc1MSAyMC4xOEgyMy4yNXoiLz48cGF0aCBzdHJva2U9IiMwOTJmNjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNMjMuMjQ5IDMuODJMMTIgMTUuMzc0TC43NTEgMy44MTltMCAxNi4zNjJsOC4yODMtNy42N209LjkzMiAwbDguMjgzIDcuNjciIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIHN0cm9rZT0iIzA5MmY2MyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMy4yNDkgMy44MkguNzV2MTYuMzZoMjIuNXoiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIHN0cm9rZT0iIzA5MmY2MyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMy4yNDkgMy44MkguNzV2MTYuMzZoMjIuNXoiIHN0cm9rZS13aWR0aD0iMSIvPjwvZz48L3N2Zz4=" alt="Email" vertical-align: middle;">
+            </a>
+        </li>
+        <li>
+            <a href="https://www.instagram.com/tung_talk/" target="_blank">
+                <img src="https://external-content.duckduckgo.com/ip3/www.instagram.com.ico" alt="Instagram">
+            </a>
+        </li>
+        <li>
+            <a href="https://lin.ee/GQlQZAE" target="_blank">
+                <img src="https://external-content.duckduckgo.com/ip3/line.me.ico" alt="Line">
+            </a>
+        </li>
+        <li>
+            <a href="https://podcasts.apple.com/us/channel/落寒說道/id6749576041" target="_blank">
+                <img src="https://encrypted-tbn0.gstatic.com/favicon-tbn?q=tbn:ANd9GcQ4IX7VcjZFvjbixRhGdSP8VE9VoT1IiA3DuAn8lHhNq5yHkls4yeRBt2YlFk85GpM4z4i0ZcOhPhFtOl4nVDjwxrZ1qB2Ika7zH11HPGozDz6TmZAynOk" alt="Podcast">
+            </a>
+        </li>
+    </ul>
     <p>&copy; <span id="current-year"></span> 沈落寒</p>
 </footer>
 
-<script>
-    // 自動更新年份
-    document.getElementById("current-year").textContent = new Date().getFullYear();
-</script>
-
 </body>
-</html>
+</html> <!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沈落寒</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2; /* 亮色背景 */
+            color: #000; /* 文字为黑色 */
+            transition: background-color 0.3s, color 0.3s; /* 动画效果 */
+        }
+        .dark-mode {
+            background-color: #181818; /* 黑色背景 */
+            color: #fff; /* 文字为白色 */
+        }
+        header {
+            background-color: #198964;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 5px solid #0d5c3d; /* 添加下边框 */
+        }
+        .dark-mode header {
+            background-color: #2d2d2d; /* 暗黑模式下的头部背景 */
+            border-bottom: 5px solid #1a1a1a; /* 暗黑模式下的边框 */
+        }
+        nav {
+            margin: 20px 0;
+            text-align: center; /* 中央對齊菜單 */
+        }
+        nav a {
+            margin: 0 15px;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* 悬停时变化 */
+        }
+        section {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .dark-mode section {
+            background-color: #242424; /* 暗黑模式下的内容背景 */
+            color: #fff; /* 内容文字为白色 */
+        }
+        section h2 {
+            color: #198964; /* 小节标题颜色 */
+        }
+        .dark-mode section h2 {
+            color: #ffffff; /* 暗黑模式下小节标题为白色 */
+        }
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            background-color: #198964;
+            color: white;
+            position: relative;
+            margin-top: 40px;
+        }
+        .dark-mode footer {
+            background-color: #2d2d2d; /* 暗黑模式下的脚部背景 */
+        }
+        .social-links {
+            list-style-type: none;
+            padding: 0;
+            display: flex; /* 使用 flexbox */
+            justify-content: center; /* 居中对齐 */
+            flex-wrap: wrap; /* 允许换行以适应小屏幕 */
+        }
+        .social-links li {
+            margin: 10px;
+        }
+        .social-links img {
+            width: 30px; /* 增大图标 */
+            height: 30px;
+            transition: transform 0.3s;
+        }
+        .social-links img:hover {
+            transform: scale(1.1); /* 悬停时放大效果 */
+        }
+        .blog-posts {
+            display: flex;
+            flex
 
+        .blog-posts {
+            display: flex;
+            flex-direction: column; /* 让每一篇文章垂直排列 */
+            margin: 20px 0;
+        }
+
+        .post {
+            display: flex; /* 使用flexbox进行布局 */
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            overflow: hidden; /* 隐藏溢出内容 */
+        }
+
+        .post img {
+            width: 150px; /* 固定图片宽度以确保比例统一 */
+            height: 100%; /* 高度自适应 */
+            object-fit: cover; /* 确保图片填满而不变形 */
+        }
+
+        .post h3 {
+            flex: 1; /* 让标题自适应空间 */
+            padding: 10px;
+            margin: 0;
+            display: flex;
+            align-items: center; /* 垂直居中对齐 */
+        }
+
+        .post a {
+            text-decoration: none;
+            color: #000; /* 默认文字颜色 */
+            display: flex; /* 使a标签也使用flexbox */
+        }
+
+        /* 暗黑模式 */
+        .dark-mode .post {
+            background: #242424; /* 暗背景 */
+        }
+
+        .dark-mode .post h3 {
+            color: #fff; /* 暗模式下的标题颜色 */
+        }
+
+        .dark-mode .post a {
+            color: #ffffff; /* 暗模式下的文字颜色 */
+        }
+
+        /* 响应式设计 - 媒体查询 */
+        @media (max-width: 768px) {
+            .blog-posts {
+                flex-direction: column; /* 移动设备上每一篇文章依旧垂直排列 */
+            }
+            .post {
+                flex-direction: row; /* 移动设备上仍旧保持左图右文 */
+            }
+            .post img {
+                width: 100%; /* 图片在移动设备上宽度占满 */
+                height: auto; /* 高度自适应 */
+            }
+        }
+    </style>
+</head>
+<body>
