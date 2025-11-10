@@ -1,4 +1,8 @@
 {
+  
+  "name": "沈落寒",
+  "short_name": "沈落寒",
+  "lang": "zh"
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -15,7 +19,4 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "start_url": "/index.html",
-  "name": "沈落寒",
-  "short_name": "沈落寒",
-  "lang": "zh"
 }
