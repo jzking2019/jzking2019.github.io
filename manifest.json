@@ -1,4 +1,6 @@
 {
+  "id": "/",
+  "lang": "zh",
   "name": "沈落寒",
   "short_name": "沈落寒",
   "start_url": "/index.html",
@@ -6,6 +8,14 @@
   "background_color": "#f2f2f2",
   "theme_color": "#198964",
   "description": "落寒的部落格",
+  "screenshot": [
+    {
+      "src": "https://image3-us-west.cloudokyo.cloud/image/v3/49/d5/a3/49d5a38e-31fc-43c4-988e-33312e4c589e/1280.jpg"
+    },
+    {
+      "src": "https://image3-us-west.cloudokyo.cloud/image/v3/10/6c/bc/106cbc2c-2e5d-47c0-bfd8-fca11253aaa8/1280.jpg"
+    }
+  ],
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
