@@ -5,6 +5,7 @@
   "display": "standalone",
   "background_color": "#f2f2f2",
   "theme_color": "#198964",
+  "description": "落寒的部落格",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -16,5 +17,8 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "categories": [
+    "personalization"
   ]
 }
