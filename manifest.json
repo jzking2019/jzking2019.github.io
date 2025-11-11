@@ -1,5 +1,6 @@
 {
   "id": "/",
+  "dir": "ltr",
   "lang": "zh",
   "name": "沈落寒",
   "short_name": "沈落寒",
@@ -8,6 +9,11 @@
   "background_color": "#f2f2f2",
   "theme_color": "#198964",
   "description": "落寒的部落格",
+  "orientation": "any",
+  "prefer_related_applications": "false",
+  "display_override": [
+    "window-controls-overlay"
+  ],
   "screenshots": [
     {
       "src": "https://image3-us-west.cloudokyo.cloud/image/v3/49/d5/a3/49d5a38e-31fc-43c4-988e-33312e4c589e/1280.jpg"
