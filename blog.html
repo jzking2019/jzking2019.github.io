@@ -193,6 +193,24 @@ section h2 {
     }
 </style>
     <script>
+// 搜尋功能
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("searchInput");
+    const posts = document.querySelectorAll(".post");
+
+    searchInput.addEventListener("input", function() {
+        const query = this.value.toLowerCase().trim();
+        posts.forEach(post => {
+            const text = post.innerText.toLowerCase();
+            // 根據關鍵字顯示或隱藏
+            if (text.includes(query)) {
+                post.style.display = "flex";
+            } else {
+                post.style.display = "none";
+            }
+        });
+    });
+});
         // Service Worker 注册
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
