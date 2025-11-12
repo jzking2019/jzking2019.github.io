@@ -48,7 +48,47 @@
         nav a:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
-    section {
+/* 🔍 搜索框 + 圖標 */
+.search-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 20px;
+    top: 25px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: background-color 0.3s;
+}
+.search-container img {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+}
+.search-input {
+    border: none;
+    outline: none;
+    padding: 5px;
+    width: 140px;
+    background: transparent;
+    color: #000;
+    font-size: 14px;
+}
+.search-input:focus {
+    width: 200px;
+}
+.dark-mode .search-container {
+    background-color: #333;
+}
+.dark-mode .search-input {
+    color: #fff;
+}
+.dark-mode .search-container img {
+    filter: invert(1);
+}
+
+section {
         padding: 20px;
         background-color: white;
         margin: 20px auto; /* Center and add margin */
@@ -219,6 +259,11 @@ section h2 {
             <a href="index.html">返回首頁</a>
             <a href="#" onclick="toggleTheme(); return false;">切換主題</a>
         </nav>
+            <!-- 🔍 搜索框（加上放大鏡圖示） -->
+        <div class="search-container">
+            <img src="https://icon-icons.com/downloadimage.php?id=145939&root=2406/SVG/&file=search_magnifier_icon_145939.svg" alt="Search">
+            <input type="text" id="searchInput" class="search-input" placeholder="搜尋文章...">
+        </div>
     </header>
 
 <section>    
