@@ -48,47 +48,56 @@
         nav a:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
-/* 🔍 搜索框 + 圖標 */
-.search-container {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 20px;
-    top: 25px;
-    background-color: white;
-    border-radius: 20px;
-    padding: 5px 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    transition: background-color 0.3s;
-}
-.search-container img {
-    width: 18px;
-    height: 18px;
-    margin-right: 6px;
-}
-.search-input {
-    border: none;
-    outline: none;
-    padding: 5px;
-    width: 140px;
-    background: transparent;
-    color: #000;
-    font-size: 14px;
-}
-.search-input:focus {
-    width: 200px;
-}
-.dark-mode .search-container {
-    background-color: #333;
-}
-.dark-mode .search-input {
-    color: #fff;
-}
-.dark-mode .search-container img {
-    filter: invert(1);
-}
+/* 🔍 搜索圖標容器 */
+        .search-container {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            background-color: white;
+            border-radius: 20px;
+            padding: 5px 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: width 0.3s, background-color 0.3s;
+            overflow: hidden;
+            width: 36px; /* 初始只顯示圖標 */
+        }
+        .search-container img {
+            width: 18px;
+            height: 18px;
+        }
+        .search-input {
+            border: none;
+            outline: none;
+            padding: 5px;
+            width: 0;
+            opacity: 0;
+            background: transparent;
+            color: #000;
+            font-size: 14px;
+            transition: width 0.3s, opacity 0.3s;
+        }
+        .search-container.active {
+            width: 200px; /* 展開寬度 */
+        }
+        .search-container.active .search-input {
+            width: 140px;
+            opacity: 1;
+        }
 
-section {
+        .dark-mode .search-container {
+            background-color: #333;
+        }
+        .dark-mode .search-input {
+            color: #fff;
+        }
+        .dark-mode .search-container img {
+            filter: invert(1);
+        }
+
+        section {
         padding: 20px;
         background-color: white;
         margin: 20px auto; /* Center and add margin */
@@ -193,24 +202,6 @@ section h2 {
     }
 </style>
     <script>
-// 搜尋功能
-document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById("searchInput");
-    const posts = document.querySelectorAll(".post");
-
-    searchInput.addEventListener("input", function() {
-        const query = this.value.toLowerCase().trim();
-        posts.forEach(post => {
-            const text = post.innerText.toLowerCase();
-            // 根據關鍵字顯示或隱藏
-            if (text.includes(query)) {
-                post.style.display = "flex";
-            } else {
-                post.style.display = "none";
-            }
-        });
-    });
-});
         // Service Worker 注册
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
@@ -277,9 +268,9 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="index.html">返回首頁</a>
             <a href="#" onclick="toggleTheme(); return false;">切換主題</a>
         </nav>
-            <!-- 🔍 搜索框（加上放大鏡圖示） -->
-        <div class="search-container">
-            <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PCFET0NUWVBFIHN2ZyAgUFVCTElDICctLy9XM0MvL0RURCBTVkcgMS4xLy9FTicgICdodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQnPjxzdmcgaGVpZ2h0PSI1MTJweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0zNDQuNSwyOThjMTUtMjMuNiwyMy44LTUxLjYsMjMuOC04MS43YzAtODQuMS02OC4xLTE1Mi4zLTE1Mi4xLTE1Mi4zQzEzMi4xLDY0LDY0LDEzMi4yLDY0LDIxNi4zICBjMCw4NC4xLDY4LjEsMTUyLjMsMTUyLjEsMTUyLjNjMzAuNSwwLDU4LjktOSw4Mi43LTI0LjRsNi45LTQuOEw0MTQuMyw0NDhsMzMuNy0zNC4zTDMzOS41LDMwNS4xTDM0NC41LDI5OHogTTMwMS40LDEzMS4yICBjMjIuNywyMi43LDM1LjIsNTIuOSwzNS4yLDg1YzAsMzIuMS0xMi41LDYyLjMtMzUuMiw4NWMtMjIuNywyMi43LTUyLjksMzUuMi04NSwzNS4yYy0zMi4xLDAtNjIuMy0xMi41LTg1LTM1LjIgIGMtMjIuNy0yMi43LTM1LjItNTIuOS0zNS4yLTg1YzAtMzIuMSwxMi41LTYyLjMsMzUuMi04NWMyMi43LTIyLjcsNTIuOS0zNS4yLDg1LTM1LjJDMjQ4LjUsOTYsMjc4LjcsMTA4LjUsMzAxLjQsMTMxLjJ6Ii8+PC9zdmc+" alt="Search">
+            <!-- 🔍 搜索框 -->
+        <div class="search-container" id="searchContainer">
+            <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PCFET0NUWVBFIHN2ZyAgUFVCTElDICctLy9XM0MvL0RURCBTVkcgMS4xLy9FTicgICdodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQnPjxzdmcgaGVpZ2h0PSI1MTJweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0zNDQuNSwyOThjMTUtMjMuNiwyMy44LTUxLjYsMjMuOC04MS43YzAtODQuMS02OC4xLTE1Mi4zLTE1Mi4xLTE1Mi4zQzEzMi4xLDY0LDY0LDEzMi4yLDY0LDIxNi4zICBjMCw4NC4xLDY4LjEsMTUyLjMsMTUyLjEsMTUyLjNjMzAuNSwwLDU4LjktOSw4Mi43LTI0LjRsNi45LTQuOEw0MTQuMyw0NDhsMzMuNy0zNC4zTDMzOS41LDMwNS4xTDM0NC41LDI5OHogTTMwMS40LDEzMS4yICBjMjIuNywyMi43LDM1LjIsNTIuOSwzNS4yLDg1YzAsMzIuMS0xMi41LDYyLjMtMzUuMiw4NWMtMjIuNywyMi43LTUyLjksMzUuMi04NSwzNS4yYy0zMi4xLDAtNjIuMy0xMi41LTg1LTM1LjIgIGMtMjIuNy0yMi43LTM1LjItNTIuOS0zNS4yLTg1YzAtMzIuMSwxMi41LTYyLjMsMzUuMi04NWMyMi43LTIyLjcsNTIuOS0zNS4yLDg1LTM1LjJDMjQ4LjUsOTYsMjc4LjcsMTA4LjUsMzAxLjQsMTMxLjJ6Ii8+PC9zdmc+" alt="Search" id="searchIcon">
             <input type="text" id="searchInput" class="search-input" placeholder="搜尋文章...">
         </div>
     </header>
@@ -376,6 +367,41 @@ document.addEventListener("DOMContentLoaded", function() {
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
         }
+
+        // 搜尋框交互
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchContainer = document.getElementById("searchContainer");
+            const searchIcon = document.getElementById("searchIcon");
+            const searchInput = document.getElementById("searchInput");
+            const posts = document.querySelectorAll(".post");
+
+            // 點擊圖標展開搜尋框
+            searchIcon.addEventListener("click", function(e) {
+                e.stopPropagation();
+                searchContainer.classList.toggle("active");
+                if (searchContainer.classList.contains("active")) searchInput.focus();
+            });
+
+            // 點擊外部關閉
+            document.addEventListener("click", function(e) {
+                if (!searchContainer.contains(e.target)) {
+                    searchContainer.classList.remove("active");
+                }
+            });
+
+            // 搜尋功能
+            searchInput.addEventListener("input", function() {
+                const query = this.value.toLowerCase().trim();
+                posts.forEach(post => {
+                    const text = post.innerText.toLowerCase();
+                    post.style.display = text.includes(query) ? "flex" : "none";
+                });
+            });
+
+            // 讀取主題偏好
+            const userTheme = localStorage.getItem('theme');
+            if (userTheme === 'dark') document.body.classList.add('dark-mode');
+        });
     </script>
 </body>
 </html>
