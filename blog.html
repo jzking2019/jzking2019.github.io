@@ -153,6 +153,17 @@ section h2 {
     }
 </style>
     <script>
+        // Service Worker 注册
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+            });
+        }
+
         async function checkAccess() {
             try {
                 const response = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=fc63e8edf7884c8a8f7662af23899450'); // 替换为你的实际 API
