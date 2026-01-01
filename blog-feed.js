@@ -1,7 +1,7 @@
 async function loadLatestPosts() {
   try {
     const res = await fetch("blog.html");
-    if (!res.ok) throw new Error("网络错误，无法加载内容");
+    if (!res.ok) throw new Error("網路錯誤，無法加載内容");
 
     const html = await res.text();
     const parser = new DOMParser();
@@ -40,10 +40,10 @@ async function loadLatestPosts() {
     container.appendChild(fragment);
 
   } catch (err) {
-    console.error("无法加载最新文章", err);
+    console.error("無法加載最新文章", err);
     const container = document.getElementById("latest-posts");
     if (container) {
-      container.innerHTML = `<p>加载失败，请稍后再试。</p>`;
+      container.innerHTML = `<p>加載失敗，請稍後再試。</p>`;
     }
   }
 }
@@ -67,3 +67,4 @@ window.addEventListener('resize', () => {
 
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
