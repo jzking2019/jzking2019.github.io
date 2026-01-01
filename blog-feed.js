@@ -23,7 +23,6 @@ async function loadLatestPosts() {
       if (link && img && title) {
         const item = document.createElement("article");
         item.className = "post";
-        item.style.width = "calc(33.33% - 20px)"; // 固定宽度
         item.style.margin = "10px"; // 设置外边距
 
         item.innerHTML = `
@@ -70,4 +69,3 @@ window.addEventListener('resize', () => {
 
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
-
