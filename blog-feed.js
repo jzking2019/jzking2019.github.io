@@ -18,7 +18,7 @@ async function loadLatestPosts() {
     posts.forEach(post => {
       const link = post.querySelector("a")?.href;
       const img = post.querySelector("img")?.src;
-      const title = post.querySelector("h3")?.innerText;
+      const title = post.querySelector("p")?.innerText;
 
       if (link && img && title) {
         const item = document.createElement("article");
