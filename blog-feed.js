@@ -1,14 +1,14 @@
 async function loadLatestPosts() {
   try {
     const res = await fetch("blog.html");
-    if (!res.ok) throw new Error("網路錯誤，無法加載内容");
+    if (!res.ok) throw new Error("网络错误，无法加载内容");
 
     const html = await res.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
 
     // 抓取所有文章，取最新 6 篇
-    const posts = Array.from(doc.querySelectorAll(".post")).slice(6);
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(6); 
     const container = document.getElementById("latest-posts");
     if (!container) return;
 
@@ -22,7 +22,9 @@ async function loadLatestPosts() {
 
       if (link && img && title) {
         const item = document.createElement("article");
-        item.className = "post";
+        item.className = "post"; // 将类设置为 "post"
+        item.style.width = "calc(33.33% - 20px)"; // 默认为三列
+
         item.innerHTML = `
           <a href="${link}" target="_blank" rel="noopener noreferrer">
             <img src="${img}" alt="${title}">
@@ -37,16 +39,14 @@ async function loadLatestPosts() {
     container.appendChild(fragment);
 
   } catch (err) {
-    console.error("無法加載最新文章", err);
+    console.error("无法加载最新文章", err);
     // 可以在这里添加用户反馈，例如：
     const container = document.getElementById("latest-posts");
     if (container) {
-      container.innerHTML = `<p>加載失敗，請稍後再試。</p>`;
+      container.innerHTML = `<p>加载失败，请稍后再试。</p>`;
     }
   }
 }
 
+// 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
-
-
-
