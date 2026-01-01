@@ -23,7 +23,8 @@ async function loadLatestPosts() {
       if (link && img && title) {
         const item = document.createElement("article");
         item.className = "post";
-        item.style.margin = "10px"; // 设置外边距
+        // 设置宽度和样式
+        updatePostStyle(item);
 
         item.innerHTML = `
           <a href="${link}" target="_blank" rel="noopener noreferrer">
@@ -50,14 +51,14 @@ async function loadLatestPosts() {
   }
 }
 
-// 更新容器样式以适应行数
-function updateContainerStyle(container) {
+// 更新文章项的宽度样式
+function updatePostStyle(item) {
   if (window.innerWidth > 1200) {
-    container.style.display = "grid";
-    container.style.gridTemplateColumns = "repeat(3, 1fr)"; // 宽屏3行
+    item.style.width = "calc(50% - 20px)"; // 宽屏2列
+  } else if (window.innerWidth <= 1200 && window.innerWidth > 768) {
+    item.style.width = "calc(33.33% - 20px)"; // 中等屏幕3列
   } else {
-    container.style.display = "grid";
-    container.style.gridTemplateColumns = "repeat(3, 1fr)"; // 中等屏幕仍然3列
+    item.style.width = "calc(50% - 20px)"; // 其他屏幕
   }
 }
 
@@ -69,3 +70,4 @@ window.addEventListener('resize', () => {
 
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
