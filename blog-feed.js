@@ -48,23 +48,7 @@ async function loadLatestPosts() {
   }
 }
 
-// 更新文章项的宽度样式
-function updatePostStyle(item) {
-  if (window.innerWidth > 1200) {
-    item.style.width = "calc(50% - 20px)"; // 宽屏2列
-  } else if (window.innerWidth <= 1200 && window.innerWidth > 768) {
-    item.style.width = "calc(33.33% - 20px)"; // 中等屏幕3列
-  } else {
-    item.style.width = "calc(50% - 20px)"; // 其他屏幕
-  }
-}
-
-// 处理窗口大小变化
-window.addEventListener('resize', () => {
-  const posts = document.querySelectorAll('.post');
-  posts.forEach(post => updatePostStyle(post));
-});
-
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
 
