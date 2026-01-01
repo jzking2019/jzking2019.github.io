@@ -57,8 +57,8 @@ function updatePostStyle(item) {
     item.style.width = "calc(50% - 20px)"; // 宽屏2列
   } else if (window.innerWidth <= 1200 && window.innerWidth > 768) {
     item.style.width = "calc(33.33% - 20px)"; // 中等屏幕3列
-  } else {
-    item.style.width = "calc(50% - 20px)"; // 其他屏幕
+  } else if (window.innerWidth <= 768 && window.innerWidth > 480) {
+    item.style.width = "calc(100% - 20px)"; // 其他屏幕
   }
 }
 
@@ -70,4 +70,5 @@ window.addEventListener('resize', () => {
 
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
 
