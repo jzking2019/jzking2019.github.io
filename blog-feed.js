@@ -31,7 +31,7 @@ async function loadLatestPosts() {
     const doc = parser.parseFromString(html, "text/html");
 
     // 抓取所有文章，取最新 6 篇
-    const posts = Array.from(doc.querySelectorAll(".post")).slice(6);
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(0,6);
     const container = document.getElementById("latest-posts");
     if (!container) return;
 
@@ -44,7 +44,7 @@ async function loadLatestPosts() {
       const title = post.querySelector("p")?.innerText;
 
       if (link && img && title) {
-        const item = document.createElement("article");
+        const item = document.createElement("div"); // 将 article 改为 div
         item.className = "post";
         item.innerHTML = `
           <a href="${link}" target="_blank" rel="noopener noreferrer">
@@ -70,5 +70,6 @@ async function loadLatestPosts() {
 }
 
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
 
 
