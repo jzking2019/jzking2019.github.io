@@ -8,7 +8,7 @@ async function loadLatestPosts() {
     const doc = parser.parseFromString(html, "text/html");
 
     // 抓取所有文章，取最新 6 篇
-    const posts = Array.from(doc.querySelectorAll(".post")).slice(0, 6);
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(6);
     const container = document.getElementById("latest-posts");
     if (!container) return;
 
@@ -75,3 +75,4 @@ window.addEventListener('resize', () => {
 
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
