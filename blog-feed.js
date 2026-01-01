@@ -8,9 +8,12 @@ async function loadLatestPosts() {
     const doc = parser.parseFromString(html, "text/html");
 
     // 抓取所有文章，取最新 6 篇
-    const posts = Array.from(doc.querySelectorAll(".post")).slice(6);
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(0, 6);
     const container = document.getElementById("latest-posts");
     if (!container) return;
+
+    // 清空容器，确保不重复加载
+    container.innerHTML = ""; 
 
     // 创建一个文档片段
     const fragment = document.createDocumentFragment();
@@ -22,13 +25,11 @@ async function loadLatestPosts() {
 
       if (link && img && title) {
         const item = document.createElement("article");
-        item.className = "post";
-        // 设置宽度和样式
-        updatePostStyle(item);
+        item.className = "post"; // 添加类名
 
         item.innerHTML = `
           <a href="${link}" target="_blank" rel="noopener noreferrer">
-            <img src="${img}" alt="${title}">
+            <img src="${img}" alt="${title}" style="width: 100%; height: auto; object-fit: cover;">
             <h3>${title}</h3>
           </a>
         `;
@@ -39,7 +40,7 @@ async function loadLatestPosts() {
     // 将文档片段添加到容器
     container.appendChild(fragment);
 
-    // 设置容器样式以实现行数限制
+    // 设置容器展示方式
     updateContainerStyle(container);
 
   } catch (err) {
@@ -51,14 +52,18 @@ async function loadLatestPosts() {
   }
 }
 
-// 更新文章项的宽度样式
-function updatePostStyle(item) {
-  if (window.innerWidth > 1200) {
-    item.style.width = "calc(50% - 20px)"; // 宽屏2列
-  } else if (window.innerWidth <= 1200 && window.innerWidth > 768) {
-    item.style.width = "calc(33.33% - 20px)"; // 中等屏幕3列
-  } else if (window.innerWidth <= 768 && window.innerWidth > 480) {
-    item.style.width = "calc(100% - 20px)"; // 其他屏幕
+// 更新容器样式以适应行数
+function updateContainerStyle(container) {
+  // 直接使用媒体查询的适配逻辑
+  if (window.innerWidth <= 480) {
+    container.style.display = "grid";
+    container.style.gridTemplateColumns = "1fr"; // 手机显示1列
+  } else if (window.innerWidth <= 768) {
+    container.style.display = "grid";
+    container.style.gridTemplateColumns = "repeat(2, 1fr)"; // 平板显示2列
+  } else {
+    container.style.display = "grid";
+    container.style.gridTemplateColumns = "repeat(3, 1fr)"; // 中等屏幕显示3列
   }
 }
 
@@ -70,5 +75,3 @@ window.addEventListener('resize', () => {
 
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
-
-
