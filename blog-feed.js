@@ -8,7 +8,7 @@ async function loadLatestPosts() {
     const doc = parser.parseFromString(html, "text/html");
 
     // 抓取所有文章，取最新 6 篇
-    const posts = Array.from(doc.querySelectorAll(".post")).slice(-6);
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(6);
     const container = document.getElementById("latest-posts");
     if (!container) return;
 
@@ -47,5 +47,6 @@ async function loadLatestPosts() {
 }
 
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
 
 
