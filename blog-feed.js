@@ -8,7 +8,7 @@ async function loadLatestPosts() {
     const doc = parser.parseFromString(html, "text/html");
 
     // 抓取所有文章，取最新 6 篇
-    const posts = Array.from(doc.querySelectorAll(".post")).slice(6);
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(0, 6);
     const container = document.getElementById("latest-posts");
     if (!container) return;
 
@@ -23,8 +23,8 @@ async function loadLatestPosts() {
       if (link && img && title) {
         const item = document.createElement("article");
         item.className = "post";
-        // 设置宽度和样式
-        updatePostStyle(item);
+        item.style.width = "calc(33.33% - 20px)"; // 固定宽度
+        item.style.margin = "10px"; // 设置外边距
 
         item.innerHTML = `
           <a href="${link}" target="_blank" rel="noopener noreferrer">
@@ -39,6 +39,9 @@ async function loadLatestPosts() {
     // 将文档片段添加到容器
     container.appendChild(fragment);
 
+    // 设置容器样式以实现行数限制
+    updateContainerStyle(container);
+
   } catch (err) {
     console.error("無法加載最新文章", err);
     const container = document.getElementById("latest-posts");
@@ -48,7 +51,22 @@ async function loadLatestPosts() {
   }
 }
 
+// 更新容器样式以适应行数
+function updateContainerStyle(container) {
+  if (window.innerWidth > 1200) {
+    container.style.display = "grid";
+    container.style.gridTemplateColumns = "repeat(3, 1fr)"; // 宽屏3行
+  } else {
+    container.style.display = "grid";
+    container.style.gridTemplateColumns = "repeat(3, 1fr)"; // 中等屏幕仍然3列
+  }
+}
+
+// 处理窗口大小变化
+window.addEventListener('resize', () => {
+  const container = document.getElementById("latest-posts");
+  updateContainerStyle(container);
+});
+
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
-
-
