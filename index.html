@@ -150,53 +150,6 @@
             color: #ffffff; /* 暗模式下的文字顏色 */
         }
 
-        /* 响应式设计 - 媒体查询 */
-        @media (max-width: 1200px) {
-            .post {
-                width: calc(33.33% - 20px); /* 中等屏幕显示3列 */
-            }
-        }
-
-        @media (max-width: 768px) {
-            .post {
-                width: calc(50% - 20px); /* 平板显示2列 */
-            }
-            nav {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            nav a {
-                margin: 10px 15px; /* 增加垂直间距 */
-            }
-            section {
-                margin: 10px; /* 减少外边距 */
-                padding: 15px; /* 减少内边距 */
-            }
-            header {
-                padding: 15px 0; /* 调整头部内边距 */
-            }
-            footer {
-                padding: 20px 0; /* 调整脚部内边距 */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .post {
-                width: calc(100% - 20px); /* 手机显示1列 */
-            }
-            nav a {
-                display: block; /* 导航垂直排列 */
-                margin: 10px 0;
-            }
-            .social-links li {
-                margin: 5px; /* 缩小社交链接间距 */
-            }
-            .social-links img {
-                width: 25px; /* 缩小图标 */
-                height: 25px;
-            }
-        }
     </style>
     <script>
         // Service Worker 注册
