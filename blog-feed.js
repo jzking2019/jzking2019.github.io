@@ -1,6 +1,6 @@
 async function loadLatestPosts() {
   try {
-    const res = await fetch("blog.html");
+    const res = await fetch("/blog.html");
     if (!res.ok) throw new Error("網路錯誤，無法加載内容");
 
     const html = await res.text();
@@ -70,3 +70,4 @@ window.addEventListener('resize', () => {
 
 // 确保 DOM 完全加载后再调用
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
