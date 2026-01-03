@@ -1,5 +1,5 @@
 /* =========================
-   Footer 加载
+   Footer 加载（全站共用）
    ========================= */
 async function loadFooter() {
   const footer = document.getElementById("site-footer");
@@ -11,53 +11,17 @@ async function loadFooter() {
 
     footer.innerHTML = await res.text();
 
-    // 年份
     const yearEl = footer.querySelector("#footer-year");
     if (yearEl) {
       yearEl.textContent = new Date().getFullYear();
     }
   } catch (err) {
-    console.error("無法加載 footer", err);
+    console.error("Footer 載入失敗", err);
   }
 }
 
 /* =========================
-   Service Worker
-   ========================= */
-function registerServiceWorker() {
-  if (!("serviceWorker" in navigator)) return;
-
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/service-worker.js")
-      .then(reg => {
-        console.log("Service Worker registered:", reg.scope);
-      })
-      .catch(err => {
-        console.log("Service Worker failed:", err);
-      });
-  });
-}
-
-/* =========================
-   IP 檢測
-   ========================= */
-async function checkAccess() {
-  try {
-    const res = await fetch(
-      "https://api.ipgeolocation.io/ipgeo?apiKey=fc63e8edf7884c8a8f7662af23899450"
-    );
-    const data = await res.json();
-    if (data.country_code === "CN") {
-      window.location.href = "PRC.html";
-    }
-  } catch (e) {
-    console.error("IP check failed", e);
-  }
-}
-
-/* =========================
-   主題切換
+   主題切換（全站共用）
    ========================= */
 function toggleTheme() {
   document.body.classList.toggle("dark-mode");
@@ -89,7 +53,7 @@ function initSearch() {
   const searchInput = document.getElementById("searchInput");
   const posts = document.querySelectorAll(".post");
 
-  // blog.html 没有搜索框就直接跳过
+  // blog 页面才存在，首页自动跳过
   if (!searchContainer || !searchIcon || !searchInput) return;
 
   searchIcon.addEventListener("click", e => {
@@ -117,7 +81,7 @@ function initSearch() {
 }
 
 /* =========================
-   年份（非 footer 的情况）
+   年份（非 footer 场景兜底）
    ========================= */
 function updateCopyrightYear() {
   const el = document.getElementById("current-year");
@@ -127,13 +91,59 @@ function updateCopyrightYear() {
 }
 
 /* =========================
-   页面统一入口
+   Service Worker
+   ========================= */
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then(reg => {
+        console.log("Service Worker registered:", reg.scope);
+      })
+      .catch(err => {
+        console.log("Service Worker failed:", err);
+      });
+  });
+}
+
+/* =========================
+   IP 检测（仅首页，永不阻塞）
+   ========================= */
+function checkAccess() {
+  // 只有首页才执行（body 必须有 class="home"）
+  if (!document.body.classList.contains("home")) return;
+
+  fetch(
+    "https://api.ipgeolocation.io/ipgeo?apiKey=fc63e8edf7884c8a8f7662af23899450"
+  )
+    .then(res => res.json())
+    .then(data => {
+      if (data.country_code === "CN") {
+        window.location.href = "PRC.html";
+      }
+    })
+    .catch(err => {
+      console.warn("IP 檢測跳過", err);
+    });
+}
+
+/* =========================
+   页面统一入口（顺序极其重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
+  // UI 永远优先
   initTheme();
-  initSearch();
-  updateCopyrightYear();
-  checkAccess();
   loadFooter();
+
+  // 页面差异功能
+  initSearch();
+
+  // 辅助功能
+  updateCopyrightYear();
   registerServiceWorker();
+
+  // ⚠️ 最后执行，且不会影响前面
+  checkAccess();
 });
