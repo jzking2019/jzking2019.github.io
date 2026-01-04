@@ -1,5 +1,117 @@
 /* =========================
-   Footer 加载（全站共用）
+   主題切換（全站）
+   ========================= */
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
+
+  const theme = document.body.classList.contains("dark-mode")
+    ? "dark"
+    : "light";
+
+  localStorage.setItem("theme", theme);
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("theme");
+
+  if (
+    saved === "dark" ||
+    (!saved &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.body.classList.add("dark-mode");
+  }
+}
+
+/* =========================
+   搜索框（僅 blog 頁）
+   ⚠️ 必須在 header 注入後調用
+   ========================= */
+function initSearch() {
+  const searchContainer = document.getElementById("searchContainer");
+  const searchIcon = document.getElementById("searchIcon");
+  const searchInput = document.getElementById("searchInput");
+  const posts = document.querySelectorAll(".post");
+
+  if (!searchContainer || !searchIcon || !searchInput) return;
+
+  searchIcon.addEventListener("click", e => {
+    e.stopPropagation();
+    searchContainer.classList.toggle("active");
+    if (searchContainer.classList.contains("active")) {
+      searchInput.focus();
+    }
+  });
+
+  document.addEventListener("click", e => {
+    if (!searchContainer.contains(e.target)) {
+      searchContainer.classList.remove("active");
+    }
+  });
+
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase().trim();
+
+    posts.forEach(post => {
+      post.style.display = post.innerText.toLowerCase().includes(q)
+        ? ""
+        : "none";
+    });
+  });
+}
+
+/* =========================
+   Header 載入（全站核心）
+   ========================= */
+async function loadHeader() {
+  const header = document.getElementById("site-header");
+  if (!header) return;
+
+  try {
+    const res = await fetch("/header.html");
+    if (!res.ok) throw new Error("Header load failed");
+
+    header.innerHTML = await res.text();
+
+    /* 主題切換 icon */
+    const themeBtn = document.getElementById("themeToggle");
+    if (themeBtn) {
+      themeBtn.addEventListener("click", e => {
+        e.preventDefault();
+        toggleTheme();
+      });
+    }
+
+    /* ⭐ 搜索框一定要在 header 完成後 */
+    initSearch();
+  } catch (err) {
+    console.error("Header 載入失敗", err);
+  }
+}
+
+function bindHeaderMenu() {
+  const menuBtn = document.getElementById("menuToggle");
+  const menu = document.getElementById("mobileMenu");
+
+  if (!menuBtn || !menu) {
+    console.warn("menuToggle 或 mobileMenu 不存在");
+    return;
+  }
+
+  menuBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    menu.classList.toggle("open");
+  });
+
+  document.addEventListener("click", e => {
+    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+      menu.classList.remove("open");
+    }
+  });
+}
+
+/* =========================
+   Footer 載入（全站）
    ========================= */
 async function loadFooter() {
   const footer = document.getElementById("site-footer");
@@ -21,77 +133,7 @@ async function loadFooter() {
 }
 
 /* =========================
-   主題切換（全站共用）
-   ========================= */
-function toggleTheme() {
-  document.body.classList.toggle("dark-mode");
-  localStorage.setItem(
-    "theme",
-    document.body.classList.contains("dark-mode") ? "dark" : "light"
-  );
-}
-
-function initTheme() {
-  const saved = localStorage.getItem("theme");
-
-  if (saved === "dark") {
-    document.body.classList.add("dark-mode");
-  } else if (
-    !saved &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  ) {
-    document.body.classList.add("dark-mode");
-  }
-}
-
-/* =========================
-   搜索框（仅 blog.html 生效）
-   ========================= */
-function initSearch() {
-  const searchContainer = document.getElementById("searchContainer");
-  const searchIcon = document.getElementById("searchIcon");
-  const searchInput = document.getElementById("searchInput");
-  const posts = document.querySelectorAll(".post");
-
-  // blog 页面才存在，首页自动跳过
-  if (!searchContainer || !searchIcon || !searchInput) return;
-
-  searchIcon.addEventListener("click", e => {
-    e.stopPropagation();
-    searchContainer.classList.toggle("active");
-    if (searchContainer.classList.contains("active")) {
-      searchInput.focus();
-    }
-  });
-
-  document.addEventListener("click", e => {
-    if (!searchContainer.contains(e.target)) {
-      searchContainer.classList.remove("active");
-    }
-  });
-
-  searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase().trim();
-    posts.forEach(post => {
-      post.style.display = post.innerText.toLowerCase().includes(q)
-        ? "flex"
-        : "none";
-    });
-  });
-}
-
-/* =========================
-   年份（非 footer 场景兜底）
-   ========================= */
-function updateCopyrightYear() {
-  const el = document.getElementById("current-year");
-  if (el) {
-    el.textContent = new Date().getFullYear();
-  }
-}
-
-/* =========================
-   Service Worker
+   Service Worker（可選）
    ========================= */
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
@@ -99,20 +141,14 @@ function registerServiceWorker() {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register("/service-worker.js")
-      .then(reg => {
-        console.log("Service Worker registered:", reg.scope);
-      })
-      .catch(err => {
-        console.log("Service Worker failed:", err);
-      });
+      .catch(() => {});
   });
 }
 
 /* =========================
-   IP 检测（仅首页，永不阻塞）
+   IP 檢測（僅首頁，非阻塞）
    ========================= */
 function checkAccess() {
-  // 只有首页才执行（body 必须有 class="home"）
   if (!document.body.classList.contains("home")) return;
 
   fetch(
@@ -124,26 +160,17 @@ function checkAccess() {
         window.location.href = "PRC.html";
       }
     })
-    .catch(err => {
-      console.warn("IP 檢測跳過", err);
-    });
+    .catch(() => {});
 }
 
 /* =========================
-   页面统一入口（顺序极其重要）
+   全站入口（順序已固定）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  // UI 永远优先
-  initTheme();
-  loadFooter();
+  initTheme();        // ① 先決定主題（icon 反色依賴它）
+  loadHeader();     // ⭐⭐ 核心：注入 header + 绑定事件
+  loadFooter();       // ③ footer
 
-  // 页面差异功能
-  initSearch();
-
-  // 辅助功能
-  updateCopyrightYear();
   registerServiceWorker();
-
-  // ⚠️ 最后执行，且不会影响前面
-  checkAccess();
+  checkAccess();      // ⚠️ 最後，永不影響 UI
 });

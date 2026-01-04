@@ -1,11 +1,14 @@
 /* =========================
-   全站基础
+   基础全站样式
    ========================= */
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
+  font-family: Arial, sans-serif;
   background: #f2f2f2;
   color: #000;
   transition: background-color 0.3s, color 0.3s;
@@ -17,48 +20,172 @@ body.dark-mode {
 }
 
 /* =========================
-   Header / Nav（全站）
+   Header
    ========================= */
 
-header {
-  background: #ffffff;
-  border-bottom: 5px solid #a1a1a1;
-  padding: 20px 0;
-  text-align: center;
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
 }
 
-.dark-mode header {
+body.dark-mode .site-header {
   background: #2d2d2d;
   border-bottom-color: #1a1a1a;
 }
 
-nav {
-  margin: 20px 0;
+/* 左侧导航 */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-right: auto; /* ⭐ 强制左对齐 */
 }
 
-nav a {
-  margin: 0 15px;
-  padding: 10px 15px;
+.nav-left a {
   text-decoration: none;
-  color: #000;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  color: inherit;
+  font-size: 15px;
 }
 
-.dark-mode nav a {
+/* icon 按钮（菜单 / 主题） */
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #000;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+body.dark-mode .icon-btn {
+  color: #fff; /* ⭐ 自动反色 */
+}
+
+.icon-btn:hover {
+  opacity: 0.7;
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* icon 通用按钮 */
+.menu-toggle,
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: #000;
+}
+
+/* 深色模式自动反色 */
+body.dark-mode .menu-toggle,
+body.dark-mode .theme-toggle {
   color: #fff;
 }
 
-nav a:hover {
-  background: rgba(0, 0, 0, 0.08);
+/* =========================
+   Mobile Menu（菜单浮层）
+   ========================= */
+
+.mobile-menu {
+  position: absolute;              /* ⭐ 脱离文档流 */
+  top: 56px;                       /* header 高度下面 */
+  left: 12px;
+  min-width: 180px;
+
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+
+  display: none;                   /* ⭐ 默认隐藏 */
+  flex-direction: column;
+  padding: 12px 16px;
+
+  z-index: 9999;                   /* ⭐ 压过所有内容 */
+}
+
+.mobile-menu a {
+  text-decoration: none;
+  color: inherit;
+  padding: 8px 0;
+  font-size: 15px;
+}
+
+/* 打开状态 */
+.mobile-menu.open {
+  display: flex;                   /* ⭐ JS 切换的关键 */
+}
+
+/* 深色模式 */
+body.dark-mode .mobile-menu {
+  background: #2d2d2d;
 }
 
 /* =========================
-   Section（全站）
+   搜索框
+   ========================= */
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  width: 36px;
+  overflow: hidden;
+  transition: width 0.3s;
+}
+
+.search-container img {
+  width: 18px;
+  height: 18px;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  width: 0;
+  opacity: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  transition: width 0.3s, opacity 0.3s;
+}
+
+.search-container.active {
+  width: 200px;
+}
+
+.search-container.active .search-input {
+  width: 140px;
+  opacity: 1;
+}
+
+body.dark-mode .search-container {
+  background: #333;
+}
+
+body.dark-mode .search-container img {
+  filter: invert(1);
+}
+
+/* =========================
+   内容区
    ========================= */
 
 section {
-  max-width: 800px;
+  max-width: 900px;
   margin: 20px auto;
   padding: 20px;
   background: #fff;
@@ -66,129 +193,52 @@ section {
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.dark-mode section {
+body.dark-mode section {
   background: #242424;
 }
 
-section h2 {
-  color: #000;
-}
-
-.dark-mode section h2 {
-  color: #fff;
-}
-
 /* =========================
-   搜索功能
+   Blog 通用样式（blog.html）
    ========================= */
 
-/* 🔍 搜索圖標容器 */
-.search-container {
-display: flex; /* 使用彈性布局 */
-align-items: center; /* 垂直居中對齊 */
-position: absolute; /* 絕對定位 */
-right: 20px; /* 右邊距 */
-top: 25px; /* 上邊距 */
-background-color: white; /* 背景顏色 */
-border-radius: 20px; /* 圓角 */
-padding: 5px 10px; /* 內邊距 */
-box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* 陰影效果 */
-cursor: pointer; /* 指針效果 */
-transition: width 0.3s, background-color 0.3s; /* 寬度及背景變化的過渡效果 */
-overflow: hidden; /* 隱藏溢出內容 */
-width: 36px; /* 初始只顯示圖標寬度 */
-}
-
-/* 搜索圖標樣式 */
-.search-container img {
-width: 18px; /* 圖標寬度 */
-height: 18px; /* 圖標高度 */
-}
-
-/* 搜索輸入框樣式 */
-.search-input {
-border: none; /* 無邊框 */
-outline: none; /* 無輪廓 */
-padding: 5px; /* 內邊距 */
-width: 0; /* 初始寬度 */
-opacity: 0; /* 初始透明度 */
-background: transparent; /* 背景透明 */
-color: #000; /* 輸入文字顏色 */
-font-size: 14px; /* 字體大小 */
-transition: width 0.3s, opacity 0.3s; /* 寬度及透明度變化過渡效果 */
-}
-
-/* 活躍狀態下的搜索容器樣式 */
-.search-container.active {
-width: 200px; /* 展開寬度 */
-}
-
-/* 活躍狀態下搜索輸入框樣式 */
-.search-container
-.active .search-input {
-width: 140px; /* 展開時的輸入框寬度 */
-opacity: 1; /* 展開時的透明度 */
-}
-
-/* 深色模式下的搜索容器樣式 */
-.dark-mode .search-container {
-background-color: #333; /* 深色模式背景 */
-}
-
-/* 深色模式下的搜索輸入框樣式 */
-.dark-mode .search-input {
-color: #fff; /* 深色模式文本顏色 */
-}
-
-/* 深色模式下的搜索圖案樣式 */
-.dark-mode .search-container img {
-filter: invert(1); /* 將圖標顏色反轉 */
-}
-
-/* 主要內容區段樣式 */
-section {
-padding: 20px; /* 內邊距 */
-background-color: white; /* 背景顏色 */
-margin: 20px auto; /* 中心對齊並添加外邊距 */
-border-radius: 8px; /* 圓角 */
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* 陰影效果 */
-max-width: 800px; /* 最大寬度設定 */
-}
-
-/* =========================
-   Footer（全站）
-   ========================= */
-
-#site-footer {
-  background: #ffffff;
-  color: #000;
-  padding: 30px 0;
-  text-align: center;
-}
-
-.dark-mode #site-footer {
-  background: #2d2d2d;
-  color: #fff;
-}
-
-.social-links {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1rem;
+。blog .blog-posts {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.social-links img {
-  width: 30px;
-  height: 30px;
-  transition: transform 0.2s ease;
+.blog .post {
+  display: flex;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
 }
 
-.social-links a:hover img {
-  transform: scale(1.15);
+.blog .post:hover {
+  transform: scale(1.02);
+}
+
+.blog .post img {
+  width: 200px;
+  object-fit: cover;
+}
+
+.blog .post h3 {
+  margin: 0;
+  padding: 12px;
+}
+
+.blog .post a {
+  display: flex;
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
+}
+
+body.dark-mode .post {
+  background: #242424;
 }
 
 /* =========================
@@ -265,62 +315,64 @@ body.dark-mode.home .post p {
   color: #cccccc;
 }
 
+
 /* =========================
-   Blog 页面（只作用于 blog.html）
+   Footer
    ========================= */
 
-.blog .blog-posts {
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0;
-}
-
-.blog .post {
-  display: flex;
-  margin: 10px 0;
+#site-footer {
   background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
+  padding: 30px 0;
+  text-align: center;
 }
 
-.blog .post:hover {
-  transform: scale(1.02);
+body.dark-mode #site-footer {
+  background: #2d2d2d;
 }
 
-.blog .post img {
-  width: 200px;
-  object-fit: cover;
-}
-
-.blog .post h3 {
-  flex: 1;
-  margin: 0;
-  padding: 10px;
+.social-links {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
 }
 
-.blog .post a {
-  display: flex;
-  width: 100%;
+.social-links img {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s;
+}
+
+.social-links img:hover {
+  transform: scale(1.15);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 100;
+}
+
+body.dark-mode .dropdown-menu {
+  background: #2d2d2d;
+  border-color: #444;
+}
+
+.dropdown-menu.open {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px 0;
+  color: inherit;
   text-decoration: none;
-  color: #000;
-}
-
-.dark-mode.blog .post {
-  background: #242424;
-}
-
-.dark-mode.blog .post h3,
-.dark-mode.blog .post a {
-  color: #fff;
-}
-
-/* Blog 响应式 */
-@media (max-width: 768px) {
-  .blog .post img {
-    width: 150px;
-  }
 }
