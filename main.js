@@ -137,8 +137,36 @@ async function loadFooter() {
     if (yearEl) {
       yearEl.textContent = new Date().getFullYear();
     }
+
+    relocateFooterForMobile(); // ⭐ 在这里
+
   } catch (err) {
     console.error("Footer 載入失敗", err);
+  }
+}
+
+window.addEventListener("resize", () => {
+  relocateFooterForMobile();
+});
+
+function relocateFooterForMobile() {
+  const menu = document.getElementById("mobileMenu");
+  const footer = document.getElementById("site-footer");
+
+  if (!menu || !footer) return;
+
+  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+  if (isMobile) {
+    // 防止重复插入
+    if (!menu.contains(footer)) {
+      menu.appendChild(footer);
+    }
+  } else {
+    // 回到 body 底部（PC）
+    if (footer.parentElement !== document.body) {
+      document.body.appendChild(footer);
+    }
   }
 }
 
