@@ -92,41 +92,73 @@ body.dark-mode .theme-toggle {
 }
 
 /* =========================
-   Mobile Menu（菜单浮层）
+   Responsive Menu（不覆盖 Header）
    ========================= */
 
-.mobile-menu {
-  position: absolute;              /* ⭐ 脱离文档流 */
-  top: 56px;                       /* header 高度下面 */
-  left: 12px;
-  min-width: 180px;
-
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-
-  display: none;                   /* ⭐ 默认隐藏 */
-  flex-direction: column;
-  padding: 12px 16px;
-
-  z-index: 9999;                   /* ⭐ 压过所有内容 */
+:root {
+  --header-height: 56px;
 }
 
-.mobile-menu a {
-  text-decoration: none;
-  color: inherit;
-  padding: 8px 0;
-  font-size: 15px;
+/* 公共菜单基础 */
+.mobile-menu {
+  position: fixed;
+  top: var(--header-height);              /* ⭐ 从 header 下方开始 */
+  left: 0;
+  height: calc(100vh - var(--header-height)); /* ⭐ 不盖 header */
+  background: #fff;
+  box-shadow: 0 0 30px rgba(0,0,0,0.25);
+
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  z-index: 9999;
+
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
 }
 
 /* 打开状态 */
 .mobile-menu.open {
-  display: flex;                   /* ⭐ JS 切换的关键 */
+  transform: translateX(0);
+}
+
+/* 菜单链接 */
+.mobile-menu a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 16px;
+  padding: 12px 0;
 }
 
 /* 深色模式 */
 body.dark-mode .mobile-menu {
   background: #2d2d2d;
+}
+
+/* =========================
+   PC：左侧 Sidebar（ChatGPT 风格）
+   ========================= */
+@media (min-width: 768px) {
+  .mobile-menu {
+    width: 240px;
+  }
+
+  /* 主内容右移（不影响 header） */
+  body.menu-open main,
+  body.menu-open section {
+    margin-left: 240px;
+    transition: margin-left 0.3s ease;
+  }
+}
+
+/* =========================
+   Mobile：全屏宽度（不盖 header）
+   ========================= */
+@media (max-width: 767px) {
+  .mobile-menu {
+    width: 100vw;
+  }
 }
 
 /* =========================
