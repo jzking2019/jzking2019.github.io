@@ -82,31 +82,41 @@ async function loadHeader() {
       });
     }
 
+    // 菜单（⭐关键）
+    initMenu();
+    
     /* ⭐ 搜索框一定要在 header 完成後 */
     initSearch();
+
   } catch (err) {
     console.error("Header 載入失敗", err);
   }
 }
 
-function bindHeaderMenu() {
+/* 菜單 */
+function initMenu() {
   const menuBtn = document.getElementById("menuToggle");
   const menu = document.getElementById("mobileMenu");
 
   if (!menuBtn || !menu) {
-    console.warn("menuToggle 或 mobileMenu 不存在");
+    console.warn("菜单 DOM 未找到");
     return;
   }
 
+  // 点击按钮：开 / 关
   menuBtn.addEventListener("click", e => {
     e.stopPropagation();
     menu.classList.toggle("open");
   });
 
-  document.addEventListener("click", e => {
-    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-      menu.classList.remove("open");
-    }
+  // 点击菜单内部不关闭
+  menu.addEventListener("click", e => {
+    e.stopPropagation();
+  });
+
+  // 点击页面其它地方关闭
+  document.addEventListener("click", () => {
+    menu.classList.remove("open");
   });
 }
 
@@ -167,10 +177,14 @@ function checkAccess() {
    全站入口（順序已固定）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();        // ① 先決定主題（icon 反色依賴它）
-  loadHeader();     // ⭐⭐ 核心：注入 header + 绑定事件
-  loadFooter();       // ③ footer
+  initTheme();
+  loadHeader();
+// 菜单（⭐关键）
+  initMenu();
+  initSearch();
+  loadFooter();
 
   registerServiceWorker();
   checkAccess();      // ⚠️ 最後，永不影響 UI
 });
+
