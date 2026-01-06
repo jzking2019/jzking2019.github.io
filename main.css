@@ -1,17 +1,14 @@
 /* =========================
-   基础全站样式
+   基础
    ========================= */
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f2f2f2;
   color: #000;
-  transition: background-color 0.3s, color 0.3s;
 }
 
 body.dark-mode {
@@ -20,26 +17,43 @@ body.dark-mode {
 }
 
 /* =========================
-   Header（固定顶部）
+   Header（唯一结构）
    ========================= */
 
+:root {
+  --header-height: 56px;
+  --bottom-nav-height: 56px;
+}
+
 .site-header {
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 14px;
+  width: 100%;
   background: #fff;
   border-bottom: 1px solid #ddd;
+  z-index: 1000;
 }
 
 body.dark-mode .site-header {
   background: #2d2d2d;
   border-bottom-color: #1a1a1a;
 }
+
+.header-pc {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+}
+
+.nav-left a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 15px;
+}
+
+/* =========================
+   左右区
+   ========================= */
 
 .nav-left,
 .nav-right {
@@ -52,40 +66,139 @@ body.dark-mode .site-header {
   flex: 1;
 }
 
-/* PC / Mobile 显示控制 */
+/* =========================
+   PC / Mobile 控制
+   ========================= */
+
 .pc-only { display: inline-flex; }
 .mobile-only { display: none; }
 
 @media (max-width: 767px) {
-  .pc-only { display: none; }
+  .pc-only { display: none !important; }
   .mobile-only { display: inline-flex; }
-}
 
-@media (max-width: 767px) {
-  .nav-left {
-    flex: none;
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  body {
+    padding-top: var(--header-height);
+    padding-bottom: var(--bottom-nav-height);
   }
 }
 
-/* 顶部文字导航（PC） */
-.nav-link {
-  text-decoration: none;
+/* =========================
+   Icon 按钮
+   ========================= */
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: inherit;
-  font-size: 15px;
-  padding: 6px 2px;
 }
 
-.nav-link:hover {
-  opacity: 0.7;
+/* =========================
+   搜索框
+   ========================= */
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  width: 36px;
+  overflow: hidden;
+  transition: width 0.3s;
 }
 
+.search-container.active {
+  width: 200px;
+}
 
-.nav-left a {
-  text-decoration: none;
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
   color: inherit;
-  font-size: 15px;
+  width: 0;
+  opacity: 0;
+  transition: width 0.3s, opacity 0.3s;
 }
 
+.search-container.active .search-input {
+  width: 140px;
+  opacity: 1;
+}
+
+body.dark-mode .search-container {
+  background: #333;
+}
+
+/* 手机：搜索占满 header */
+@media (max-width: 767px) {
+  .search-container.active {
+    position: absolute;
+    inset: 0;
+    height: var(--header-height);
+    border-radius: 0;
+    padding: 0 16px;
+    z-index: 1100;
+  }
+
+  .search-container.active .search-input {
+    width: 100%;
+  }
+}
+
+/* =========================
+   Mobile Bottom Nav
+   ========================= */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-nav-height);
+  display: flex;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.bottom-nav a,
+.bottom-nav button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+body.dark-mode .bottom-nav {
+  background: #2d2d2d;
+  border-top-color: #1a1a1a;
+}
 /* =========================
    Icon 按钮
    ========================= */
@@ -104,123 +217,6 @@ body.dark-mode .site-header {
 
 .icon-btn:hover { opacity: 0.7; }
 .icon-btn:active { transform: scale(0.95); }
-
-/* =========================
-   Responsive Menu（不覆盖 Header）
-   ========================= */
-
-:root {
-  --header-height: 56px;
-  --bottom-nav-height: 56px;
-}
-
-/* 公共菜单基础 */
-.mobile-menu {
-  position: fixed;
-  top: var(--header-height);
-  bottom: var(--bottom-nav-height);
-  left: 0;
-
-  width: 100vw;
-  z-index: 1002; /* 高于 header / bottom-nav */
-
-  background: #fff;
-  box-shadow: 0 0 30px rgba(0,0,0,0.25);
-
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-}
-
-/* 打开状态 */
-.mobile-menu.open {
-  transform: translateX(0);
-}
-
-/* 菜单链接 */
-.mobile-menu a {
-  text-decoration: none;
-  color: inherit;
-  font-size: 16px;
-  padding: 12px 0;
-}
-
-.mobile-menu footer {
-  margin-top: auto;           /* ⭐ 推到菜单底部 */
-  padding-top: 16px;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  font-size: 13px;
-  opacity: 0.85;
-}
-
-body.dark-mode .mobile-menu footer {
-  border-top-color: rgba(255,255,255,0.15);
-}
-
-
-/* 深色模式 */
-body.dark-mode .mobile-menu {
-  background: #2d2d2d;
-}
-
-/* =========================
-   PC：左侧 Sidebar（ChatGPT 风格）
-   ========================= */
-@media (min-width: 768px) {
-  .mobile-menu {
-    width: 240px;
-  }
-
-  /* 主内容右移（不影响 header） */
-  body.menu-open main,
-  body.menu-open section {
-    margin-left: 240px;
-    transition: margin-left 0.3s ease;
-  }
-}
-
-/* =========================
-   Mobile：全屏宽度（不盖 header）
-   ========================= */
-@media (max-width: 767px) {
-  .mobile-menu {
-    width: 100vw;
-  }
-}
-
-@media (max-width: 767px) {
-  body > footer {
-    display: none;
-  }
-}
-
-@media (max-width: 767px) {
-  .bottom-nav {
-    height: var(--bottom-nav-height);
-  }
-}
-
-@media (max-width: 767px) {
-  .mobile-menu {
-    width: 100vw;
-    height: calc(
-      100vh - var(--header-height) - var(--bottom-nav-height)
-    );
-  }
-}
-
-@media (max-width: 767px) {
-  .site-header .menu-toggle {
-    display: none;
-  }
-
-  .site-header .nav-left a {
-    display: none;
-  }
-}
 
 /* =========================
    搜索框
@@ -298,101 +294,6 @@ body.dark-mode .site-header .search-container * {
   }
 }
 
-/* =========================
-   手机底部导航（YouTube 风格）
-   ========================= */
-
-/* ===== 手机端 Header 只保留功能区 ===== */
-@media (max-width: 767px) {
-  .site-header .nav-left a {
-    display: none;
-  }
-
-  /* 中间撑开 */
-  .site-header::before {
-    display: block;
-    flex: 1;
-  }
-
-  .site-header .nav-left {
-    gap: 0;
-  }
-}
-
-/* ===== Mobile Bottom Navigation 修复 ===== */
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-
-  display: flex;
-  align-items: center;
-
-  background: #fff;
-  border-top: 1px solid #ddd;
-  z-index: 1000;
-}
-  
-.bottom-nav a,
-.bottom-nav button {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background: none;
-  border: none;
-  color: inherit;
-  text-decoration: none;
-  font-size: 12px;
-  gap: 2px;
-}
-
-.bottom-nav svg {
-  width: 22px;
-  height: 22px;
-}
-
-/* 深色模式 */
-body.dark-mode .bottom-nav {
-  background: #2d2d2d;
-  border-top-color: #1a1a1a;
-}
-
-/* 仅手机显示 */
-.mobile-only {
-  display: none;
-}
-
-@media (max-width: 767px) {
-  .mobile-only {
-    display: flex;
-  }
-}
-
-
-@media (max-width: 767px) {
-  .site-header .menu-toggle {
-    display: none;
-  }
-}
-
-@media (max-width: 767px) {
-  #menuToggle {
-    display: none;
-  }
-}
-
-/* PC 隐藏 */
-@media (min-width: 768px) {
-  .bottom-nav {
-    display: none !important;
-  }
-}
 /* =========================
    内容区
    ========================= */
@@ -590,10 +491,4 @@ body.dark-mode .dropdown-menu {
   text-decoration: none;
 
 }
-
-
-
-
-
-
 
