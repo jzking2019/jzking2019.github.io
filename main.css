@@ -24,7 +24,7 @@ body.dark-mode {
    ========================= */
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 1000;
   height: 56px;
@@ -576,6 +576,7 @@ body.dark-mode .dropdown-menu {
   text-decoration: none;
 
 }
+
 
 
 
