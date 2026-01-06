@@ -148,55 +148,88 @@ body.dark-mode .search-container {
   }
 }
 
-/* =====================================================
-   Mobile Menu（侧边菜单，不盖 header / bottom）
-   ===================================================== */
+/* =========================
+   📱 Mobile Header 最终形态
+   左：搜索 ｜ 右：主题
+   ========================= */
+@media (max-width: 767px) {
 
-.mobile-menu {
-  position: fixed;
-  top: var(--header-height);
-  bottom: var(--bottom-nav-height);
-  left: 0;
+  /* Header 基础 */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    padding: 0 14px;
+    z-index: 1200;
+  }
 
-  width: 100vw;
-  background: #fff;
-  z-index: 1250;
+  /* 左右区域对齐 */
+  .site-header .nav-left,
+  .site-header .nav-right {
+    display: flex;
+    align-items: center;
+  }
 
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
+  .site-header .nav-left {
+    flex: 1;
+    justify-content: flex-start;
+  }
 
-  overflow-y: auto;
+  .site-header .nav-right {
+    flex: 1;
+    justify-content: flex-end;
+  }
 
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-}
+  /* ❌ 隐藏手机 Header 中的内容 */
+  .site-header .nav-left a,
+  .site-header #menuToggle {
+    display: none !important;
+  }
 
-.mobile-menu.open {
-  transform: translateX(0);
-}
+  /* ===== 搜索按钮（左） ===== */
+  .site-header .search-container {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.06);
+  }
 
-body.dark-mode .mobile-menu {
-  background: #2d2d2d;
-}
+  body.dark-mode .site-header .search-container {
+    background: rgba(255,255,255,0.12);
+  }
 
-.mobile-menu a {
-  text-decoration: none;
-  color: inherit;
-  padding: 12px 0;
-  font-size: 16px;
-}
+  /* 搜索 icon 反色 */
+  body.dark-mode .site-header .search-container img {
+    filter: invert(1);
+  }
 
-/* 菜单内 footer（clone 版） */
-.menu-footer {
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  font-size: 13px;
-}
+  /* 🔍 搜索展开：占满 Header */
+  .site-header .search-container.active {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 56px;
+    border-radius: 0;
+    padding: 0 16px;
+    background: inherit;
+    z-index: 1300;
+  }
 
-body.dark-mode .menu-footer {
-  border-top-color: rgba(255,255,255,0.15);
+  .site-header .search-container.active .search-input {
+    width: 100%;
+    opacity: 1;
+  }
+
+  /* ===== 主题切换（右） ===== */
+  .site-header #themeToggle {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    border-radius: 50%;
+  }
 }
 
 /* =====================================================
@@ -309,3 +342,4 @@ section {
 body.dark-mode section {
   background: #242424;
 }
+
