@@ -343,3 +343,91 @@ body.dark-mode section {
   background: #242424;
 }
 
+/* =========================
+   Header 布局修复（关键）
+   ========================= */
+
+/* Header 强制三段式结构 */
+.site-header {
+  display: flex;
+  align-items: center;
+}
+
+/* 左右固定，中间自动填充 */
+.site-header .nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.site-header .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+/* ⭐ 中间自动填充区（CSS 虚拟） */
+.site-header::before {
+  content: "";
+  flex: 1;
+}
+
+/* =========================
+   PC：保持原样（文字导航）
+   ========================= */
+@media (min-width: 768px) {
+  .site-header::before {
+    display: none; /* PC 不需要中间撑开 */
+  }
+}
+
+/* =========================
+   📱 Mobile：左搜索 · 右主题
+   ========================= */
+@media (max-width: 767px) {
+
+  /* 隐藏 Header 中的菜单和文字 */
+  .site-header .nav-left a,
+  .site-header #menuToggle {
+    display: none !important;
+  }
+
+  /* 左侧只剩搜索 */
+  .site-header .nav-left {
+    flex: 0 0 auto;
+  }
+
+  /* 中间撑开 */
+  .site-header::before {
+    display: block;
+    flex: 1;
+  }
+
+  /* 右侧主题 */
+  .site-header .nav-right {
+    flex: 0 0 auto;
+  }
+
+  /* 搜索按钮样式修复 */
+  .site-header .search-container {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    border-radius: 50%;
+  }
+
+  /* 搜索展开占满 Header */
+  .site-header .search-container.active {
+    position: absolute;
+    inset: 0;
+    height: 56px;
+    border-radius: 0;
+    padding: 0 16px;
+    z-index: 1300;
+  }
+
+  .site-header .search-container.active .search-input {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+
