@@ -111,6 +111,7 @@ body.dark-mode .site-header {
 
 :root {
   --header-height: 56px;
+  --bottom-nav-height: 56px;
 }
 
 /* 公共菜单基础 */
@@ -548,4 +549,5 @@ body.dark-mode .dropdown-menu {
   padding: 8px 0;
   color: inherit;
   text-decoration: none;
+
 }
