@@ -20,14 +20,18 @@ body.dark-mode {
 }
 
 /* =========================
-   Header
+   Header（固定顶部）
    ========================= */
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 0 14px;
   background: #fff;
   border-bottom: 1px solid #ddd;
 }
@@ -37,13 +41,38 @@ body.dark-mode .site-header {
   border-bottom-color: #1a1a1a;
 }
 
-/* 左侧导航 */
-.nav-left {
+.nav-left,
+.nav-right {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-right: auto; /* ⭐ 强制左对齐 */
 }
+
+.nav-left {
+  flex: 1;
+}
+
+/* PC / Mobile 显示控制 */
+.pc-only { display: inline-flex; }
+.mobile-only { display: none; }
+
+@media (max-width: 767px) {
+  .pc-only { display: none; }
+  .mobile-only { display: inline-flex; }
+}
+
+/* 顶部文字导航（PC） */
+.nav-link {
+  text-decoration: none;
+  color: inherit;
+  font-size: 15px;
+  padding: 6px 2px;
+}
+
+.nav-link:hover {
+  opacity: 0.7;
+}
+
 
 .nav-left a {
   text-decoration: none;
@@ -51,7 +80,10 @@ body.dark-mode .site-header {
   font-size: 15px;
 }
 
-/* icon 按钮（菜单 / 主题） */
+/* =========================
+   Icon 按钮
+   ========================= */
+
 .icon-btn {
   background: none;
   border: none;
@@ -59,37 +91,13 @@ body.dark-mode .site-header {
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: #000;
+  justify-content: center;
+  color: inherit;
   transition: opacity 0.2s, transform 0.1s;
 }
 
-body.dark-mode .icon-btn {
-  color: #fff; /* ⭐ 自动反色 */
-}
-
-.icon-btn:hover {
-  opacity: 0.7;
-}
-
-.icon-btn:active {
-  transform: scale(0.95);
-}
-
-/* icon 通用按钮 */
-.menu-toggle,
-.theme-toggle {
-  background: none;
-  border: none;
-  padding: 6px;
-  cursor: pointer;
-  color: #000;
-}
-
-/* 深色模式自动反色 */
-body.dark-mode .menu-toggle,
-body.dark-mode .theme-toggle {
-  color: #fff;
-}
+.icon-btn:hover { opacity: 0.7; }
+.icon-btn:active { transform: scale(0.95); }
 
 /* =========================
    Responsive Menu（不覆盖 Header）
@@ -189,13 +197,16 @@ body.dark-mode .mobile-menu {
   align-items: center;
   gap: 6px;
   background: #fff;
-  border-radius: 20px;
+  border-radius: 999px;
   padding: 6px 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  cursor: pointer;
   width: 36px;
   overflow: hidden;
   transition: width 0.3s;
+  cursor: pointer;
+}
+
+body.dark-mode .search-container {
+  background: #333;
 }
 
 .search-container img {
@@ -206,11 +217,10 @@ body.dark-mode .mobile-menu {
 .search-input {
   border: none;
   outline: none;
-  width: 0;
-  opacity: 0;
   background: transparent;
   color: inherit;
-  font-size: 14px;
+  width: 0;
+  opacity: 0;
   transition: width 0.3s, opacity 0.3s;
 }
 
@@ -223,13 +233,22 @@ body.dark-mode .mobile-menu {
   opacity: 1;
 }
 
-body.dark-mode .search-container {
-  background: #333;
+/* 手机：搜索展开占满 header */
+@media (max-width: 767px) {
+  .search-container.active {
+    position: absolute;
+    inset: 0;
+    height: 56px;
+    border-radius: 0;
+    padding: 0 16px;
+    z-index: 1100;
+  }
+
+  .search-container.active .search-input {
+    width: 100%;
+  }
 }
 
-body.dark-mode .search-container img {
-  filter: invert(1);
-}
 
 /* =========================
    内容区
