@@ -125,8 +125,10 @@ body.dark-mode .site-header {
 
   display: flex;
   flex-direction: column;
+   
   padding: 20px;
-
+  overflow-y: auto; /* ⭐ 关键：允许滚动看到 footer */
+   
   z-index: 9999;
 
   transform: translateX(-100%);
@@ -556,4 +558,5 @@ body.dark-mode .dropdown-menu {
   text-decoration: none;
 
 }
+
 
