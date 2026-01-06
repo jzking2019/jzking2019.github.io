@@ -367,6 +367,12 @@ body.dark-mode .bottom-nav {
   }
 }
 
+@media (max-width: 767px) {
+  #menuToggle {
+    display: none;
+  }
+}
+
 /* PC 隐藏 */
 @media (min-width: 768px) {
   .bottom-nav {
@@ -570,6 +576,7 @@ body.dark-mode .dropdown-menu {
   text-decoration: none;
 
 }
+
 
 
 
