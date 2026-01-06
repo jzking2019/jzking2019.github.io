@@ -114,15 +114,63 @@ async function loadBottomNav() {
 /* =========================
    Footer 注入
    ========================= */
+
 async function loadFooter() {
   const footer = document.getElementById("site-footer");
   if (!footer) return;
 
-  const res = await fetch("/footer.html");
-  footer.innerHTML = await res.text();
+  try {
+    const res = await fetch("/footer.html");
+    if (!res.ok) throw new Error("Footer load failed");
 
-  const year = footer.querySelector("#footer-year");
-  if (year) year.textContent = new Date().getFullYear();
+    footer.innerHTML = await res.text();
+
+    const yearEl = footer.querySelector("#footer-year");
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    // ⭐ 关键
+  syncFooterToMobileMenu();
+
+  } catch (err) {
+    console.error("Footer 載入失敗", err);
+  }
+}
+
+window.addEventListener("resize", syncFooterToMobileMenu);
+
+/* =========================
+   Mobile：Footer 注入菜单（JS Clone）
+   ========================= */
+
+function syncFooterToMobileMenu() {
+  const menu = document.getElementById("mobileMenu");
+  const footer = document.getElementById("site-footer");
+
+  if (!menu || !footer) return;
+
+  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+  // 先清理旧的 menu footer（防止重复）
+  const old = menu.querySelector(".menu-footer");
+  if (old) old.remove();
+
+  if (!isMobile) {
+    // PC：什么都不做，footer 仍在 body 底部
+    footer.style.display = "";
+    return;
+  }
+
+  // Mobile：隐藏原 footer
+  footer.style.display = "none";
+
+  // clone footer
+  const clone = footer.cloneNode(true);
+  clone.classList.add("menu-footer");
+  clone.style.display = "block";
+
+  menu.appendChild(clone);
 }
 
 /* =========================
@@ -163,4 +211,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   registerServiceWorker();
   checkAccess();
+  // ⭐ 最终兜底
+  setTimeout(syncFooterToMobileMenu, 0);
 });
