@@ -214,6 +214,17 @@ body.dark-mode .mobile-menu {
     );
   }
 }
+
+@media (max-width: 767px) {
+  .site-header .menu-toggle {
+    display: none;
+  }
+
+  .site-header .nav-left a {
+    display: none;
+  }
+}
+
 /* =========================
    搜索框
    ========================= */
@@ -576,6 +587,7 @@ body.dark-mode .dropdown-menu {
   text-decoration: none;
 
 }
+
 
 
 
