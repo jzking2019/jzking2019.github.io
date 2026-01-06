@@ -1,19 +1,16 @@
 /* =========================
-   主題切換（全站）
+   主题切换（全站）
    ========================= */
 function toggleTheme() {
   document.body.classList.toggle("dark-mode");
-
-  const theme = document.body.classList.contains("dark-mode")
-    ? "dark"
-    : "light";
-
-  localStorage.setItem("theme", theme);
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark-mode") ? "dark" : "light"
+  );
 }
 
 function initTheme() {
   const saved = localStorage.getItem("theme");
-
   if (
     saved === "dark" ||
     (!saved &&
@@ -24,195 +21,146 @@ function initTheme() {
 }
 
 /* =========================
-   搜索框（僅 blog 頁）
-   ⚠️ 必須在 header 注入後調用
+   搜索框（header 注入后）
    ========================= */
 function initSearch() {
-  const searchContainer = document.getElementById("searchContainer");
-  const searchIcon = document.getElementById("searchIcon");
-  const searchInput = document.getElementById("searchInput");
-  const posts = document.querySelectorAll(".post");
+  const container = document.getElementById("searchContainer");
+  const icon = document.getElementById("searchIcon");
+  const input = document.getElementById("searchInput");
 
-  if (!searchContainer || !searchIcon || !searchInput) return;
+  if (!container || !icon || !input) return;
 
-  searchIcon.addEventListener("click", e => {
+  icon.addEventListener("click", e => {
     e.stopPropagation();
-    searchContainer.classList.toggle("active");
-    if (searchContainer.classList.contains("active")) {
-      searchInput.focus();
-    }
+    container.classList.toggle("active");
+    if (container.classList.contains("active")) input.focus();
   });
 
   document.addEventListener("click", e => {
-    if (!searchContainer.contains(e.target)) {
-      searchContainer.classList.remove("active");
+    if (!container.contains(e.target)) {
+      container.classList.remove("active");
     }
-  });
-
-  searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase().trim();
-
-    posts.forEach(post => {
-      post.style.display = post.innerText.toLowerCase().includes(q)
-        ? ""
-        : "none";
-    });
   });
 }
 
 /* =========================
-   Header 載入（全站核心）
+   菜单（通用：header / bottom）
    ========================= */
-async function loadHeader() {
-  const header = document.getElementById("site-header");
-  if (!header) return;
-
-  try {
-    const res = await fetch("/header.html");
-    if (!res.ok) throw new Error("Header load failed");
-
-    header.innerHTML = await res.text();
-
-    /* 主題切換 icon */
-    const themeBtn = document.getElementById("themeToggle");
-    if (themeBtn) {
-      themeBtn.addEventListener("click", e => {
-        e.preventDefault();
-        toggleTheme();
-      });
-    }
-
-    // 菜单（⭐关键）
-    initMenu();
-    
-    /* ⭐ 搜索框一定要在 header 完成後 */
-    initSearch();
-
-  } catch (err) {
-    console.error("Header 載入失敗", err);
-  }
-}
-
-/* 菜單 */
-function initMenu() {
-  const menuBtn = document.getElementById("menuToggle");
+function bindMenu(toggleId) {
+  const btn = document.getElementById(toggleId);
   const menu = document.getElementById("mobileMenu");
 
-  if (!menuBtn || !menu) {
-    console.warn("菜单 DOM 未找到");
-    return;
-  }
+  if (!btn || !menu) return;
 
-  // 点击按钮：开 / 关
-  menuBtn.addEventListener("click", e => {
+  btn.addEventListener("click", e => {
     e.stopPropagation();
     menu.classList.toggle("open");
+    document.body.classList.toggle("menu-open", menu.classList.contains("open"));
   });
+}
 
-  // 点击菜单内部不关闭
-  menu.addEventListener("click", e => {
-    e.stopPropagation();
-  });
-
-  // 点击页面其它地方关闭
+/* 点击空白关闭菜单（只绑一次） */
+function bindGlobalMenuClose() {
   document.addEventListener("click", () => {
+    const menu = document.getElementById("mobileMenu");
+    if (!menu) return;
     menu.classList.remove("open");
+    document.body.classList.remove("menu-open");
   });
 }
 
 /* =========================
-   Footer 載入（全站）
+   Header 注入
+   ========================= */
+async function loadHeader() {
+  const mount = document.getElementById("site-header");
+  if (!mount) return;
+
+  const res = await fetch("/header.html");
+  mount.innerHTML = await res.text();
+
+  // 主题切换
+  const themeBtn = document.getElementById("themeToggle");
+  if (themeBtn) {
+    themeBtn.addEventListener("click", toggleTheme);
+  }
+
+  // Header 菜单按钮
+  bindMenu("menuToggle");
+
+  // 搜索
+  initSearch();
+
+  // ⭐ 菜单存在后，阻止冒泡
+  const menu = document.getElementById("mobileMenu");
+  if (menu) {
+    menu.addEventListener("click", e => e.stopPropagation());
+  }
+}
+/* =========================
+   手机底部导航注入
+   ========================= */
+async function loadBottomNav() {
+  const mount = document.getElementById("bottomNav");
+  if (!mount) return;
+
+  const res = await fetch("/bottom-nav.html");
+  mount.innerHTML = await res.text();
+
+  // 底部「更多」按钮
+  bindMenu("menuToggleMobile");
+}
+
+/* =========================
+   Footer 注入
    ========================= */
 async function loadFooter() {
   const footer = document.getElementById("site-footer");
   if (!footer) return;
 
-  try {
-    const res = await fetch("/footer.html");
-    if (!res.ok) throw new Error("Footer load failed");
+  const res = await fetch("/footer.html");
+  footer.innerHTML = await res.text();
 
-    footer.innerHTML = await res.text();
-
-    const yearEl = footer.querySelector("#footer-year");
-    if (yearEl) {
-      yearEl.textContent = new Date().getFullYear();
-    }
-
-    relocateFooterForMobile(); // ⭐ 在这里
-
-  } catch (err) {
-    console.error("Footer 載入失敗", err);
-  }
-}
-
-window.addEventListener("resize", () => {
-  relocateFooterForMobile();
-});
-
-function relocateFooterForMobile() {
-  const menu = document.getElementById("mobileMenu");
-  const footer = document.getElementById("site-footer");
-
-  if (!menu || !footer) return;
-
-  const isMobile = window.matchMedia("(max-width: 767px)").matches;
-
-  if (isMobile) {
-    // 防止重复插入
-    if (!menu.contains(footer)) {
-      menu.appendChild(footer);
-    }
-  } else {
-    // 回到 body 底部（PC）
-    if (footer.parentElement !== document.body) {
-      document.body.appendChild(footer);
-    }
-  }
+  const year = footer.querySelector("#footer-year");
+  if (year) year.textContent = new Date().getFullYear();
 }
 
 /* =========================
-   Service Worker（可選）
+   Service Worker（可选）
    ========================= */
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
-
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/service-worker.js")
-      .catch(() => {});
-  });
+  navigator.serviceWorker.register("/service-worker.js").catch(() => {});
 }
 
 /* =========================
-   IP 檢測（僅首頁，非阻塞）
+   IP 检测（首页）
    ========================= */
 function checkAccess() {
   if (!document.body.classList.contains("home")) return;
 
-  fetch(
-    "https://api.ipgeolocation.io/ipgeo?apiKey=fc63e8edf7884c8a8f7662af23899450"
-  )
-    .then(res => res.json())
-    .then(data => {
-      if (data.country_code === "CN") {
-        window.location.href = "PRC.html";
+  fetch("https://api.ipgeolocation.io/ipgeo?apiKey=fc63e8edf7884c8a8f7662af23899450")
+    .then(r => r.json())
+    .then(d => {
+      if (d.country_code === "CN") {
+        location.href = "/PRC.html";
       }
     })
     .catch(() => {});
 }
 
 /* =========================
-   全站入口（順序已固定）
+   全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
-  loadHeader();
-// 菜单（⭐关键）
-  initMenu();
-  initSearch();
+
+  loadHeader(); // 顶部
+  loadBottomNav(); // ⭐ 手机底部
   loadFooter();
 
-  registerServiceWorker();
-  checkAccess();      // ⚠️ 最後，永不影響 UI
-});
+  bindGlobalMenuClose();
 
+  registerServiceWorker();
+  checkAccess();
+});

@@ -61,6 +61,12 @@ body.dark-mode .site-header {
   .mobile-only { display: inline-flex; }
 }
 
+@media (max-width: 767px) {
+  .nav-left {
+    flex: none;
+  }
+}
+
 /* 顶部文字导航（PC） */
 .nav-link {
   text-decoration: none;
@@ -233,6 +239,21 @@ body.dark-mode .search-container {
   opacity: 1;
 }
 
+/* ===== 搜索框深色模式强制反色（修复） ===== */
+
+body.dark-mode .site-header .search-container {
+  background: #333;
+}
+
+body.dark-mode .site-header .search-container svg,
+body.dark-mode .site-header .search-container img {
+  filter: invert(1) brightness(1.2);
+}
+
+body.dark-mode .site-header .search-container * {
+  color: #fff;
+}
+
 /* 手机：搜索展开占满 header */
 @media (max-width: 767px) {
   .search-container.active {
@@ -249,7 +270,89 @@ body.dark-mode .search-container {
   }
 }
 
+/* =========================
+   手机底部导航（YouTube 风格）
+   ========================= */
 
+/* ===== 手机端 Header 只保留功能区 ===== */
+@media (max-width: 767px) {
+  .site-header .nav-left a {
+    display: none;
+  }
+
+  .site-header .nav-left {
+    gap: 0;
+  }
+}
+
+/* ===== Mobile Bottom Navigation 修复 ===== */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+
+  background: #fff;
+  border-top: 1px solid #ddd;
+  z-index: 1000;
+}
+  
+.bottom-nav a,
+.bottom-nav button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: none;
+  border: none;
+  color: inherit;
+  text-decoration: none;
+  font-size: 12px;
+  gap: 2px;
+}
+
+.bottom-nav svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* 深色模式 */
+body.dark-mode .bottom-nav {
+  background: #2d2d2d;
+  border-top-color: #1a1a1a;
+}
+
+/* 仅手机显示 */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-only {
+    display: flex;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .site-header .menu-toggle {
+    display: none;
+  }
+}
+
+/* PC 隐藏 */
+@media (min-width: 768px) {
+  .bottom-nav {
+    display: none !important;
+  }
+}
 /* =========================
    内容区
    ========================= */
