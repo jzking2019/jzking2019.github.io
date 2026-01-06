@@ -117,18 +117,21 @@ body.dark-mode .site-header {
 /* 公共菜单基础 */
 .mobile-menu {
   position: fixed;
-  top: var(--header-height);              /* ⭐ 从 header 下方开始 */
+  top: var(--header-height);
   left: 0;
-  height: calc(100vh - var(--header-height)); /* ⭐ 不盖 header */
+
+  height: calc(100vh - var(--header-height) - var(--bottom-nav-height));
+  width: 100vw;
+
   background: #fff;
   box-shadow: 0 0 30px rgba(0,0,0,0.25);
 
   display: flex;
   flex-direction: column;
-   
+
   padding: 20px;
   overflow-y: auto; /* ⭐ 关键：允许滚动看到 footer */
-   
+
   z-index: 9999;
 
   transform: translateX(-100%);
