@@ -120,8 +120,8 @@ body.dark-mode .site-header {
   top: var(--header-height);
   left: 0;
 
-  height: calc(100vh - var(--header-height) - var(--bottom-nav-height));
-  width: 100vw;
+  height: calc(100vh - var(--header-height));
+  width: 240vw; /* PC siderbar */
 
   background: #fff;
   box-shadow: 0 0 30px rgba(0,0,0,0.25);
@@ -203,6 +203,15 @@ body.dark-mode .mobile-menu {
 @media (max-width: 767px) {
   .bottom-nav {
     height: var(--bottom-nav-height);
+  }
+}
+
+@media (max-width: 767px) {
+  .mobile-menu {
+    width: 100vw;
+    height: calc(
+      100vh - var(--header-height) - var(--bottom-nav-height)
+    );
   }
 }
 /* =========================
