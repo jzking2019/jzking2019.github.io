@@ -116,11 +116,20 @@ function bindMenu(toggleId) {
 
 /* 点击空白关闭菜单（只绑一次） */
 function bindGlobalMenuClose() {
-  document.addEventListener("click", () => {
+  document.addEventListener("click", e => {
     const menu = document.getElementById("mobileMenu");
-    if (!menu) return;
-    menu.classList.remove("open");
-    document.body.classList.remove("menu-open");
+    const toggle = document.getElementById("menuToggle");
+
+    if (!menu || !toggle) return;
+
+    if (
+      menu.classList.contains("open") &&
+      !menu.contains(e.target) &&
+      !toggle.contains(e.target)
+    ) {
+      menu.classList.remove("open");
+      document.body.classList.remove("menu-open");
+    }
   });
 }
 
@@ -283,4 +292,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
 });
+
 
