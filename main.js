@@ -146,6 +146,17 @@ document.addEventListener("keydown", e => {
   }
 });
 
+/* 窗口尺寸變化時自動「復位菜單狀態」 */
+window.addEventListener("resize", () => {
+  if (window.innerWidth < 768) {
+    const menu = document.getElementById("mobileMenu");
+    if (!menu) return;
+
+    menu.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  }
+});
+
 /* =========================
    Header 注入
    ========================= */
@@ -292,5 +303,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
 });
+
 
 
