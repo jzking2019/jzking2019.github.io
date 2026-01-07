@@ -83,7 +83,7 @@ function renderSearchResults(results, keyword) {
 
   if (results.length === 0) {
     const empty = document.createElement("p");
-    empty.textContent = "沒有找到相關内容";
+    empty.textContent = "沒有找到相關內容，請檢查您輸入的字符是否有誤。";
     main.appendChild(empty);
     return;
   }
@@ -268,4 +268,5 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAccess();
   // ⭐ 最终兜底
   setTimeout(syncFooterToMobileMenu, 0);
+
 });
