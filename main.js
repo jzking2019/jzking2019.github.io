@@ -83,7 +83,7 @@ function renderSearchResults(results, keyword) {
 
   if (results.length === 0) {
     const empty = document.createElement("p");
-    empty.textContent = "沒有找到相關內容，請檢查您輸入的字符是否有誤。";
+    empty.textContent = "沒有找到相關内容";
     main.appendChild(empty);
     return;
   }
@@ -116,35 +116,13 @@ function bindMenu(toggleId) {
 
 /* 点击空白关闭菜单（只绑一次） */
 function bindGlobalMenuClose() {
-  document.addEventListener("click", e => {
+  document.addEventListener("click", () => {
     const menu = document.getElementById("mobileMenu");
-    const toggle = document.getElementById("menuToggle");
-
-    if (!menu || !toggle) return;
-
-    if (
-      menu.classList.contains("open") &&
-      !menu.contains(e.target) &&
-      !toggle.contains(e.target)
-    ) {
-      menu.classList.remove("open");
-      document.body.classList.remove("menu-open");
-    }
-  });
-}
-
-/* ESC 關閉菜單 */
-document.addEventListener("keydown", e => {
-  if (e.key !== "Escape") return;
-
-  const menu = document.getElementById("mobileMenu");
-  if (!menu) return;
-
-  if (menu.classList.contains("open")) {
+    if (!menu) return;
     menu.classList.remove("open");
     document.body.classList.remove("menu-open");
-  }
-});
+  });
+}
 
 /* =========================
    Header 注入
@@ -290,9 +268,4 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAccess();
   // ⭐ 最终兜底
   setTimeout(syncFooterToMobileMenu, 0);
-
 });
-
-
-
-
