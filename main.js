@@ -128,13 +128,14 @@ function bindGlobalMenuClose() {
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape") return;
 
-  const menu = document.getElementById("mobileMenu");
-  if (!menu) return;
+  // ⭐ 只在 PC 執行
+  if (window.matchMedia("(max-width: 767px)").matches) return;
 
-  if (menu.classList.contains("open")) {
-    menu.classList.remove("open");
-    document.body.classList.remove("menu-open");
-  }
+  const menu = document.getElementById("mobileMenu");
+  if (!menu || !menu.classList.contains("open")) return;
+
+  menu.classList.remove("open");
+  document.body.classList.remove("menu-open");
 });
 
 /* =========================
@@ -283,3 +284,4 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
 });
+
