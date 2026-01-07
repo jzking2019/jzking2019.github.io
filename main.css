@@ -22,7 +22,12 @@ body.dark-mode {
 
 :root {
   --header-height: 56px;
-  --bottom-nav-height: 56px;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --bottom-nav-height: 56px;
+  }
 }
 
 .site-header {
@@ -517,5 +522,6 @@ body.dark-mode .dropdown-menu {
   text-decoration: none;
 
 }
+
 
 
