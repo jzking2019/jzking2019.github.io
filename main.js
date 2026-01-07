@@ -36,11 +36,66 @@ function initSearch() {
     if (container.classList.contains("active")) input.focus();
   });
 
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const q = input.value.trim();
+      if (q) {
+        searchBlog(q);
+        container.classList.remove("active");
+      }
+    }
+  });
+
   document.addEventListener("click", e => {
     if (!container.contains(e.target)) {
       container.classList.remove("active");
     }
   });
+}
+
+async function searchBlog(keyword) {
+  const res = await fetch("/blog.html");
+  const html = await res.text();
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  const posts = [...doc.querySelectorAll(".post")];
+
+  const results = posts.filter(post =>
+    post.innerText.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  renderSearchResults(results, keyword);
+}
+
+function renderSearchResults(results, keyword) {
+  const main =
+    document.querySelector("main") ||
+    document.querySelector("section") ||
+    document.body;
+
+  main.innerHTML = "";
+
+  const title = document.createElement("h2");
+  title.textContent = `搜索結果：「${keyword}」`;
+  main.appendChild(title);
+
+  if (results.length === 0) {
+    const empty = document.createElement("p");
+    empty.textContent = "沒有找到相關内容";
+    main.appendChild(empty);
+    return;
+  }
+
+  const list = document.createElement("div");
+  list.className = "blog-posts";
+
+  results.forEach(post => {
+    list.appendChild(post.cloneNode(true));
+  });
+
+  main.appendChild(list);
 }
 
 /* =========================
