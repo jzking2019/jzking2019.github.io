@@ -134,6 +134,10 @@ body.menu-open .menu-icon span {
   opacity: 0;
 }
 
+body.menu-open {
+  overflow: hidden;
+}
+
 /* ===== 手机端强制不显示 ===== */
 @media (max-width: 767px) {
   .pc-menu-toggle {
@@ -188,6 +192,7 @@ body.menu-open .menu-icon span {
   }
 
   /* 打开菜单时，内容右移 */
+@media (min-width: 768px) {
   body.menu-open main,
   body.menu-open section {
     margin-left: 240px;
@@ -632,5 +637,6 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
