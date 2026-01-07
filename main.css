@@ -135,13 +135,6 @@ body.menu-open .menu-icon span {
   opacity: 0;
 }
 
-/* ===== 手机端强制不显示 ===== */
-@media (max-width: 767px) {
-  .pc-menu-toggle {
-    display: none !important;
-  }
-}
-
 /* =========================
    公共菜单基础（默认 = 手机）
    ========================= */
@@ -633,4 +626,5 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
