@@ -293,6 +293,34 @@ body.dark-mode .site-header .search-container * {
 }
 
 /* =========================
+   仅手机端：搜索移到左边
+   ========================= */
+@media (max-width: 767px) {
+
+  .header-pc {
+    display: flex;
+  }
+
+  /* 左右区仍存在，但不再靠 flex:1 撑开 */
+  .nav-left {
+    flex: none;
+    order: 1;
+  }
+
+  .nav-right {
+    flex: 1;
+    order: 2;
+    justify-content: flex-end;
+  }
+
+  /* ⭐ 搜索排到最前 */
+  .nav-right .search-container {
+    order: -1;
+    margin-right: auto;
+  }
+}
+
+/* =========================
    内容区
    ========================= */
 
@@ -489,4 +517,5 @@ body.dark-mode .dropdown-menu {
   text-decoration: none;
 
 }
+
 
