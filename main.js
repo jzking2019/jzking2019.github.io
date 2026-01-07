@@ -124,6 +124,19 @@ function bindGlobalMenuClose() {
   });
 }
 
+/* 按ESC關閉菜單 */
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+
+  const menu = document.getElementById("mobileMenu");
+  if (!menu) return;
+
+  if (menu.classList.contains("open")) {
+    menu.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  }
+});
+
 /* =========================
    Header 注入
    ========================= */
@@ -268,4 +281,5 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAccess();
   // ⭐ 最终兜底
   setTimeout(syncFooterToMobileMenu, 0);
+
 });
