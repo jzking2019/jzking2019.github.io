@@ -107,95 +107,6 @@ function initSearch() {
 }
 
 /* =========================
-   STEP 1：全站搜尋（MVP）
-   來源：blog.html
-   ========================= */
-
-// 解析 blog.html 文章
-async function loadBlogPostsForSearch() {
-  const res = await fetch("/blog.html");
-  const html = await res.text();
-  const doc = new DOMParser().parseFromString(html, "text/html");
-
-  const posts = [];
-  doc.querySelectorAll(".post").forEach(post => {
-    const link = post.querySelector("a");
-    const img = post.querySelector("img");
-    const title = post.querySelector("p");
-
-    if (!link || !title) return;
-
-    posts.push({
-      title: title.textContent.trim(),
-      href: link.href,
-      img: img ? img.src : ""
-    });
-  });
-
-  return posts;
-}
-
-// 清空所有 section
-function clearAllSections() {
-  document.querySelectorAll("section").forEach(sec => sec.remove());
-}
-
-// 顯示搜尋結果
-function renderSearchResults(results, keyword) {
-  clearAllSections();
-
-  const section = document.createElement("section");
-  section.innerHTML = `<h2>搜尋結果：「${keyword}」</h2>`;
-
-  if (results.length === 0) {
-    section.innerHTML += `<p>没有找到相关內容，請檢查您輸入的字符是否有誤並從試。</p>`;
-  } else {
-    results.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "post";
-      div.innerHTML = `
-        <a href="${item.href}" target="_blank">
-          ${item.img ? `<img src="${item.img}" alt="">` : ""}
-          <p>${item.title}</p>
-        </a>
-      `;
-      section.appendChild(div);
-    });
-  }
-
-  document.body.insertBefore(
-    section,
-    document.getElementById("bottomNav") || document.body.lastChild
-  );
-}
-
-// 綁定搜尋輸入
-async function enableGlobalSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
-
-  const posts = await loadBlogPostsForSearch();
-
-  input.addEventListener("keydown", e => {
-    if (e.key !== "Enter") return;
-
-    const keyword = input.value.trim();
-    if (!keyword) return;
-
-    const results = posts.filter(p =>
-      p.title.toLowerCase().includes(keyword.toLowerCase())
-    );
-
-    renderSearchResults(results, keyword);
-  });
-}
-
-// 搜尋初始化（在 header 載入後）
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(enableGlobalSearch, 300);
-});
-
-/* =========================
    菜单（通用：header / bottom）
    ========================= */
 function bindMenu(toggleId) {
@@ -444,6 +355,94 @@ document.addEventListener("DOMContentLoaded", () => {
   initBlogPagination({ postsPerPage: 6 });
 });
 
+/* =========================
+   STEP 1：全站搜尋（MVP）
+   來源：blog.html
+   ========================= */
+
+// 解析 blog.html 文章
+async function loadBlogPostsForSearch() {
+  const res = await fetch("/blog.html");
+  const html = await res.text();
+  const doc = new DOMParser().parseFromString(html, "text/html");
+
+  const posts = [];
+  doc.querySelectorAll(".post").forEach(post => {
+    const link = post.querySelector("a");
+    const img = post.querySelector("img");
+    const title = post.querySelector("p");
+
+    if (!link || !title) return;
+
+    posts.push({
+      title: title.textContent.trim(),
+      href: link.href,
+      img: img ? img.src : ""
+    });
+  });
+
+  return posts;
+}
+
+// 清空所有 section
+function clearAllSections() {
+  document.querySelectorAll("section").forEach(sec => sec.remove());
+}
+
+// 顯示搜尋結果
+function renderSearchResults(results, keyword) {
+  clearAllSections();
+
+  const section = document.createElement("section");
+  section.innerHTML = `<h2>搜尋結果：「${keyword}」</h2>`;
+
+  if (results.length === 0) {
+    section.innerHTML += `<p>没有找到相关內容，請檢查您輸入的字符是否有誤並從試。</p>`;
+  } else {
+    results.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <a href="${item.href}" target="_blank">
+          ${item.img ? `<img src="${item.img}" alt="">` : ""}
+          <p>${item.title}</p>
+        </a>
+      `;
+      section.appendChild(div);
+    });
+  }
+
+  document.body.insertBefore(
+    section,
+    document.getElementById("bottomNav") || document.body.lastChild
+  );
+}
+
+// 綁定搜尋輸入
+async function enableGlobalSearch() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+
+  const posts = await loadBlogPostsForSearch();
+
+  input.addEventListener("keydown", e => {
+    if (e.key !== "Enter") return;
+
+    const keyword = input.value.trim();
+    if (!keyword) return;
+
+    const results = posts.filter(p =>
+      p.title.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    renderSearchResults(results, keyword);
+  });
+}
+
+// 搜尋初始化（在 header 載入後）
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(enableGlobalSearch, 300);
+});
 
 
 
