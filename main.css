@@ -580,6 +580,43 @@ body.dark-mode.home .post p {
   color: #cccccc;
 }
 
+/* =========================
+   分頁樣式
+   ========================= */
+#pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 30px;
+}
+
+#pagination button {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: none;
+  cursor: pointer;
+}
+
+#pagination button.active {
+  background: #198964;
+  color: #fff;
+  border-color: #198964;
+}
+
+#pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+body.dark-mode #pagination button {
+  border-color: #555;
+}
+
+body.dark-mode #pagination button.active {
+  background: #3aa37a;
+}
 
 /* =========================
    Footer
@@ -648,6 +685,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
