@@ -23,6 +23,57 @@ function initTheme() {
 /* =========================
    搜索框（header 注入后）
    ========================= */
+let blogCache = null;
+
+async function loadBlogCache() {
+  if (blogCache) return blogCache;
+
+  const res = await fetch("/blog.html");
+  const html = await res.text();
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  blogCache = Array.from(doc.querySelectorAll(".blog .post"));
+  return blogCache;
+}
+
+async function liveSearch(keyword) {
+  if (!keyword) return;
+
+  document.body.classList.remove("home");
+  document.body.classList.add("search-page");
+
+  const main = document.querySelector("main");
+  if (!main) return;
+
+  const posts = await loadBlogCache();
+  let result = "";
+
+  posts.forEach(post => {
+    if (post.innerText.toLowerCase().includes(keyword.toLowerCase())) {
+      result += post.outerHTML;
+    }
+  });
+
+  main.innerHTML = `
+    <section class="blog">
+      <h2>搜尋結果：${keyword}</h2>
+      <div class="blog-posts">
+        ${result || "<p style='opacity:.6'>沒有結果</p>"}
+      </div>
+    </section>
+  `;
+}
+
+function debounce(fn, delay = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
 function initSearch() {
   const container = document.getElementById("searchContainer");
   const icon = document.getElementById("searchIcon");
@@ -30,20 +81,16 @@ function initSearch() {
 
   if (!container || !icon || !input) return;
 
+  const liveSearchDebounced = debounce(liveSearch, 300);
+
   icon.addEventListener("click", e => {
     e.stopPropagation();
     container.classList.toggle("active");
     if (container.classList.contains("active")) input.focus();
   });
 
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      const q = input.value.trim();
-      if (q) {
-        searchBlog(q);
-        container.classList.remove("active");
-      }
-    }
+  input.addEventListener("input", e => {
+    liveSearchDebounced(e.target.value.trim());
   });
 
   document.addEventListener("click", e => {
@@ -329,5 +376,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
 });
+
 
 
