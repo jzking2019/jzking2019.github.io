@@ -148,7 +148,7 @@ function renderSearchResults(results, keyword) {
   section.innerHTML = `<h2>搜尋結果：「${keyword}」</h2>`;
 
   if (results.length === 0) {
-    section.innerHTML += `<p>沒有找到相關文章。</p>`;
+    section.innerHTML += `<p>没有找到相关內容，請檢查您輸入的字符是否有誤並從試。</p>`;
   } else {
     results.forEach(item => {
       const div = document.createElement("div");
@@ -443,6 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBlogPagination({ postsPerPage: 6 });
 });
+
 
 
 
