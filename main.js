@@ -98,6 +98,51 @@ function renderSearchResults(results, keyword) {
   main.appendChild(list);
 }
 
+async function searchBlog(keyword) {
+  if (!keyword) return;
+
+  // ① 切換語境（避免首頁樣式污染）
+  document.body.classList.remove("home");
+  document.body.classList.add("search-page");
+
+  // ② 清空主內容（一次清乾淨）
+  const main = document.querySelector("main");
+  if (main) main.innerHTML = "";
+
+  // ③ 載入 blog.html
+  const res = await fetch("/blog.html");
+  const html = await res.text();
+
+  // ④ 解析 HTML
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  const posts = doc.querySelectorAll(".blog .post");
+  let resultHtml = "";
+
+  posts.forEach(post => {
+    const text = post.innerText.toLowerCase();
+    if (text.includes(keyword.toLowerCase())) {
+      resultHtml += post.outerHTML;
+    }
+  });
+
+  // ⑤ 沒結果
+  if (!resultHtml) {
+    resultHtml = `<p style="opacity:.6">沒有找到相關文章</p>`;
+  }
+
+  // ⑥ 插入結果（使用 blog 結構）
+  main.innerHTML = `
+    <section class="blog">
+      <h2>搜尋結果：${keyword}</h2>
+      <div class="blog-posts">
+        ${resultHtml}
+      </div>
+    </section>
+  `;
+}
+
 /* =========================
    菜单（通用：header / bottom）
    ========================= */
@@ -284,4 +329,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
 });
+
 
