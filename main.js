@@ -403,7 +403,7 @@ function renderSearchResults(results, keyword) {
       const div = document.createElement("div");
       div.className = "post";
       div.innerHTML = `
-        <a href="${item.href}" target="_blank">
+        <a href="${item.href}">
           ${item.img ? `<img src="${item.img}" alt="">` : ""}
           <p>${item.title}</p>
         </a>
@@ -443,6 +443,7 @@ async function enableGlobalSearch() {
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(enableGlobalSearch, 300);
 });
+
 
 
 
