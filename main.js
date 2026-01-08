@@ -21,90 +21,93 @@ function initTheme() {
 }
 
 /* =========================
-   Blog 搜索（全站）
+   STEP 1：全站搜尋（MVP）
+   來源：blog.html
    ========================= */
 
-let blogCache = null;
-
-async function loadBlogCache() {
-  if (blogCache) return blogCache;
-
+// 解析 blog.html 文章
+async function loadBlogPostsForSearch() {
   const res = await fetch("/blog.html");
   const html = await res.text();
+  const doc = new DOMParser().parseFromString(html, "text/html");
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
+  const posts = [];
+  doc.querySelectorAll(".post").forEach(post => {
+    const link = post.querySelector("a");
+    const img = post.querySelector("img");
+    const title = post.querySelector("p");
 
-  blogCache = Array.from(doc.querySelectorAll(".post"));
-  return blogCache;
+    if (!link || !title) return;
+
+    posts.push({
+      title: title.textContent.trim(),
+      href: link.href,
+      img: img ? img.src : ""
+    });
+  });
+
+  return posts;
 }
 
-async function searchBlog(keyword) {
-  if (!keyword) return;
-
-  // 移除首頁樣式
-  document.body.classList.remove("home");
-
-  // 清空所有 section
+// 清空所有 section
+function clearAllSections() {
   document.querySelectorAll("section").forEach(sec => sec.remove());
+}
 
-  const posts = await loadBlogCache();
-  let resultHTML = "";
-
-  posts.forEach(post => {
-    if (post.innerText.toLowerCase().includes(keyword.toLowerCase())) {
-      resultHTML += post.outerHTML;
-    }
-  });
+// 顯示搜尋結果
+function renderSearchResults(results, keyword) {
+  clearAllSections();
 
   const section = document.createElement("section");
-  section.className = "blog search-result";
+  section.innerHTML = `<h2>搜尋結果：「${keyword}」</h2>`;
 
-  section.innerHTML = `
-    <h2>搜尋結果 ${keyword}</h2>
-    <div class="blog-posts">
-      ${resultHTML || "<p style='opacity:.6'>没有找到相关內容，請檢查您輸入的字符是否有誤並從試。</p>"}
-    </div>
-  `;
+  if (results.length === 0) {
+    section.innerHTML += `<p>没有找到相关內容，請檢查您輸入的字符是否有誤並從試。</p>`;
+  } else {
+    results.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <a href="${item.href}">
+          ${item.img ? `<img src="${item.img}" alt="">` : ""}
+          <p>${item.title}</p>
+        </a>
+      `;
+      section.appendChild(div);
+    });
+  }
 
-  document
-    .querySelector(".site-header")
-    .insertAdjacentElement("afterend", section);
+  document.body.insertBefore(
+    section,
+    document.getElementById("bottomNav") || document.body.lastChild
+  );
 }
 
-function debounce(fn, delay = 300) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-}
-
-function initSearch() {
-  const container = document.getElementById("searchContainer");
-  const icon = document.getElementById("searchIcon");
+// 綁定搜尋輸入
+async function enableGlobalSearch() {
   const input = document.getElementById("searchInput");
+  if (!input) return;
 
-  if (!container || !icon || !input) return;
+  const posts = await loadBlogPostsForSearch();
 
-  const debouncedSearch = debounce(searchBlog, 300);
+  input.addEventListener("keydown", e => {
+    if (e.key !== "Enter") return;
 
-  icon.addEventListener("click", e => {
-    e.stopPropagation();
-    container.classList.toggle("active");
-    if (container.classList.contains("active")) input.focus();
-  });
+    const keyword = input.value.trim();
+    if (!keyword) return;
 
-  input.addEventListener("input", e => {
-    debouncedSearch(e.target.value.trim());
-  });
+    const results = posts.filter(p =>
+      p.title.toLowerCase().includes(keyword.toLowerCase())
+    );
 
-  document.addEventListener("click", e => {
-    if (!container.contains(e.target)) {
-      container.classList.remove("active");
-    }
+    renderSearchResults(results, keyword);
   });
 }
+
+// 搜尋初始化（在 header 載入後）
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(enableGlobalSearch, 300);
+});
 
 /* =========================
    菜单（通用：header / bottom）
@@ -355,94 +358,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initBlogPagination({ postsPerPage: 6 });
 });
 
-/* =========================
-   STEP 1：全站搜尋（MVP）
-   來源：blog.html
-   ========================= */
 
-// 解析 blog.html 文章
-async function loadBlogPostsForSearch() {
-  const res = await fetch("/blog.html");
-  const html = await res.text();
-  const doc = new DOMParser().parseFromString(html, "text/html");
 
-  const posts = [];
-  doc.querySelectorAll(".post").forEach(post => {
-    const link = post.querySelector("a");
-    const img = post.querySelector("img");
-    const title = post.querySelector("p");
-
-    if (!link || !title) return;
-
-    posts.push({
-      title: title.textContent.trim(),
-      href: link.href,
-      img: img ? img.src : ""
-    });
-  });
-
-  return posts;
-}
-
-// 清空所有 section
-function clearAllSections() {
-  document.querySelectorAll("section").forEach(sec => sec.remove());
-}
-
-// 顯示搜尋結果
-function renderSearchResults(results, keyword) {
-  clearAllSections();
-
-  const section = document.createElement("section");
-  section.innerHTML = `<h2>搜尋結果：「${keyword}」</h2>`;
-
-  if (results.length === 0) {
-    section.innerHTML += `<p>没有找到相关內容，請檢查您輸入的字符是否有誤並從試。</p>`;
-  } else {
-    results.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "post";
-      div.innerHTML = `
-        <a href="${item.href}">
-          ${item.img ? `<img src="${item.img}" alt="">` : ""}
-          <p>${item.title}</p>
-        </a>
-      `;
-      section.appendChild(div);
-    });
-  }
-
-  document.body.insertBefore(
-    section,
-    document.getElementById("bottomNav") || document.body.lastChild
-  );
-}
-
-// 綁定搜尋輸入
-async function enableGlobalSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
-
-  const posts = await loadBlogPostsForSearch();
-
-  input.addEventListener("keydown", e => {
-    if (e.key !== "Enter") return;
-
-    const keyword = input.value.trim();
-    if (!keyword) return;
-
-    const results = posts.filter(p =>
-      p.title.toLowerCase().includes(keyword.toLowerCase())
-    );
-
-    renderSearchResults(results, keyword);
-  });
-}
-
-// 搜尋初始化（在 header 載入後）
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(enableGlobalSearch, 300);
-});
 
 
 
