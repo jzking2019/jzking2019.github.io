@@ -135,6 +135,10 @@ body.menu-open .menu-icon span {
   opacity: 0;
 }
 
+body.menu-open {
+  overflow: hidden;
+}
+
 /* ===== 手机端强制不显示 ===== */
 @media (max-width: 767px) {
   .pc-menu-toggle {
@@ -633,6 +637,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
