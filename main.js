@@ -21,8 +21,9 @@ function initTheme() {
 }
 
 /* =========================
-   搜索框（header 注入后）
+   Blog 搜索（全站）
    ========================= */
+
 let blogCache = null;
 
 async function loadBlogCache() {
@@ -34,22 +35,20 @@ async function loadBlogCache() {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
 
-  blogCache = Array.from(doc.querySelectorAll(".blog .post"));
+  blogCache = Array.from(doc.querySelectorAll(".post"));
   return blogCache;
 }
 
-async function liveSearch(keyword) {
+async function searchBlog(keyword) {
   if (!keyword) return;
 
-  // 1️⃣ 移除首页样式
+  // 移除首頁樣式
   document.body.classList.remove("home");
 
-  // 2️⃣ 删除所有 section（不动 header / footer / bottom-nav）
+  // 清空所有 section
   document.querySelectorAll("section").forEach(sec => sec.remove());
 
-  // 3️⃣ 载入 blog 内容（只一次）
   const posts = await loadBlogCache();
-
   let resultHTML = "";
 
   posts.forEach(post => {
@@ -58,7 +57,6 @@ async function liveSearch(keyword) {
     }
   });
 
-  // 4️⃣ 构造搜索结果 section
   const section = document.createElement("section");
   section.className = "blog search-result";
 
@@ -69,9 +67,9 @@ async function liveSearch(keyword) {
     </div>
   `;
 
-  // 5️⃣ 插入到 header 之后
-  const header = document.querySelector(".site-header");
-  header.insertAdjacentElement("afterend", section);
+  document
+    .querySelector(".site-header")
+    .insertAdjacentElement("afterend", section);
 }
 
 function debounce(fn, delay = 300) {
@@ -89,7 +87,7 @@ function initSearch() {
 
   if (!container || !icon || !input) return;
 
-  const liveSearchDebounced = debounce(liveSearch, 300);
+  const debouncedSearch = debounce(searchBlog, 300);
 
   icon.addEventListener("click", e => {
     e.stopPropagation();
@@ -98,7 +96,7 @@ function initSearch() {
   });
 
   input.addEventListener("input", e => {
-    liveSearchDebounced(e.target.value.trim());
+    debouncedSearch(e.target.value.trim());
   });
 
   document.addEventListener("click", e => {
@@ -106,96 +104,6 @@ function initSearch() {
       container.classList.remove("active");
     }
   });
-}
-
-async function searchBlog(keyword) {
-  const res = await fetch("/blog.html");
-  const html = await res.text();
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-
-  const posts = [...doc.querySelectorAll(".post")];
-
-  const results = posts.filter(post =>
-    post.innerText.toLowerCase().includes(keyword.toLowerCase())
-  );
-
-  renderSearchResults(results, keyword);
-}
-
-function renderSearchResults(results, keyword) {
-  const main =
-    document.querySelector("main") ||
-    document.querySelector("section") ||
-    document.body;
-
-  main.innerHTML = "";
-
-  const title = document.createElement("h2");
-  title.textContent = `搜索結果：「${keyword}」`;
-  main.appendChild(title);
-
-  if (results.length === 0) {
-    const empty = document.createElement("p");
-    empty.textContent = "沒有找到相關内容";
-    main.appendChild(empty);
-    return;
-  }
-
-  const list = document.createElement("div");
-  list.className = "blog-posts";
-
-  results.forEach(post => {
-    list.appendChild(post.cloneNode(true));
-  });
-
-  main.appendChild(list);
-}
-
-async function searchBlog(keyword) {
-  if (!keyword) return;
-
-  // ① 切換語境（避免首頁樣式污染）
-  document.body.classList.remove("home");
-  document.body.classList.add("search-page");
-
-  // ② 清空主內容（一次清乾淨）
-  const main = document.querySelector("main");
-  if (main) main.innerHTML = "";
-
-  // ③ 載入 blog.html
-  const res = await fetch("/blog.html");
-  const html = await res.text();
-
-  // ④ 解析 HTML
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-
-  const posts = doc.querySelectorAll(".blog .post");
-  let resultHtml = "";
-
-  posts.forEach(post => {
-    const text = post.innerText.toLowerCase();
-    if (text.includes(keyword.toLowerCase())) {
-      resultHtml += post.outerHTML;
-    }
-  });
-
-  // ⑤ 沒結果
-  if (!resultHtml) {
-    resultHtml = `<p style="opacity:.6">沒有找到相關文章</p>`;
-  }
-
-  // ⑥ 插入結果（使用 blog 結構）
-  main.innerHTML = `
-    <section class="blog">
-      <h2>搜尋結果：${keyword}</h2>
-      <div class="blog-posts">
-        ${resultHtml}
-      </div>
-    </section>
-  `;
 }
 
 /* =========================
@@ -446,6 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBlogPagination({ postsPerPage: 6 });
 });
+
 
 
 
