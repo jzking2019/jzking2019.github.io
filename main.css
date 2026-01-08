@@ -401,6 +401,17 @@ body.dark-mode .site-header .search-container * {
   }
 }
 
+/* 搜尋頁專用（不吃首頁卡片樣式） */
+.search-page .blog-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.search-page .post {
+  width: 100% !important;
+}
+
 /* =========================
    仅手机端：搜索移到左边
    ========================= */
@@ -637,6 +648,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
