@@ -63,9 +63,9 @@ async function liveSearch(keyword) {
   section.className = "blog search-result";
 
   section.innerHTML = `
-    <h2>搜尋結果：${keyword}</h2>
+    <h2>搜尋結果 ${keyword}</h2>
     <div class="blog-posts">
-      ${resultHTML || "<p style='opacity:.6'>沒有結果</p>"}
+      ${resultHTML || "<p style='opacity:.6'>没有找到相关內容，請檢查您輸入的內容是否有誤並從試。</p>"}
     </div>
   `;
 
@@ -384,6 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
 });
+
 
 
 
