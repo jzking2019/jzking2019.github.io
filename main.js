@@ -41,29 +41,37 @@ async function loadBlogCache() {
 async function liveSearch(keyword) {
   if (!keyword) return;
 
+  // 1️⃣ 移除首页样式
   document.body.classList.remove("home");
-  document.body.classList.add("search-page");
 
-  const main = document.querySelector("main");
-  if (!main) return;
+  // 2️⃣ 删除所有 section（不动 header / footer / bottom-nav）
+  document.querySelectorAll("section").forEach(sec => sec.remove());
 
+  // 3️⃣ 载入 blog 内容（只一次）
   const posts = await loadBlogCache();
-  let result = "";
+
+  let resultHTML = "";
 
   posts.forEach(post => {
     if (post.innerText.toLowerCase().includes(keyword.toLowerCase())) {
-      result += post.outerHTML;
+      resultHTML += post.outerHTML;
     }
   });
 
-  main.innerHTML = `
-    <section class="blog">
-      <h2>搜尋結果：${keyword}</h2>
-      <div class="blog-posts">
-        ${result || "<p style='opacity:.6'>沒有結果</p>"}
-      </div>
-    </section>
+  // 4️⃣ 构造搜索结果 section
+  const section = document.createElement("section");
+  section.className = "blog search-result";
+
+  section.innerHTML = `
+    <h2>搜尋結果：${keyword}</h2>
+    <div class="blog-posts">
+      ${resultHTML || "<p style='opacity:.6'>沒有結果</p>"}
+    </div>
   `;
+
+  // 5️⃣ 插入到 header 之后
+  const header = document.querySelector(".site-header");
+  header.insertAdjacentElement("afterend", section);
 }
 
 function debounce(fn, delay = 300) {
@@ -376,6 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
 });
+
 
 
 
