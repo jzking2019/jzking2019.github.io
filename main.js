@@ -367,6 +367,67 @@ function checkAccess() {
 }
 
 /* =========================
+   部落格分頁
+   ========================= */
+function initBlogPagination({
+  postsPerPage = 6
+} = {}) {
+  const blog = document.querySelector(".blog");
+  if (!blog) return; // 只在 blog 页面生效
+
+  const postsContainer = blog.querySelector(".blog-posts");
+  const posts = Array.from(postsContainer.children);
+  const pagination = document.getElementById("pagination");
+
+  if (!pagination || posts.length <= postsPerPage) return;
+
+  let currentPage = 1;
+  const totalPages = Math.ceil(posts.length / postsPerPage);
+
+  function renderPage(page) {
+    currentPage = page;
+
+    posts.forEach((post, index) => {
+      const start = (page - 1) * postsPerPage;
+      const end = page * postsPerPage;
+      post.style.display =
+        index >= start && index < end ? "" : "none";
+    });
+
+    renderPagination();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function renderPagination() {
+    pagination.innerHTML = "";
+
+    const prev = document.createElement("button");
+    prev.textContent = "‹";
+    prev.disabled = currentPage === 1;
+    prev.onclick = () => renderPage(currentPage - 1);
+
+    pagination.appendChild(prev);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+      if (i === currentPage) btn.classList.add("active");
+      btn.onclick = () => renderPage(i);
+      pagination.appendChild(btn);
+    }
+
+    const next = document.createElement("button");
+    next.textContent = "›";
+    next.disabled = currentPage === totalPages;
+    next.onclick = () => renderPage(currentPage + 1);
+
+    pagination.appendChild(next);
+  }
+
+  renderPage(1);
+}
+
+/* =========================
    全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -383,7 +444,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ⭐ 最终兜底
   setTimeout(syncFooterToMobileMenu, 0);
 
+  initBlogPagination({ postsPerPage: 6 });
 });
+
 
 
 
