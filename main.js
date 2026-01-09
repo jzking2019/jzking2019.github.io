@@ -23,8 +23,7 @@ function initTheme() {
 /* =========================
    Blog 搜索（全站）
    ========================= */
-
-let blogCache = null;
+/*
 
 async function loadBlogCache() {
   if (blogCache) return blogCache;
@@ -79,6 +78,8 @@ function debounce(fn, delay = 300) {
     timer = setTimeout(() => fn(...args), delay);
   };
 }
+
+*/
 
 function initSearch() {
   const input = document.getElementById("searchInput");
@@ -335,62 +336,6 @@ function checkAccess() {
 }
 
 /* =========================
-   部落格分頁
-   ========================= */
-function initBlogPagination() {
-  if (!document.body.classList.contains("blog")) return;
-
-  const posts = [...document.querySelectorAll(".post")];
-  const pagination = document.getElementById("pagination");
-  if (!posts.length || !pagination) return;
-
-  const PER_PAGE = 5;
-  const totalPages = Math.ceil(posts.length / PER_PAGE);
-
-  // 讀取 URL ?page=
-  const params = new URLSearchParams(window.location.search);
-  let currentPage = parseInt(params.get("page"), 10) || 1;
-
-  // 防呆
-  if (currentPage < 1) currentPage = 1;
-  if (currentPage > totalPages) currentPage = totalPages;
-
-  function renderPage(page) {
-    currentPage = page;
-
-    posts.forEach((post, index) => {
-      post.style.display =
-        index >= (page - 1) * PER_PAGE && index < page * PER_PAGE
-          ? ""
-          : "none";
-    });
-
-    renderPagination();
-
-    // ⭐ 更新 URL，但不重新整理
-    const url = new URL(window.location);
-    url.searchParams.set("page", page);
-    window.history.pushState({}, "", url);
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function renderPagination() {
-    pagination.innerHTML = "";
-
-    for (let i = 1; i <= totalPages; i++) {
-      const btn = document.createElement("button");
-      btn.textContent = i;
-      btn.className = i === currentPage ? "active" : "";
-      btn.onclick = () => renderPage(i);
-      pagination.appendChild(btn);
-    }
-  }
-
-  renderPage(currentPage);
-}
-
-/* =========================
    全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -407,9 +352,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ⭐ 最终兜底
   setTimeout(syncFooterToMobileMenu, 0);
 
-  initBlogPagination({ postsPerPage: 6 });
   initBlogSearchAndPagination();
 });
+
 
 
 
