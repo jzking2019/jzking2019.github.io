@@ -681,6 +681,14 @@ body.dark-mode #pagination button.active {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+#cf-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .cf-box {
@@ -707,17 +715,30 @@ body.dark-mode #pagination button.active {
   margin-bottom: 24px;
 }
 
+/* 驗證錯誤提示 */
+.cf-error {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: #d93025;
+  display: none;
+}
+
+/* 鎖定背景 */
 body.cf-lock {
   overflow: hidden;
 }
 
-/* 暗黑模式 */
+/* 深色模式 */
 body.dark-mode #cf-overlay {
   background: #000;
 }
 
 body.dark-mode .cf-box {
   color: #fff;
+}
+
+body.dark-mode .cf-error {
+  color: #ff6b6b;
 }
 
 /* =========================
@@ -787,6 +808,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
