@@ -23,63 +23,6 @@ function initTheme() {
 /* =========================
    Blog 搜索（全站）
    ========================= */
-/*
-
-async function loadBlogCache() {
-  if (blogCache) return blogCache;
-
-  const res = await fetch("/blog.html");
-  const html = await res.text();
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-
-  blogCache = Array.from(doc.querySelectorAll(".post"));
-  return blogCache;
-}
-
-async function searchBlog(keyword) {
-  if (!keyword) return;
-
-  // 移除首頁樣式
-  document.body.classList.remove("home");
-
-  // 清空所有 section
-  document.querySelectorAll("section").forEach(sec => sec.remove());
-
-  const posts = await loadBlogCache();
-  let resultHTML = "";
-
-  posts.forEach(post => {
-    if (post.innerText.toLowerCase().includes(keyword.toLowerCase())) {
-      resultHTML += post.outerHTML;
-    }
-  });
-
-  const section = document.createElement("section");
-  section.className = "blog search-result";
-
-  section.innerHTML = `
-    <h2>搜尋結果 ${keyword}</h2>
-    <div class="blog-posts">
-      ${resultHTML || "<p style='opacity:.6'>没有找到相关內容，請檢查您輸入的字符是否有誤並從試。</p>"}
-    </div>
-  `;
-
-  document
-    .querySelector(".site-header")
-    .insertAdjacentElement("afterend", section);
-}
-
-function debounce(fn, delay = 300) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-}
-
-*/
 
 function initSearch() {
   const input = document.getElementById("searchInput");
@@ -118,19 +61,53 @@ function initBlogSearchAndPagination() {
 
   const params = new URLSearchParams(location.search);
   const query = (params.get("q") || "").toLowerCase();
+  const intro = document.getElementById("blog-intro");
+
+if (query && intro) {
+  intro.remove(); // ⭐ 搜索時移除「部落格 在這裡…」
+}
+   
   const page = parseInt(params.get("page") || "1", 10);
 
-  const POSTS_PER_PAGE = 5;
+  const POSTS_PER_PAGE = 7;
 
   const posts = Array.from(document.querySelectorAll(".blog .post"));
   if (!posts.length) return;
 
+if (query) {
+  let resultTitle = document.getElementById("search-title");
+
+  if (!resultTitle) {
+    resultTitle = document.createElement("h2");
+    resultTitle.id = "search-title";
+    resultTitle.textContent = `搜尋結果 ${query}`;
+    document.querySelector("section").prepend(resultTitle);
+  }
+}
+   
   // 搜索过滤
   const filtered = query
     ? posts.filter(post =>
         post.innerText.toLowerCase().includes(query)
       )
     : posts;
+   // 移除舊的空狀態（防止重複）
+const oldEmpty = document.querySelector(".empty-state");
+if (oldEmpty) oldEmpty.remove();
+
+// 如果搜尋沒結果
+if (query && filtered.length === 0) {
+  const empty = document.createElement("div");
+  empty.className = "empty-state";
+  empty.innerHTML = `
+    <div class="empty-icon">🔍</div>
+    <h3>沒有找到相關文章</h3>
+    <p>請嘗試其他關鍵字，或瀏覽全部文章。</p>
+    <a href="/blog.html" class="empty-action">查看全部文章</a>
+  `;
+
+  document.querySelector("section").appendChild(empty);
+}
 
   // 全部先隐藏
   posts.forEach(p => (p.style.display = "none"));
@@ -354,6 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBlogSearchAndPagination();
 });
+
 
 
 
