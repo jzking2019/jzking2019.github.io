@@ -669,30 +669,53 @@ body.dark-mode #pagination button.active {
 }
 
 /* =========================
-   Turnstile 驗證頁面樣式
+   Turnstile 全屏驗證
    ========================= */
 
 #cf-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 9999;
+  z-index: 99999;
+
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .cf-box {
-  background: #fff;
-  padding: 32px;
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   text-align: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.cf-box h2 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.cf-box p {
+  opacity: 0.8;
+  margin-bottom: 24px;
+}
+
+/* 暗黑模式 */
+body.dark-mode #cf-overlay {
+  background: #000;
 }
 
 body.dark-mode .cf-box {
-  background: #2d2d2d;
   color: #fff;
 }
+
 /* =========================
    Footer
    ========================= */
@@ -760,6 +783,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
