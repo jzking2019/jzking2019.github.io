@@ -81,29 +81,89 @@ function debounce(fn, delay = 300) {
 }
 
 function initSearch() {
-  const container = document.getElementById("searchContainer");
-  const icon = document.getElementById("searchIcon");
   const input = document.getElementById("searchInput");
+  const icon = document.getElementById("searchIcon");
+  const container = document.getElementById("searchContainer");
 
-  if (!container || !icon || !input) return;
+  if (!input || !icon || !container) return;
 
-  const debouncedSearch = debounce(searchBlog, 300);
-
+  // 展开搜索框
   icon.addEventListener("click", e => {
     e.stopPropagation();
-    container.classList.toggle("active");
-    if (container.classList.contains("active")) input.focus();
+    container.classList.add("active");
+    input.focus();
   });
 
-  input.addEventListener("input", e => {
-    debouncedSearch(e.target.value.trim());
+  // Enter 直接跳 blog.html
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const q = input.value.trim();
+      if (!q) return;
+      location.href = `/blog.html?q=${encodeURIComponent(q)}&page=1`;
+    }
   });
 
+  // 点击空白关闭
   document.addEventListener("click", e => {
     if (!container.contains(e.target)) {
       container.classList.remove("active");
     }
   });
+}
+
+// blog 搜索 + 分頁 JS
+function initBlogSearchAndPagination() {
+  if (!document.body.classList.contains("blog")) return;
+
+  const params = new URLSearchParams(location.search);
+  const query = (params.get("q") || "").toLowerCase();
+  const page = parseInt(params.get("page") || "1", 10);
+
+  const POSTS_PER_PAGE = 5;
+
+  const posts = Array.from(document.querySelectorAll(".blog .post"));
+  if (!posts.length) return;
+
+  // 搜索过滤
+  const filtered = query
+    ? posts.filter(post =>
+        post.innerText.toLowerCase().includes(query)
+      )
+    : posts;
+
+  // 全部先隐藏
+  posts.forEach(p => (p.style.display = "none"));
+
+  // 分页
+  const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
+  const start = (page - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+
+  filtered.slice(start, end).forEach(p => {
+    p.style.display = "";
+  });
+
+  // 分页按钮
+  const pager = document.getElementById("pagination");
+  if (!pager) return;
+
+  pager.innerHTML = "";
+  if (totalPages <= 1) return;
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    btn.disabled = i === page;
+
+    btn.addEventListener("click", () => {
+      const newParams = new URLSearchParams();
+      if (query) newParams.set("q", query);
+      newParams.set("page", i);
+      location.search = newParams.toString();
+    });
+
+    pager.appendChild(btn);
+  }
 }
 
 /* =========================
@@ -348,7 +408,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogPagination({ postsPerPage: 6 });
+  initBlogSearchAndPagination();
 });
+
 
 
 
