@@ -689,6 +689,13 @@ body.dark-mode.home .post p {
   margin-top: 6px;
 }
 
+/* 🔒 文章頁圖片防爆（終極保險） */
+.article img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* 推薦連結 */
 .article-link {
   display: inline-block;
@@ -892,6 +899,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
