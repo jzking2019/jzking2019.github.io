@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>請稍後 - 沈落寒</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: white; /* 默认背景色 */
+            color: black; /* 默认文字颜色 */
+        }
+        footer {
+            text-align: center;
+            margin: 0;
+            font-size: 1rem;
+            padding: 1em 0;
+            background-color: transparent;
+        }
+        .message {
+            text-align: center;
+            font-size: 2rem;
+            margin: 1em 0;
+        }
+        
+        /* 针对暗色模式的样式 */
+        @media (prefers-color-scheme: dark) {
+            body, html {
+                background-color: black; /* 暗色模式时的背景色 */
+                color: white; /* 暗色模式时的文字颜色 */
+            }
+            footer {
+                color: white; /* 暗色模式中footer文字颜色 */
+            }
+        }
+    </style>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+
+    <h1>正在驗證...</h1>
+    
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAACLdRXyJTn20t0BK"></div>
+
+    <script>
+        window.onload = function() {
+            // 確保Turnstile已經加載
+            const turnstileResponse = document.querySelector('.cf-turnstile-response');
+
+            // 等待一段時間以確保驗證完全
+            const checkTurnstileResponse = setInterval(() => {
+                if (turnstileResponse.value) {
+                    clearInterval(checkTurnstileResponse);
+                    // 在這裡可以進行重定向或加載其他內容
+                    alert('驗證成功！');
+                    // 例如重定向到另一頁面
+                    window.location.href = '/returnUrl';
+                }
+            }, 100); // 每100毫秒檢查一次
+        };
+    </script>
+
+<footer>
+    <p>&copy; <span id="current-year"></span> 沈落寒</p>
+</footer>
+
+<script>
+    // 自動更新年份
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
