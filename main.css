@@ -412,6 +412,51 @@ body.dark-mode .site-header .search-container * {
   width: 100% !important;
 }
 
+/* 搜尋無結果卡片 */
+.empty-state {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 32px 24px;
+  text-align: center;
+  border-radius: 16px;
+  background: var(--card-bg, rgba(0,0,0,0.04));
+}
+
+body.dark-mode .empty-state {
+  background: rgba(255,255,255,0.06);
+}
+
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.empty-state h3 {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.empty-state p {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+.empty-action {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  text-decoration: none;
+  background: #198964;
+  color: #fff;
+}
+
+.empty-action:hover {
+  opacity: 0.9;
+}
+
 /* =========================
    仅手机端：搜索移到左边
    ========================= */
@@ -685,6 +730,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
