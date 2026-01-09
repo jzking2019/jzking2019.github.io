@@ -21,6 +21,42 @@ function initTheme() {
 }
 
 /* =========================
+   Turnstile 全站驗證（不跳頁）
+   ========================= */
+
+function initTurnstileGuard() {
+  // 已驗證過就直接放行
+  if (sessionStorage.getItem("cf-verified") === "1") return;
+
+  // 建立遮罩
+  const overlay = document.createElement("div");
+  overlay.id = "cf-overlay";
+  overlay.innerHTML = `
+    <div class="cf-box">
+      <h2>請稍後...</h2>
+      <p>正在進行安全驗證</p>
+      <div class="cf-turnstile"
+           data-sitekey="0x4AAAAAACLdRXyJTn20t0BK"
+           data-callback="onTurnstileSuccess"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // 載入 Turnstile API
+  const s = document.createElement("script");
+  s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+  s.async = true;
+  s.defer = true;
+  document.head.appendChild(s);
+
+  // 成功回調
+  window.onTurnstileSuccess = function () {
+    sessionStorage.setItem("cf-verified", "1");
+    overlay.remove();
+  };
+}
+
+/* =========================
    Blog 搜索（全站）
    ========================= */
 
@@ -329,7 +365,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogSearchAndPagination();
+  initTurnstileGuard(); // Turnstile 驗證
 });
+
 
 
 
