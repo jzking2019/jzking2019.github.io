@@ -100,10 +100,9 @@ if (query && filtered.length === 0) {
   const empty = document.createElement("div");
   empty.className = "empty-state";
   empty.innerHTML = `
-    <div class="empty-icon">🔍</div>
-    <h3>沒有找到相關文章</h3>
-    <p>請嘗試其他關鍵字，或瀏覽全部文章。</p>
-    <a href="/blog.html" class="empty-action">查看全部文章</a>
+    <h3>沒有找到相關內容</h3>
+    <p>請嘗試其他關鍵字，或瀏覽全部內容。</p>
+    <a href="/blog.html" class="empty-action">查看全部內容</a>
   `;
 
   document.querySelector("section").appendChild(empty);
@@ -331,6 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBlogSearchAndPagination();
 });
+
 
 
 
