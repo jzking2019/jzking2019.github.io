@@ -882,6 +882,65 @@ body.dark-mode .cf-error {
   color: #ff6b6b;
 }
 
+.timeline-year-content {
+  display: none;
+}
+
+.timeline-year.open .timeline-year-content {
+  display: block;
+}
+
+.timeline-year-toggle {
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.image-viewer img {
+  max-width: 92vw;
+  max-height: 92vh;
+}
+
+/* 文章圖片橫向排列 */
+.article-gallery {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+/* 每張圖 */
+.article-image {
+  flex: 1;
+  margin: 0;
+}
+
+/* 圖片本身，防止過界 */
+.article-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
+@media (max-width: 767px) {
+  .article-gallery {
+    flex-direction: column;
+  }
+}
+
 /* =========================
    Footer
    ========================= */
@@ -949,6 +1008,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
