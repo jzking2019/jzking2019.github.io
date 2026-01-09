@@ -21,39 +21,74 @@ function initTheme() {
 }
 
 /* =========================
-   Turnstile 全站驗證（不跳頁）
+   Cloudflare Turnstile（全站・JS 注入）
    ========================= */
 
-function initTurnstileGuard() {
-  // 已驗證過就直接放行
-  if (sessionStorage.getItem("cf-verified") === "1") return;
+function initTurnstileGate() {
+  const verified = sessionStorage.getItem("cf_verified");
+  if (verified === "true") return;
 
-  // 建立遮罩
+  // === 建立 Overlay HTML ===
   const overlay = document.createElement("div");
   overlay.id = "cf-overlay";
+
   overlay.innerHTML = `
     <div class="cf-box">
-      <h2>請稍後...</h2>
-      <p>正在進行安全驗證</p>
-      <div class="cf-turnstile"
-           data-sitekey="0x4AAAAAACLdRXyJTn20t0BK"
-           data-callback="onTurnstileSuccess"></div>
+      <h2>請稍後…</h2>
+      <p>我們正在驗證您的連線安全性</p>
+
+      <div id="cf-turnstile"></div>
+
+      <div class="cf-error" id="cf-error">
+        驗證失敗或逾時，請重新整理頁面再試。
+      </div>
     </div>
   `;
+
   document.body.appendChild(overlay);
+  document.body.classList.add("cf-lock");
 
-  // 載入 Turnstile API
-  const s = document.createElement("script");
-  s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
-  s.async = true;
-  s.defer = true;
-  document.head.appendChild(s);
+  const errorBox = overlay.querySelector("#cf-error");
+  const mount = overlay.querySelector("#cf-turnstile");
 
-  // 成功回調
-  window.onTurnstileSuccess = function () {
-    sessionStorage.setItem("cf-verified", "1");
-    overlay.remove();
+  // === 超時顯示錯誤（45 秒） ===
+  const timeout = setTimeout(() => {
+    errorBox.style.display = "block";
+  }, 45000);
+
+  // === 載入 Turnstile SDK ===
+  const script = document.createElement("script");
+  script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+  script.async = true;
+  script.defer = true;
+
+  script.onload = () => {
+    turnstile.render(mount, {
+      sitekey: "0x4AAAAAACLdRXyJTn20t0BK",
+
+      callback: () => {
+        clearTimeout(timeout);
+        sessionStorage.setItem("cf_verified", "true");
+
+        overlay.classList.add("fade-out");
+        document.body.classList.remove("cf-lock");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 400);
+      },
+
+      "error-callback": () => {
+        errorBox.style.display = "block";
+      },
+
+      "expired-callback": () => {
+        errorBox.style.display = "block";
+      }
+    });
   };
+
+  document.head.appendChild(script);
 }
 
 /* =========================
@@ -367,6 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBlogSearchAndPagination();
   initTurnstileGuard(); // Turnstile 驗證
 });
+
 
 
 
