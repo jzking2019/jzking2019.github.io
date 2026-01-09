@@ -383,6 +383,39 @@ function checkAccess() {
 }
 
 /* =========================
+   時間節點摺疊
+   ========================= */
+function initTimelineCollapse() {
+  document.querySelectorAll(".timeline-year-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const year = btn.closest(".timeline-year");
+      year.classList.toggle("open");
+    });
+  });
+}
+
+/* =========================
+   圖片點擊放大
+   ========================= */
+function initImageViewer() {
+  document.addEventListener("click", e => {
+    const img = e.target.closest(".article-image img");
+    if (!img) return;
+
+    const viewer = document.createElement("div");
+    viewer.className = "image-viewer";
+    viewer.innerHTML = `<img src="${img.src}" alt="">`;
+
+    viewer.addEventListener("click", () => viewer.remove());
+    document.addEventListener("keydown", esc => {
+      if (esc.key === "Escape") viewer.remove();
+    }, { once: true });
+
+    document.body.appendChild(viewer);
+  });
+}
+
+/* =========================
    全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -401,7 +434,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBlogSearchAndPagination();
   initTurnstileGuard(); // Turnstile 驗證
+  initTimelineCollapse(); // 時間節點摺疊
+  initImageViewer(); // 圖片點擊放大
 });
+
 
 
 
