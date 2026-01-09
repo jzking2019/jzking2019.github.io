@@ -63,14 +63,17 @@
             document.body.appendChild(turnstileDiv);
 
             const targetUrl = new URL(window.location.href);
-            const returnUrl = targetUrl.searchParams.get('returnUrl') || '/default-page.html';
+            const returnUrl = targetUrl.searchParams.get('returnUrl') || 'index.html';
 
             const interval = setInterval(() => {
                 const response = document.querySelector('.cf-turnstile-response');
 
                 if (response && response.value) {
                     clearInterval(interval);
-                    // 驗證成功後重定向至目標網址
+                    // 確保這裡進行伺服器端驗證
+                    alert('驗證成功，跳轉至目標頁面'); // 調試提示
+
+                    // 驗證完成後跳轉
                     window.location.href = returnUrl;
                 }
             }, 100);
