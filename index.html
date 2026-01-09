@@ -31,17 +31,21 @@
 
   <!-- Turnstile 驗證 -->
   <script>
-        // 檢查訪問狀態
-        document.addEventListener('DOMContentLoaded', () => {
-            const hasVisited = localStorage.getItem('hasVisited');
+    document.addEventListener('DOMContentLoaded', () => { // 檢查訪問狀態
+    const hasVisited = localStorage.getItem('hasVisited');
 
-            if (!hasVisited) {
-                // 如果未首次訪問，將標記為已訪問
-                localStorage.setItem('hasVisited', 'true');
-                // 跳轉至驗證頁面
-                window.location.href = 'Turnstile.html?returnUrl=index.html';
-            }
-        });
+    if (!hasVisited) {
+        // 如果未首次訪問，將標記為已訪問
+        localStorage.setItem('hasVisited', 'true');
+        
+        // 調試輸出
+        console.log('使用者尚未訪問，正在跳轉至驗證頁面');
+        
+        // 跳轉至驗證頁面
+        window.location.href = 'Turnstile.html?returnUrl=index.html';
+    }
+});
+
     </script>
 </head>
   
