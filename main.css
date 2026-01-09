@@ -882,6 +882,7 @@ body.dark-mode .cf-error {
   color: #ff6b6b;
 }
 
+/* 時間節點摺疊 */
 .timeline-year-content {
   display: none;
 }
@@ -935,12 +936,45 @@ body.dark-mode .cf-error {
   border-radius: 6px;
 }
 
+/* 手機自動改為直向堆疊 */
 @media (max-width: 767px) {
   .article-gallery {
     flex-direction: column;
   }
 }
 
+/* PC：橫向排列（不滑）*/
+.article-gallery {
+  display: flex;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.article-image {
+  flex: 1;
+  margin: 0;
+}
+
+/* 手機：左右滑動（像相簿）*/
+@media (max-width: 767px) {
+  .article-gallery {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+  }
+
+  .article-image {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+  }
+
+  /* 隱藏滾動條（但仍可滑） */
+  .article-gallery::-webkit-scrollbar {
+    display: none;
+  }
+}
 /* =========================
    Footer
    ========================= */
@@ -1008,6 +1042,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
