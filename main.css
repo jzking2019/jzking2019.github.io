@@ -669,6 +669,31 @@ body.dark-mode #pagination button.active {
 }
 
 /* =========================
+   Turnstile 驗證頁面樣式
+   ========================= */
+
+#cf-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-box {
+  background: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+body.dark-mode .cf-box {
+  background: #2d2d2d;
+  color: #fff;
+}
+/* =========================
    Footer
    ========================= */
 
@@ -735,6 +760,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
