@@ -40,7 +40,7 @@ function initTurnstileGate() {
       <div id="cf-turnstile"></div>
 
       <div class="cf-error" id="cf-error">
-        驗證失敗或逾時，請重新整理頁面再試。
+        驗證失敗或逾時，請從新整理頁面再試。
       </div>
     </div>
   `;
@@ -402,6 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBlogSearchAndPagination();
   initTurnstileGuard(); // Turnstile 驗證
 });
+
 
 
 
