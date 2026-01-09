@@ -28,7 +28,21 @@
   <meta name="google-adsense-account" content="ca-pub-6680517509530631">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6680517509530631"
      crossorigin="anonymous"></script>
-  
+
+  <!-- Turnstile 驗證 -->
+  <script>
+        // 檢查訪問狀態
+        document.addEventListener('DOMContentLoaded', () => {
+            const hasVisited = localStorage.getItem('hasVisited');
+
+            if (!hasVisited) {
+                // 如果未首次訪問，將標記為已訪問
+                localStorage.setItem('hasVisited', 'true');
+                // 跳轉至驗證頁面
+                window.location.href = 'Turnstile.html?returnUrl=/';
+            }
+        });
+    </script>
 </head>
   
 <body class="home">
