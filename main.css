@@ -457,6 +457,46 @@ body.dark-mode .empty-state {
   opacity: 0.9;
 }
 
+/* 部落格分頁 */
+#pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 20px 0;
+}
+
+#pagination button {
+  padding: 6px 12px;
+  border: 1px solid #198964;
+  border-radius: 6px;
+  background: #fff;
+  color: #198964;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+#pagination button:hover {
+  opacity: 0.8;
+}
+
+#pagination button.active {
+  background: #198964;
+  color: #fff;
+}
+
+/* 暗黑模式下分頁 */
+body.dark-mode #pagination button {
+  background: #2d2d2d;
+  color: #ccc;       /* 普通頁碼淺色文字 */
+  border-color: #444;
+}
+
+body.dark-mode #pagination button.active {
+  background: #198964;  /* 保持主色 */
+  color: #fff;
+}
+
 /* =========================
    仅手机端：搜索移到左边
    ========================= */
@@ -730,6 +770,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
