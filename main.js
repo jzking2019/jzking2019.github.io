@@ -277,62 +277,57 @@ function checkAccess() {
 /* =========================
    部落格分頁
    ========================= */
-function initBlogPagination({
-  postsPerPage = 6
-} = {}) {
-  const blog = document.querySelector(".blog");
-  if (!blog) return; // 只在 blog 页面生效
+function initBlogPagination() {
+  if (!document.body.classList.contains("blog")) return;
 
-  const postsContainer = blog.querySelector(".blog-posts");
-  const posts = Array.from(postsContainer.children);
+  const posts = [...document.querySelectorAll(".post")];
   const pagination = document.getElementById("pagination");
+  if (!posts.length || !pagination) return;
 
-  if (!pagination || posts.length <= postsPerPage) return;
+  const PER_PAGE = 5;
+  const totalPages = Math.ceil(posts.length / PER_PAGE);
 
-  let currentPage = 1;
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  // 讀取 URL ?page=
+  const params = new URLSearchParams(window.location.search);
+  let currentPage = parseInt(params.get("page"), 10) || 1;
+
+  // 防呆
+  if (currentPage < 1) currentPage = 1;
+  if (currentPage > totalPages) currentPage = totalPages;
 
   function renderPage(page) {
     currentPage = page;
 
     posts.forEach((post, index) => {
-      const start = (page - 1) * postsPerPage;
-      const end = page * postsPerPage;
       post.style.display =
-        index >= start && index < end ? "" : "none";
+        index >= (page - 1) * PER_PAGE && index < page * PER_PAGE
+          ? ""
+          : "none";
     });
 
     renderPagination();
+
+    // ⭐ 更新 URL，但不重新整理
+    const url = new URL(window.location);
+    url.searchParams.set("page", page);
+    window.history.pushState({}, "", url);
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function renderPagination() {
     pagination.innerHTML = "";
 
-    const prev = document.createElement("button");
-    prev.textContent = "‹";
-    prev.disabled = currentPage === 1;
-    prev.onclick = () => renderPage(currentPage - 1);
-
-    pagination.appendChild(prev);
-
     for (let i = 1; i <= totalPages; i++) {
       const btn = document.createElement("button");
       btn.textContent = i;
-      if (i === currentPage) btn.classList.add("active");
+      btn.className = i === currentPage ? "active" : "";
       btn.onclick = () => renderPage(i);
       pagination.appendChild(btn);
     }
-
-    const next = document.createElement("button");
-    next.textContent = "›";
-    next.disabled = currentPage === totalPages;
-    next.onclick = () => renderPage(currentPage + 1);
-
-    pagination.appendChild(next);
   }
 
-  renderPage(1);
+  renderPage(currentPage);
 }
 
 /* =========================
@@ -354,6 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBlogPagination({ postsPerPage: 6 });
 });
+
 
 
 
