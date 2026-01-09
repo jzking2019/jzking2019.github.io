@@ -624,6 +624,90 @@ body.dark-mode.home .post a {
 body.dark-mode.home .post p {
   color: #cccccc;
 }
+/* =========================
+   文章頁樣式
+   ========================= */
+/* 基本文章區塊 */
+
+.article {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 16px;
+  line-height: 1.8;
+}
+/* 標題與資訊 */
+.article-title {
+  font-size: 1.9rem;
+  margin-bottom: 8px;
+}
+
+.article-meta {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  margin-bottom: 24px;
+}
+
+.article-intro {
+  font-size: 1.05rem;
+  opacity: 0.85;
+  margin-bottom: 28px;
+}
+
+/* 內文排版 */
+.article h2 {
+  margin-top: 36px;
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+}
+
+.article p {
+  margin: 12px 0;
+}
+
+.article ul {
+  padding-left: 18px;
+  margin: 12px 0;
+}
+
+.article li {
+  margin: 6px 0;
+}
+/* 圖片 */
+.article-image {
+  margin: 28px 0;
+  text-align: center;
+}
+
+.article-image img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.article-image figcaption {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-top: 6px;
+}
+
+/* 推薦連結 */
+.article-link {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* 深色模式 */
+body.dark-mode .article {
+  color: #eaeaea;
+}
+
+body.dark-mode .article-meta,
+body.dark-mode .article-intro,
+body.dark-mode .article-image figcaption {
+  opacity: 0.7;
+}
 
 /* =========================
    分頁樣式
@@ -808,6 +892,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
