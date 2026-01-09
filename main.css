@@ -707,6 +707,10 @@ body.dark-mode #pagination button.active {
   margin-bottom: 24px;
 }
 
+body.cf-lock {
+  overflow: hidden;
+}
+
 /* 暗黑模式 */
 body.dark-mode #cf-overlay {
   background: #000;
@@ -783,6 +787,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
