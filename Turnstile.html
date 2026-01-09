@@ -48,26 +48,32 @@
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
-
-    <h1>正在驗證...</h1>
-    
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAACLdRXyJTn20t0BK"></div>
+    <h1>正在進行驗證...</h1>
 
     <script>
-        window.onload = function() {
-            // 確保Turnstile已經加載
-            const turnstileResponse = document.querySelector('.cf-turnstile-response');
+        const script = document.createElement('script');
+        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+        script.async = true;
+        document.head.appendChild(script);
 
-            // 等待一段時間以確保驗證完全
-            const checkTurnstileResponse = setInterval(() => {
-                if (turnstileResponse.value) {
-                    clearInterval(checkTurnstileResponse);
-                    // 在這裡可以進行重定向或加載其他內容
-                    alert('驗證成功！');
-                    // 例如重定向到另一頁面
-                    window.location.href = '/returnUrl';
+        script.onload = () => {
+            const turnstileDiv = document.createElement('div');
+            turnstileDiv.className = 'cf-turnstile';
+            turnstileDiv.setAttribute('data-sitekey', 'YOUR_SITE_KEY');
+            document.body.appendChild(turnstileDiv);
+
+            const targetUrl = new URL(window.location.href);
+            const returnUrl = targetUrl.searchParams.get('returnUrl') || '/default-page.html';
+
+            const interval = setInterval(() => {
+                const response = document.querySelector('.cf-turnstile-response');
+
+                if (response && response.value) {
+                    clearInterval(interval);
+                    // 驗證成功後重定向至目標網址
+                    window.location.href = returnUrl;
                 }
-            }, 100); // 每100毫秒檢查一次
+            }, 100);
         };
     </script>
 
