@@ -1132,32 +1132,65 @@ body.dark-mode .cf-error {
    404 推荐文章
    ========================= */
 
-.error-recommend {
-  max-width: 900px;
-  margin: 40px auto 0;
-  padding: 0 16px;
+  .error-recommend {
+    flex-wrap: nowrap;        /* ❗关键 */
+    overflow-x: auto;
+    gap: 14px;
+    padding: 6px 10px 12px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .error-recommend .post {
+    flex: 0 0 75%;            /* ❗只用 flex，不用 width */
+    margin: 0;
+    scroll-snap-align: start;
+  }
+
+  .error-recommend .post img {
+    height: auto;             /* ❗手机用自然比例 */
+  }
+
+  .error-recommend::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.error-recommend h3 {
-  font-size: 16px;
-  margin-bottom: 12px;
-  opacity: 0.8;
+/* 深色模式 */
+body.dark-mode.error-recommend .post {
+  background: #242424;
 }
 
-.error-recommend .blog-posts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
+body.dark-mode.error-recommend .post a {
+  color: #ffffff;
 }
 
-/* 卡片缩小一点 */
-.error-recommend .post {
-  box-shadow: none;
-  border: 1px solid rgba(0,0,0,0.08);
+/* 16:9 容器 */
+.error-recommend .post-thumb {
+  aspect-ratio: 16 / 9;   /* ⭐ 現代瀏覽器首選 */
+  width: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #000;
 }
 
-body.dark-mode .error-recommend .post {
-  border-color: rgba(255,255,255,0.12);
+/* 圖片填滿比例 */
+.error-recommend .post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* ❗裁切不變形 */
+  display: block;
+}
+
+/* 標題兩行省略 */
+.error-recommend .post-title {
+  font-size: 15px;
+  line-height: 1.4;
+  margin: 8px 6px 10px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;      /* ⭐ 限制 2 行 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* =========================
@@ -1279,6 +1312,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
