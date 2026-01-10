@@ -509,93 +509,89 @@ body {
 
 /* =========================
    部落格頁面
-   1. 基礎卡片佈局修正
+   1. 基礎卡片佈局：確保水平排列
    ========================= */
-.blog .post {
-  background-color: #ffffff !important; /* 淺色模式強制白 */
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: background-color 0.3s ease; /* 切換時平滑一點 */
-}
-
-.blog .post a {
-  display: flex !important;
-  flex-direction: row !important; /* 強制左右排列 */
-  padding: 15px;
-  gap: 15px;
+.blog .blog-posts .post a {
+  display: flex;
+  flex-direction: row;    /* 強制左右排列 */
+  align-items: stretch;   /* 讓文字區塊高度與圖片一致 */
+  gap: 16px;
+  padding: 12px;
   text-decoration: none;
+  color: inherit;
 }
 
 /* =========================
-   2. 右側內容區：強制垂直排列
+   2. 左側封面：固定寬度
    ========================= */
-/* 1. 確保右側內容區塊撐滿高度，以便讓 meta 掉到底部 */
-.post-content {
-  flex: 1;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start; /* 讓內容從頂部開始排 */
-  min-height: 80px;            /* 確保高度足以讓 meta 有下沉空間 */
+.blog .blog-posts .post .post-thumb {
+  flex: 0 0 160px;        /* 固定寬度，不縮放 */
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #eee;
 }
 
-/* 2. 標題樣式保持不變 */
-.post-title {
+.blog .blog-posts .post .post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================
+   3. 右側內容：強制垂直並讓 Meta 沉底
+   ========================= */
+.blog .blog-posts .post .post-content {
+  flex: 1;                /* 佔滿剩餘寬度 */
+  display: flex;
+  flex-direction: column; /* 標題在上，Meta 在下 */
+  justify-content: space-between; /* 關鍵：將內容撐開到兩端 */
+  min-width: 0;           /* 防止長標題撐破佈局 */
+}
+
+.blog .blog-posts .post .post-title {
   font-size: 16px;
+  font-weight: 600;
   line-height: 1.4;
-  margin: 0 0 8px 0;
+  margin: 0;
 }
 
-/* 3. 關鍵修正：將日期和標籤推至底部 */
-.post-meta {
-  margin-top: auto;            /* ⭐ 這行會將 meta 推到底部 */
-  display: flex !important;
-  flex-direction: row !important;
+/* 日期與標籤容器 */
+.blog .blog-posts .post .post-meta {
+  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  padding-top: 10px;           /* 增加一點點與標題的最小間距 */
+  font-size: 12px;
+  margin-top: 8px;        /* 確保與標題有基本間距 */
 }
 
-/* 4. 修正標籤內文字太靠近邊框的問題 */
-.post-tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px 8px !important;
+.blog .blog-posts .post .post-tag {
+  padding: 2px 8px;
   border-radius: 4px;
-  height: 20px;                /* 統一標籤高度 */
-  line-height: 1 !important;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* =========================
-   3. 深色模式強力覆蓋
+   4. 深色模式：提高選擇器權重
    ========================= */
-
-/* 請注意：如果您的切換是靠 body 的 class="dark-mode"
-   這裡使用更高權重的寫法 
-*/
-body.dark-mode .blog .post {
-  background-color: #242424 !important; /* 卡片背景變深灰色 */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+body.dark-mode .blog .blog-posts .post {
+  background-color: #1f1f1f;
 }
 
-body.dark-mode .post-title {
-  color: #ffffff !important; /* 標題變白 */
+body.dark-mode .blog .blog-posts .post .post-title {
+  color: #ffffff;
 }
 
-body.dark-mode .post-meta {
-  color: #aaaaaa !important; /* 日期變淺灰 */
+body.dark-mode .blog .blog-posts .post .post-meta {
+  color: #bdbdbd;
 }
 
-body.dark-mode .post-tag {
-  background: rgba(255, 255, 255, 0.1) !important; /* 標籤背景 */
-  color: #eeeeee !important;
-}
-
-body.dark-mode .post-thumb {
-  background: #333 !important;
+body.dark-mode .blog .blog-posts .post .post-tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
 }
 
 /* =========================
@@ -1121,6 +1117,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
