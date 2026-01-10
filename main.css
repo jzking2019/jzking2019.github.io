@@ -588,15 +588,15 @@ body {
 }
 
 /* =========================
-   深色模式
+   深色模式：強力修復版
    ========================= */
 
 /* 1. 強制覆蓋卡牌背景 */
 /* 使用 body.dark-mode 並精確定位到 .blog 內的 .post */
 body.dark-mode .blog article.post,
 body.dark-mode .blog .post {
-  background-color: #242424; /* 如果沒生效，這裡暫時保留 important 觀察，生效後再嘗試去掉 */
-  background: #242424;
+  background-color: #242424 !important; /* 如果沒生效，這裡暫時保留 important 觀察，生效後再嘗試去掉 */
+  background: #242424 !important;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
@@ -608,7 +608,7 @@ body.dark-mode .blog .post a {
 /* 3. 標題：確保為白色 */
 body.dark-mode .blog .post .post-title,
 body.dark-mode .blog .post .post-title a {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 /* 4. Meta 文字與 Tag */
@@ -621,7 +621,6 @@ body.dark-mode .post-tag {
   background: rgba(255, 255, 255, 0.14);
   color: #e0e0e0;
 }
-
 
 /* =========================
    首页 Blog（PC / 平板）
@@ -1146,6 +1145,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
