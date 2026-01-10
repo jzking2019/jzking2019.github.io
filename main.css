@@ -1163,6 +1163,10 @@ body.dark-mode .error-recommend .post {
 /* =========================
    404 搜索（置中）
    ========================= */
+.error-search img {
+  width: 18px;
+  height: 18px;
+}
 
 .error-search {
   display: flex;
@@ -1262,6 +1266,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
