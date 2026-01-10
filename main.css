@@ -508,7 +508,7 @@ body {
 }
 
 /* =========================
-   Blog 列表（左圖右文）
+   Blog 列表（左圖右文，上文下 meta）
    ========================= */
 
 .blog .blog-posts {
@@ -522,23 +522,28 @@ body {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column; /* ✅ 強制上下 */
+  gap: 6px;
 }
 
-.blog .post a {
-  display: flex;              /* ⭐ 左右排列 */
+/* 上半部：左圖 + 標題 */
+.blog .post > a {
+  display: flex;
   gap: 12px;
-  padding: 10px;
   text-decoration: none;
   color: inherit;
 }
 
 /* =========================
-   左侧封面（固定比例）
+   封面
    ========================= */
 
 .post-thumb {
-  flex: 0 0 140px;             /* ⭐ 固定宽度 */
-  aspect-ratio: 16 / 9;        /* ⭐ 固定比例 */
+  flex: 0 0 140px;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 8px;
   background: #eee;
@@ -552,63 +557,84 @@ body {
 }
 
 /* =========================
-   右側內容
+   標題
    ========================= */
 
-.post-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* ⭐ 讓內容分佈在上下兩端 */
-  flex: 1;                         /* ⭐ 讓右側佔滿剩餘寬度 */
-  gap: 6px;
-  padding: 4px 0;                 /* 稍微增加上下間距讓對齊更美觀 */
-}
-
-/* 確保標題不會縮得太小 */
 .post-title {
   font-size: 15px;
   line-height: 1.4;
   margin: 0;
-  display: -webkit-box;           /* 如果標題太長，限制行數（選配） */
+
+  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 /* =========================
-   Tag 通用
+   底部 meta（關鍵）
+   ========================= */
+.post-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+}
+
+/* ⭐ 卡片底部的 meta */
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+  opacity: 0.75;
+
+  margin-top: auto;   /* ← 這一行是靈魂 */
+}
+
+/* =========================
+   Tag：基礎（不覆蓋分類）
    ========================= */
 
 .post-tag {
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 11px;
-  background: rgba(0,0,0,0.06);
+  white-space: nowrap;
+}
+
+/* 類型 */
+.post-tag[data-type="article"] {
+  background: rgba(33,150,243,.12);
+  color: #1565c0;
+}
+
+.post-tag[data-type="video"] {
+  background: rgba(233,30,99,.12);
+  color: #ad1457;
+}
+
+/* 分類 */
+.post-tag[data-category] {
+  background: rgba(76,175,80,.12);
+  color: #2e7d32;
 }
 
 /* =========================
-   深色模式
+   深色模式（維持正常）
    ========================= */
 
-/* 提高選擇器權重，確保高於 .blog .post */
 body.dark-mode .blog-posts .post {
-  background-color: #242424; /* ⭐ 確保背景色變為深灰色 */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.4); /* 加深陰影 */
+  background: #242424;
 }
 
-body.dark-mode .blog-posts .post a {
-  color: #eaeaea;
-}
-
-/* 標題 */
 body.dark-mode .post-title {
-  color: #ffffff;
+  color: #fff;
 }
 
-/* tag 在暗色下 */
 body.dark-mode .post-tag {
-  background: rgba(255,255,255,0.1);
-  color: #cccccc;
+  background: rgba(255,255,255,.12);
+  color: #ddd;
 }
 
 /* =========================
