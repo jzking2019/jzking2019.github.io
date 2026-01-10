@@ -508,61 +508,92 @@ body {
 }
 
 /* =========================
-   部落格頁面
+   1. 確保卡片維持「左圖右文」
    ========================= */
-/* 右側內容區塊：強制垂直堆疊 */
+.blog .blog-posts .post a {
+  display: flex !important;   /* 強制水平排列 */
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 15px;
+  text-decoration: none;
+}
+
+/* =========================
+   2. 固定圖片容器寬度，防止變大
+   ========================= */
+.blog .blog-posts .post .post-thumb {
+  flex: 0 0 160px;            /* 固定圖片寬度為 160px */
+  width: 160px;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.blog .blog-posts .post .post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================
+   3. 文字區塊：確保標題與日期垂直靠左
+   ========================= */
 .blog .blog-posts .post .post-content {
-  flex: 1;
+  flex: 1;                    /* 佔據剩餘所有空間 */
   display: flex;
-  flex-direction: column; /* 強制內容垂直排列 */
+  flex-direction: column;     /* 強制內部內容由上至下排列 */
   justify-content: flex-start;
-  align-items: flex-start; /* 確保所有內容靠左對齊 */
+  align-items: flex-start;    /* 強制所有內容靠左對齊 */
   min-width: 0;
 }
 
 .blog .blog-posts .post .post-title {
-  display: block;        /* 強制標題自佔一行 */
-  width: 100%;           /* 確保佔滿寬度，把後面的擠下去 */
   font-size: 16px;
   font-weight: 600;
   line-height: 1.4;
-  margin: 0 0 8px 0;     /* 下方留白，與日期拉開距離 */
+  margin: 0 0 8px 0;          /* 標題下方的間距 */
+  width: 100%;                /* 確保標題佔滿寬度，將日期推至下一行 */
+  text-align: left;
 }
 
-/* =========================
-   日期與標籤：緊貼標題下方靠左
-   ========================= */
+/* 日期與 tag 容器：緊貼標題下方 */
 .blog .blog-posts .post .post-meta {
   display: flex;
-  flex-direction: row;   /* 日期與標籤維持橫向排列 */
-  flex-wrap: wrap;       /* 空間不足時自動換行 */
-  justify-content: flex-start; /* 靠左對齊 */
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* 確保靠左 */
   align-items: center;
   gap: 10px;
   font-size: 12px;
-  margin: 0;             /* 清除任何可能導致偏移的 margin */
 }
 
-/* 確保 tag 不會變形 */
 .blog .blog-posts .post .post-tag {
-  display: inline-block;
   padding: 2px 8px;
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.05);
-  white-space: nowrap;
 }
 
 /* =========================
-   深色模式適配
+   4. 深色模式適配 (無 !important 版)
    ========================= */
+body.dark-mode .blog .blog-posts .post {
+  background-color: #1f1f1f;
+}
+
+body.dark-mode .blog .blog-posts .post .post-title {
+  color: #ffffff;
+}
+
 body.dark-mode .blog .blog-posts .post .post-meta {
   color: #a0a0a0;
 }
 
 body.dark-mode .blog .blog-posts .post .post-tag {
   background-color: rgba(255, 255, 255, 0.1);
-  color: #ccc;
+  color: #cccccc;
 }
+
 
 /* =========================
    首页 Blog（PC / 平板）
@@ -1087,6 +1118,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
