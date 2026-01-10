@@ -21,6 +21,29 @@ function initTheme() {
 }
 
 /* =========================
+   Google AdSense 全站注入（最終版）
+   ========================= */
+(function loadAdSense() {
+  // ❌ Turnstile / 驗證頁不載入廣告
+  if (location.pathname.includes("Turnstile")) return;
+
+  // ❌ 防止重複載入（SPA / 多次 inject）
+  if (window.__adsenseLoaded) return;
+  window.__adsenseLoaded = true;
+
+  // ❌ 若頁面本來就有 adsbygoogle.js
+  if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src =
+    "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6680517509530631";
+  script.crossOrigin = "anonymous";
+
+  document.head.appendChild(script);
+})();
+
+/* =========================
    Cloudflare Turnstile（全站・JS 注入）
    ========================= */
 
@@ -490,6 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initImageViewer(); // 圖片點擊放大
   loadHomeLatestPosts(); // 首頁動態推薦注入
 });
+
 
 
 
