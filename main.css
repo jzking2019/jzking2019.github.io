@@ -1154,6 +1154,19 @@ body.dark-mode .cf-error {
     display: none;
   }
 
+/* PC 端調整 (通常設定在 768px 或 992px 以上) */
+@media (min-width: 768px) {
+
+  .error-recommend .post {
+    flex: 0 0 220px;           /* ⭐ 固定寬度，或是設為 20%~30% */
+    max-width: 250px;          /* 限制最大寬度 */
+  }
+
+  .error-recommend .post-title {
+    font-size: 14px;           /* PC 標題稍微縮小 */
+  }
+}
+
 /* 深色模式 */
 body.dark-mode.error-recommend .post {
   background: #242424;
@@ -1311,6 +1324,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
