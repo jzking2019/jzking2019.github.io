@@ -509,86 +509,113 @@ body {
 
 /* =========================
    部落格頁面
-   1. 基礎卡片佈局修正
+   1. 基礎卡片佈局優化
    ========================= */
 .blog .post {
   background-color: #ffffff;
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .blog .post a {
   display: flex;
   flex-direction: row;
-  padding: 15px;
-  gap: 15px;
+  padding: 16px;
+  gap: 20px;
   text-decoration: none;
-  color: inherit;
+  /* 移除固定 color，讓它繼承 body 或 post-content 的設定 */
+}
+
+/* 確保圖片比例固定，不被壓縮 */
+.post-image-wrapper {
+  flex: 0 0 140px; /* 您可以根據需要調整縮圖寬度 */
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* =========================
-   2. 右側內容區：強制垂直排列
+   2. 右側內容區：緊湊排版
    ========================= */
 .post-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: flex-start; /* 改為靠上對齊 */
 }
 
 .post-title {
   font-size: 16px;
   font-weight: 600;
-  margin: 0;
+  margin: 0 0 8px 0;
   line-height: 1.4;
   color: #333;
 }
 
-/* 日期 + 標籤 容器 */
 .post-meta {
   display: flex;
+  flex-direction: row; /* 讓日期與標籤在同一行或自然流動 */
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: #888;
+  gap: 12px;
+  margin-top: auto; /* 將日期標籤推到底部 */
 }
 
 .post-date {
   font-size: 12px;
+  color: #888;
 }
 
-/* 修正您截圖中出現的長條陰影 */
+.post-tags {
+  display: flex;
+  gap: 6px;
+}
+
 .post-tag {
-  background: rgba(0,0,0,0.06);
-  padding: 3px 10px;
-  border-radius: 999px;
+  background: rgba(0,0,0,0.05);
+  padding: 2px 8px;
+  border-radius: 4px;
   font-size: 11px;
-  line-height: 1.4;
-  white-space: nowrap;
+  color: #666;
 }
 
 /* =========================
-   4. 深色模式：提高選擇器權重
+   3. 深色模式：提高選擇器權重
+   (透過串聯 body.dark-mode 確保優先權)
    ========================= */
+
 body.dark-mode .blog .post {
   background-color: #1f1f1f;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 body.dark-mode .blog .post-title {
-  color: #ffffff;
+  color: #f0f0f0;
 }
 
-body.dark-mode .blog .post-meta {
-  color: #bdbdbd;
+body.dark-mode .post-date {
+  color: #999;
 }
 
-body.dark-mode .blog .post-tag {
-  background: rgba(255,255,255,0.14);
-  color: #e0e0e0;
+body.dark-mode .post-tag {
+  background: rgba(255,255,255,0.1);
+  color: #bbb;
 }
+
+/* 如果您的連結有顏色覆蓋，這裡一併修正 */
+body.dark-mode .blog .post a {
+  color: inherit;
+}
+
 
 /* =========================
    首页 Blog（PC / 平板）
@@ -1113,6 +1140,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
