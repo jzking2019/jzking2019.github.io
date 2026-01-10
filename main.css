@@ -512,20 +512,20 @@ body {
    1. 基礎卡片佈局修正
    ========================= */
 .blog .post {
-  background-color: #ffffff !important; /* 淺色模式強制白 */
+  background-color: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: background-color 0.3s ease; /* 切換時平滑一點 */
 }
 
 .blog .post a {
-  display: flex !important;
-  flex-direction: row !important; /* 強制左右排列 */
+  display: flex;
+  flex-direction: row;
   padding: 15px;
   gap: 15px;
   text-decoration: none;
+  color: inherit;
 }
 
 /* =========================
@@ -533,17 +533,14 @@ body {
    ========================= */
 .post-content {
   flex: 1;
-  display: flex !important;
-  flex-direction: column !important; /* 強制標題在上，Meta在下 */
-  justify-content: flex-start;
-  gap: 10px; /* 控制標題與日期的間距 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .post-title {
-  display: block !important; /* 確保它是塊狀，佔據一行 */
-  width: 100%;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   margin: 0;
   line-height: 1.4;
   color: #333;
@@ -551,41 +548,45 @@ body {
 
 /* 日期 + 標籤 容器 */
 .post-meta {
-  display: flex !important;
-  flex-direction: row !important; /* 讓日期與標籤橫向排在標題下方 */
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 12px;
   color: #888;
 }
 
+.post-date {
+  font-size: 12px;
+}
+
 /* 修正您截圖中出現的長條陰影 */
 .post-tag {
-  background: rgba(0,0,0,0.05) !important;
-  padding: 3px 10px !important;
-  border-radius: 6px !important;
-  height: auto !important; /* 移除可能的固定高度 */
-  line-height: 1.2 !important;
+  background: rgba(0,0,0,0.06);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 /* =========================
    4. 深色模式：提高選擇器權重
    ========================= */
-body.dark-mode .blog .blog-posts .post {
+body.dark-mode .blog .post {
   background-color: #1f1f1f;
 }
 
-body.dark-mode .blog .blog-posts .post .post-title {
+body.dark-mode .blog .post-title {
   color: #ffffff;
 }
 
-body.dark-mode .blog .blog-posts .post .post-meta {
+body.dark-mode .blog .post-meta {
   color: #bdbdbd;
 }
 
-body.dark-mode .blog .blog-posts .post .post-tag {
-  background-color: rgba(255, 255, 255, 0.1);
+body.dark-mode .blog .post-tag {
+  background: rgba(255,255,255,0.14);
   color: #e0e0e0;
 }
 
@@ -1112,6 +1113,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
