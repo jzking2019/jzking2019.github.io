@@ -552,6 +552,51 @@ body.dark-mode .post {
 }
 
 /* =========================
+   部落格時間與分類
+   ========================= */
+/* 基礎樣式 */
+.post-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: nowrap;
+  background: rgba(0,0,0,0.06);
+  color: #333;
+}
+
+/* 內容類型 */
+.post-tag[data-type="article"] {
+  background: rgba(33, 150, 243, 0.12);
+  color: #1565c0;
+}
+
+.post-tag[data-type="video"] {
+  background: rgba(233, 30, 99, 0.12);
+  color: #ad1457;
+}
+
+/* 內容分類 */
+.post-tag[data-category] {
+  background: rgba(76, 175, 80, 0.12);
+  color: #2e7d32;
+}
+
+/* 深色模式 */
+body.dark-mode .post-tag {
+  background: rgba(255,255,255,0.12);
+  color: #ddd;
+}
+
+body.dark-mode .post-tag[data-type="article"] {
+  color: #90caf9;
+}
+
+body.dark-mode .post-tag[data-type="video"] {
+  color: #f48fb1;
+}
+
+/* =========================
    首页 Blog（PC / 平板）
    ========================= */
 
@@ -1076,6 +1121,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
