@@ -565,6 +565,26 @@ body.dark-mode .post {
   color: #333;
 }
 
+.post a {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-content {
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
 /* 內容類型 */
 .post-tag[data-type="article"] {
   background: rgba(33, 150, 243, 0.12);
@@ -1121,6 +1141,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
