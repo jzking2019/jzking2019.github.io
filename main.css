@@ -1163,21 +1163,30 @@ body.dark-mode .error-recommend .post {
 /* =========================
    404 搜索（置中）
    ========================= */
-.error-search img {
-  width: 18px;
-  height: 18px;
-}
-
 .error-search {
   display: flex;
   justify-content: center;
   margin: 24px 0 36px;
+  position: relative; /* 新增：讓內部的 absolute 定位以此為基準 */
+  max-width: 420px;    /* 移到外層容器確保 Icon 跟隨寬度 */
+  margin-left: auto;   /* 配合 justify-content: center 的效果 */
+  margin-right: auto;
+}
+
+.error-search img {
+  width: 18px;
+  height: 18px;
+  position: absolute;  /* 新增：絕對定位 */
+  left: 16px;          /* 距離左邊邊距 */
+  top: 50%;            /* 置中對齊 */
+  transform: translateY(-50%); /* 垂直置中修正 */
+  pointer-events: none; /* 讓點擊圖示時也能觸發 input 聚焦 */
+  z-index: 1;
 }
 
 .error-search input {
   width: 100%;
-  max-width: 420px;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 42px; /* 修改：左側 padding 增加到 42px 給 Icon 空間 */
   font-size: 15px;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.2);
@@ -1270,6 +1279,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
