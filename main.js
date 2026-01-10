@@ -1,26 +1,4 @@
 /* =========================
-   主题切换（全站）
-   ========================= */
-function toggleTheme() {
-  document.body.classList.toggle("dark-mode");
-  localStorage.setItem(
-    "theme",
-    document.body.classList.contains("dark-mode") ? "dark" : "light"
-  );
-}
-
-function initTheme() {
-  const saved = localStorage.getItem("theme");
-  if (
-    saved === "dark" ||
-    (!saved &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    document.body.classList.add("dark-mode");
-  }
-}
-
-/* =========================
    Google AdSense 全站注入（最終版）
    ========================= */
 (function loadAdSense() {
@@ -42,6 +20,28 @@ function initTheme() {
 
   document.head.appendChild(script);
 })();
+
+/* =========================
+   主题切换（全站）
+   ========================= */
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark-mode") ? "dark" : "light"
+  );
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("theme");
+  if (
+    saved === "dark" ||
+    (!saved &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.body.classList.add("dark-mode");
+  }
+}
 
 /* =========================
    Cloudflare Turnstile（全站・JS 注入）
@@ -513,6 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
 });
+
 
 
 
