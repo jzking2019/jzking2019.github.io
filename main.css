@@ -1132,52 +1132,42 @@ body.dark-mode .cf-error {
    404 推荐文章
    ========================= */
 
-  .error-recommend {
-    flex-wrap: nowrap;        /* ❗关键 */
-    overflow-x: auto;
-    gap: 14px;
-    padding: 6px 10px 12px;
-    scroll-snap-type: x mandatory;
-  }
-
-  .error-recommend .post {
-    flex: 0 0 75%;            /* ❗只用 flex，不用 width */
-    margin: 0;
-    scroll-snap-align: start;
-  }
-
-  .error-recommend .post img {
-    height: auto;             /* ❗手机用自然比例 */
-  }
-
-  .error-recommend::-webkit-scrollbar {
-    display: none;
-  }
+.error-recommend {
+  display: flex;             /* 確保 flex 佈局 */
+  flex-wrap: nowrap;         /* 強制不換行，形成橫向滾動 */
+  overflow-x: auto;          /* 溢出時顯示滾動條 */
+  gap: 14px;
+  padding: 6px 10px 12px;
+  scroll-snap-type: x mandatory; /* 滾動吸附感 */
+  -webkit-overflow-scrolling: touch; /* 優化 iOS 滾動流暢度 */
 }
 
-/* 深色模式 */
-body.dark-mode.error-recommend .post {
-  background: #242424;
+/* 隱藏滾動條 (所有裝置) */
+.error-recommend::-webkit-scrollbar {
+  display: none;
 }
 
-body.dark-mode.error-recommend .post a {
-  color: #ffffff;
+.error-recommend .post {
+  flex: 0 0 75%;             /* 寬度佔比 75% */
+  margin: 0;
+  scroll-snap-align: start;
+  min-width: 250px;          /* 建議加上最小寬度，避免在大螢幕過窄 */
 }
 
-/* 16:9 容器 */
+/* 16:9 圖片容器 */
 .error-recommend .post-thumb {
-  aspect-ratio: 16 / 9;   /* ⭐ 現代瀏覽器首選 */
+  aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
   border-radius: 6px;
   background: #000;
 }
 
-/* 圖片填滿比例 */
+/* 圖片填滿 */
 .error-recommend .post-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;      /* ❗裁切不變形 */
+  object-fit: cover;
   display: block;
 }
 
@@ -1186,12 +1176,23 @@ body.dark-mode.error-recommend .post a {
   font-size: 15px;
   line-height: 1.4;
   margin: 8px 6px 10px;
-
   display: -webkit-box;
-  -webkit-line-clamp: 2;      /* ⭐ 限制 2 行 */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* 修正：body.dark-mode 與 .error-recommend 之間應有空格 */
+body.dark-mode .error-recommend .post {
+  background: #242424;
+  border-radius: 8px; /* 增加圓角讓深色模式更美觀 */
+}
+
+body.dark-mode .error-recommend .post a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
 
 /* =========================
    404 搜索（置中）
@@ -1312,6 +1313,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
