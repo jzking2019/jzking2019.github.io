@@ -508,74 +508,111 @@ body {
 }
 
 /* =========================
-   部落格頁面
+   Blog 列表整體容器
    ========================= */
 
+.blog .post {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 14px;
+}
+
+/* 確保點擊區域是左右排列 */
 .blog .post a {
-  display: flex;              
-  gap: 16px; /* 稍微增加圖片與文字的間距 */
+  display: flex !important;   /* 強制水平排列：左圖右文 */
+  flex-direction: row;        
+  gap: 16px;
   padding: 12px;
   text-decoration: none;
   color: inherit;
-  align-items: flex-start; /* 確保頂部對齊 */
+  align-items: flex-start;    /* 頂部對齊 */
 }
 
+/* =========================
+   左側封面（固定大小）
+   ========================= */
+
+.post-thumb {
+  flex: 0 0 140px;            /* 寬度固定在 140px */
+  width: 140px;               /* 雙重保險 */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f0f0f0;
+}
+
+.post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================
+   右側內容（上下排列標題與標籤）
+   ========================= */
+
 .post-content {
+  flex: 1;                    /* 佔據剩餘的所有空間 */
   display: flex;
-  flex-direction: column; /* 讓內部元素垂直堆疊 */
-  gap: 8px;              /* 標題與日期/標籤之間的間距 */
-  justify-content: center;
+  flex-direction: column;     /* 讓內容內部垂直排列 */
+  gap: 8px;                   /* 標題與日期之間的距離 */
+  min-width: 0;               /* 防止長標題撐破佈局 */
 }
 
 .post-title {
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 1.4;
   margin: 0;
-  /* 移除可能導致並排的寬度限制 */
-  width: 100%; 
+  color: #333;
 }
 
-/* 日期 + 分類 (現在會自動位於標題下方) */
+/* 日期與標籤容器 */
 .post-meta {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;            /* 空間不足時自動換行 */
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  opacity: 0.8;
+  color: #666;
+}
+
+.post-tag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.05);
+  font-size: 11px;
 }
 
 /* =========================
-   Blog 深色模式（修正選擇器）
+   深色模式修正（修正變色問題）
    ========================= */
 
-/* 修正說明：
-   將 body.dark-mode.blog 改為 .dark-mode .post
-   這樣只要 body 有 .dark-mode，內部的卡片就會變色
-*/
-
+/* 這裡使用更通用的選擇器，確保只要 body 有 dark-mode 類名就能生效 */
 .dark-mode .post {
-  background-color: #2c2c2c !important; /* 稍微淺一點的深色，增加層次感 */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  background-color: #1e1e1e !important;
+}
+
+.dark-mode .post-title {
+  color: #ffffff !important;
+}
+
+.dark-mode .post-meta {
+  color: #aaaaaa !important;
+}
+
+.dark-mode .post-tag {
+  background: rgba(255, 255, 255, 0.1);
+  color: #cccccc;
 }
 
 .dark-mode .post a {
   color: #eeeeee;
 }
 
-.dark-mode .post-title {
-  color: #ffffff;
-}
-
-.dark-mode .post-meta {
-  color: #bbbbbb;
-}
-
-.dark-mode .post-tag {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ddd;
-}
 
 
 /* =========================
@@ -1101,6 +1138,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
