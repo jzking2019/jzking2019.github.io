@@ -508,112 +508,95 @@ body {
 }
 
 /* =========================
-   Blog 列表整體容器
+   部落格頁面
+   1. 基礎卡片佈局修正
    ========================= */
-
 .blog .post {
-  background: #fff;
-  border-radius: 10px;
+  background-color: #ffffff !important; /* 淺色模式強制白 */
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: background-color 0.3s ease; /* 切換時平滑一點 */
 }
 
-/* 確保點擊區域是左右排列 */
 .blog .post a {
-  display: flex !important;   /* 強制水平排列：左圖右文 */
-  flex-direction: row;        
-  gap: 16px;
-  padding: 12px;
+  display: flex !important;
+  flex-direction: row !important; /* 強制左右排列 */
+  padding: 15px;
+  gap: 15px;
   text-decoration: none;
-  color: inherit;
-  align-items: flex-start;    /* 頂部對齊 */
 }
 
 /* =========================
-   左側封面（固定大小）
+   2. 右側內容區：強制垂直排列
    ========================= */
-
-.post-thumb {
-  flex: 0 0 140px;            /* 寬度固定在 140px */
-  width: 140px;               /* 雙重保險 */
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: 8px;
-  background: #f0f0f0;
-}
-
-.post-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* =========================
-   右側內容（上下排列標題與標籤）
-   ========================= */
-
 .post-content {
-  flex: 1;                    /* 佔據剩餘的所有空間 */
-  display: flex;
-  flex-direction: column;     /* 讓內容內部垂直排列 */
-  gap: 8px;                   /* 標題與日期之間的距離 */
-  min-width: 0;               /* 防止長標題撐破佈局 */
+  flex: 1;
+  display: flex !important;
+  flex-direction: column !important; /* 強制標題在上，Meta在下 */
+  justify-content: flex-start;
+  gap: 10px; /* 控制標題與日期的間距 */
 }
 
 .post-title {
+  display: block !important; /* 確保它是塊狀，佔據一行 */
+  width: 100%;
   font-size: 16px;
-  font-weight: 600;
-  line-height: 1.4;
+  font-weight: bold;
   margin: 0;
+  line-height: 1.4;
   color: #333;
 }
 
-/* 日期與標籤容器 */
+/* 日期 + 標籤 容器 */
 .post-meta {
-  display: flex;
-  flex-wrap: wrap;            /* 空間不足時自動換行 */
+  display: flex !important;
+  flex-direction: row !important; /* 讓日期與標籤橫向排在標題下方 */
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 12px;
-  color: #666;
+  color: #888;
 }
 
+/* 修正您截圖中出現的長條陰影 */
 .post-tag {
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: rgba(0,0,0,0.05);
-  font-size: 11px;
+  background: rgba(0,0,0,0.05) !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  height: auto !important; /* 移除可能的固定高度 */
+  line-height: 1.2 !important;
 }
 
 /* =========================
-   深色模式修正（修正變色問題）
+   3. 深色模式強力覆蓋
    ========================= */
 
-/* 這裡使用更通用的選擇器，確保只要 body 有 dark-mode 類名就能生效 */
-.dark-mode .post {
-  background-color: #1e1e1e !important;
+/* 請注意：如果您的切換是靠 body 的 class="dark-mode"
+   這裡使用更高權重的寫法 
+*/
+body.dark-mode .blog .post {
+  background-color: #242424 !important; /* 卡片背景變深灰色 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
-.dark-mode .post-title {
-  color: #ffffff !important;
+body.dark-mode .post-title {
+  color: #ffffff !important; /* 標題變白 */
 }
 
-.dark-mode .post-meta {
-  color: #aaaaaa !important;
+body.dark-mode .post-meta {
+  color: #aaaaaa !important; /* 日期變淺灰 */
 }
 
-.dark-mode .post-tag {
-  background: rgba(255, 255, 255, 0.1);
-  color: #cccccc;
+body.dark-mode .post-tag {
+  background: rgba(255, 255, 255, 0.1) !important; /* 標籤背景 */
+  color: #eeeeee !important;
 }
 
-.dark-mode .post a {
-  color: #eeeeee;
+body.dark-mode .post-thumb {
+  background: #333 !important;
 }
-
-
 
 /* =========================
    首页 Blog（PC / 平板）
@@ -1138,6 +1121,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
