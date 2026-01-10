@@ -510,42 +510,45 @@ body {
 /* =========================
    部落格頁面
    ========================= */
+/* 右側內容區塊：強制垂直堆疊 */
 .blog .blog-posts .post .post-content {
   flex: 1;
   display: flex;
-  flex-direction: column; 
-  /* 取消 space-between，改為靠頂部堆疊 */
-  justify-content: flex-start; 
+  flex-direction: column; /* 強制內容垂直排列 */
+  justify-content: flex-start;
+  align-items: flex-start; /* 確保所有內容靠左對齊 */
   min-width: 0;
-  padding: 4px 0; /* 給上下留一點微小間距 */
 }
 
 .blog .blog-posts .post .post-title {
+  display: block;        /* 強制標題自佔一行 */
+  width: 100%;           /* 確保佔滿寬度，把後面的擠下去 */
   font-size: 16px;
   font-weight: 600;
   line-height: 1.4;
-  margin: 0 0 10px 0; /* ⭐ 增加標題下方的間距，把日期推開 */
-  display: block;
+  margin: 0 0 8px 0;     /* 下方留白，與日期拉開距離 */
 }
 
 /* =========================
-   日期與標籤：靠左對齊
+   日期與標籤：緊貼標題下方靠左
    ========================= */
 .blog .blog-posts .post .post-meta {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  /* ⭐ 確保靠左對齊，不往右邊跑 */
-  justify-content: flex-start; 
+  flex-direction: row;   /* 日期與標籤維持橫向排列 */
+  flex-wrap: wrap;       /* 空間不足時自動換行 */
+  justify-content: flex-start; /* 靠左對齊 */
   align-items: center;
-  gap: 12px; /* 日期與標籤之間的間距 */
+  gap: 10px;
   font-size: 12px;
-  /* 移除 margin-top: auto 防止其掉到底部，改用固定間距 */
-  margin-top: 0; 
+  margin: 0;             /* 清除任何可能導致偏移的 margin */
 }
 
-/* 確保日期文字不會換行 */
-.blog .blog-posts .post .post-date {
+/* 確保 tag 不會變形 */
+.blog .blog-posts .post .post-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
   white-space: nowrap;
 }
 
@@ -1084,6 +1087,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
