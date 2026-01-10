@@ -92,6 +92,58 @@ function initTurnstileGate() {
 }
 
 /* =========================
+   首页：最新文章注入（仅首页）
+   ========================= */
+async function loadHomeLatestPosts() {
+  // ⭐ 只在首页执行
+  if (!document.body.classList.contains("home")) return;
+
+  const container = document.querySelector(".home .blog-posts");
+  if (!container) return;
+
+  try {
+    const res = await fetch("/blog.html");
+    if (!res.ok) throw new Error("无法加载 blog.html");
+
+    const html = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    // 取最新 6 篇
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(0, 6);
+    const fragment = document.createDocumentFragment();
+
+    posts.forEach(post => {
+      const link = post.querySelector("a")?.href;
+      const img = post.querySelector("img")?.src;
+      const title = post.querySelector("p, h3")?.innerText;
+
+      if (!link || !img || !title) return;
+
+      const item = document.createElement("div");
+      item.className = "post";
+      item.innerHTML = `
+        <a href="${link}" target="_blank" rel="noopener noreferrer">
+          <div class="post-thumb">
+            <img src="${img}" alt="${title}">
+          </div>
+          <div class="post-body">
+            <p class="post-title">${title}</p>
+          </div>
+        </a>
+      `;
+      fragment.appendChild(item);
+    });
+
+    container.appendChild(fragment);
+
+  } catch (err) {
+    console.error("首页最新文章加载失败", err);
+    container.innerHTML = `<p style="opacity:.6">最新内容加载失败</p>`;
+  }
+}
+
+/* =========================
    Blog 搜索（全站）
    ========================= */
 
@@ -437,6 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
 });
+
 
 
 
