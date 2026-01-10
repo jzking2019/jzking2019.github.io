@@ -578,6 +578,14 @@ body {
   opacity: 0.8;
 }
 
+/* tag */
+.post-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: rgba(0,0,0,0.06);
+}
+
 /* =========================
    深色模式修復 (提高選擇器權重)
    ========================= */
@@ -600,8 +608,8 @@ body.dark-mode .post-meta {
 }
 
 body.dark-mode .post-tag {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #dddddd;
+  background: rgba(255,255,255,0.14);
+  color: #e0e0e0;
 }
 
 /* =========================
@@ -1127,6 +1135,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
