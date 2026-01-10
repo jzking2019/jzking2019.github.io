@@ -491,6 +491,55 @@ function initImageViewer() {
 }
 
 /* =========================
+   404 推荐文章
+   ========================= */
+async function load404Recommendations() {
+  // 只在 404 页面执行
+  if (!location.pathname.includes("404")) return;
+
+  const container = document.querySelector(".error-recommend .blog-posts");
+  if (!container) return;
+
+  try {
+    const res = await fetch("/blog.html");
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    // 抓最新 4 篇
+    const posts = Array.from(doc.querySelectorAll(".post")).slice(0, 4);
+
+    posts.forEach(post => {
+      const clone = post.cloneNode(true);
+
+      // 防止影响原分页 / 样式
+      clone.querySelectorAll(".post-meta").forEach(m => m.remove());
+
+      container.appendChild(clone);
+    });
+  } catch (e) {
+    console.warn("404 推荐文章加载失败");
+  }
+}
+
+/* =========================
+   404 搜索逻辑
+   ========================= */
+function init404Search() {
+  if (!location.pathname.includes("404")) return;
+
+  const input = document.getElementById("errorSearchInput");
+  if (!input) return;
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const q = input.value.trim();
+      if (!q) return;
+      location.href = `/blog.html?q=${encodeURIComponent(q)}&page=1`;
+    }
+  });
+}
+
+/* =========================
    全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -512,7 +561,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
+  init404Search(); // 404搜索
+  load404Recommendations(); // 404推薦
 });
+
 
 
 
