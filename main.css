@@ -588,39 +588,27 @@ body {
 }
 
 /* =========================
-   深色模式
+   Blog 深色模式（强制覆盖）
    ========================= */
 
-body.dark-mode .blog .post {
-  background: #242424;
+body.dark-mode.blog .post {
+  background-color: #1f1f1f;
 }
 
-body.dark-mode .post-tag {
-  background: rgba(255,255,255,0.12);
-}
-
-/* ===== 深色模式：文章卡牌 ===== */
-
-body.dark-mode .blog .post {
-  background: #1f1f1f;
-}
-
-body.dark-mode .blog .post a {
+body.dark-mode.blog .post a {
   color: #eaeaea;
 }
 
-/* 标题 */
-body.dark-mode .post-title {
+body.dark-mode.blog .post-title {
   color: #ffffff;
 }
 
-/* meta 文字 */
-body.dark-mode .post-meta {
-  opacity: 0.85;
+body.dark-mode.blog .post-meta {
+  color: #bdbdbd;
 }
 
-/* tag 在暗色下 */
-body.dark-mode .post-tag {
+/* tag */
+body.dark-mode.blog .post-tag {
   background: rgba(255,255,255,0.14);
   color: #e0e0e0;
 }
@@ -1148,5 +1136,6 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
