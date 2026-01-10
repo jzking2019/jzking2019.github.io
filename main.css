@@ -1127,6 +1127,76 @@ body.dark-mode .cf-error {
     display: none;
   }
 }
+
+/* =========================
+   404 推荐文章
+   ========================= */
+
+.error-recommend {
+  max-width: 900px;
+  margin: 40px auto 0;
+  padding: 0 16px;
+}
+
+.error-recommend h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.error-recommend .blog-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+/* 卡片缩小一点 */
+.error-recommend .post {
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+body.dark-mode .error-recommend .post {
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* =========================
+   404 搜索（置中）
+   ========================= */
+
+.error-search {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 36px;
+}
+
+.error-search input {
+  width: 100%;
+  max-width: 420px;
+  padding: 12px 16px;
+  font-size: 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.2);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.error-search input:focus {
+  border-color: #198964;
+  box-shadow: 0 0 0 3px rgba(25,137,100,0.15);
+}
+
+/* 暗黑模式 */
+body.dark-mode .error-search input {
+  background: #1e1e1e;
+  color: #fff;
+  border-color: rgba(255,255,255,0.25);
+}
+
+body.dark-mode .error-search input::placeholder {
+  color: #aaa;
+}
+
 /* =========================
    Footer
    ========================= */
@@ -1192,6 +1262,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
