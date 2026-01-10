@@ -1,26 +1,3 @@
-// 注入样式（等价于 post-grid CSS）
-(function injectPostGridStyle() {
-  const style = document.createElement("style");
-  style.textContent = `
-    #latest-posts {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-    }
-    #latest-posts .post img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    #latest-posts .post h3 {
-      font-size: 1rem;
-      margin: 0.5em 0 0;
-      text-align: center;
-    }
-  `;
-  document.head.appendChild(style);
-})();
-
 async function loadLatestPosts() {
   try {
     const res = await fetch("blog.html");
@@ -47,11 +24,15 @@ async function loadLatestPosts() {
         const item = document.createElement("div"); // 将 article 改为 div
         item.className = "post";
         item.innerHTML = `
-          <a href="${link}" target="_blank" rel="noopener noreferrer">
-            <img src="${img}" alt="${title}">
-            <h3>${title}</h3>
-          </a>
-        `;
+  <a href="${link}" target="_blank" rel="noopener noreferrer">
+    <div class="post-thumb">
+      <img src="${img}" alt="${title}">
+    </div>
+    <div class="post-body">
+      <p class="post-title">${title}</p>
+    </div>
+  </a>
+`;
         fragment.appendChild(item);
       }
     });
@@ -70,6 +51,7 @@ async function loadLatestPosts() {
 }
 
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
 
 
 
