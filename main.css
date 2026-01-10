@@ -552,7 +552,7 @@ body.dark-mode .post {
 }
 
 /* =========================
-   首页 Blog（只作用于首页）
+   首页 Blog（PC / 平板）
    ========================= */
 
 .home .blog-posts {
@@ -576,11 +576,7 @@ body.dark-mode .post {
   width: 100%;
   height: 170px;
   object-fit: cover;
-}
-
-.home .post h3 {
-  padding: 10px;
-  margin: 0;
+  display: block;
 }
 
 .home .post a {
@@ -588,16 +584,7 @@ body.dark-mode .post {
   color: #000;
 }
 
-.dark-mode .home .post {
-  background: #242424;
-}
-
-.dark-mode .home .post h3,
-.dark-mode .home .post a {
-  color: #fff;
-}
-
-/* 首页响应式 */
+/* 桌面響應式 */
 @media (max-width: 1200px) {
   .home .post { width: calc(33.33% - 20px); }
 }
@@ -606,53 +593,40 @@ body.dark-mode .post {
   .home .post { width: calc(50% - 20px); }
 }
 
-@media (max-width: 480px) {
-  .home .post { width: calc(100% - 20px); }
-}
-
-/* 部落格區深色模式 */
-
-body.dark-mode.home .post {
-  background: #242424;
-}
-
-body.dark-mode.home .post h3,
-body.dark-mode.home .post a {
-  color: #ffffff;
-}
-
-body.dark-mode.home .post p {
-  color: #cccccc;
-}
-
 /* =========================
    首页「最新动态」横向滑动（仅手机）
-   blog + blog-posts 版本
    ========================= */
 @media (max-width: 767px) {
   .home .blog-posts {
-    display: flex;
-    gap: 14px;
+    flex-wrap: nowrap;        /* ❗关键 */
     overflow-x: auto;
-    padding: 4px 2px 10px;
+    gap: 14px;
+    padding: 6px 10px 12px;
     scroll-snap-type: x mandatory;
+  }
+
+  .home .post {
+    flex: 0 0 75%;            /* ❗只用 flex，不用 width */
+    margin: 0;
+    scroll-snap-align: start;
+  }
+
+  .home .post img {
+    height: auto;             /* ❗手机用自然比例 */
   }
 
   .home .blog-posts::-webkit-scrollbar {
     display: none;
   }
-
-  .home .blog-posts .post {
-    flex: 0 0 75%;
-    scroll-snap-align: start;
-  }
 }
 
-.home .post img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 6px;
+/* 深色模式 */
+body.dark-mode.home .post {
+  background: #242424;
+}
+
+body.dark-mode.home .post a {
+  color: #ffffff;
 }
 
 /* =========================
@@ -1073,6 +1047,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
