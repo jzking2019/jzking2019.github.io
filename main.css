@@ -624,6 +624,37 @@ body.dark-mode.home .post a {
 body.dark-mode.home .post p {
   color: #cccccc;
 }
+
+/* =========================
+   首页「最新动态」横向滑动（仅手机）
+   blog + blog-posts 版本
+   ========================= */
+@media (max-width: 767px) {
+  .home .blog-posts {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 4px 2px 10px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .home .blog-posts::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home .blog-posts .post {
+    flex: 0 0 75%;
+    scroll-snap-align: start;
+  }
+}
+
+.home .post img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
 /* =========================
    文章頁樣式
    ========================= */
@@ -1042,6 +1073,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
