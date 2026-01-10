@@ -590,40 +590,35 @@ body {
 /* =========================
    深色模式
    ========================= */
-
+/* 1. 卡牌背景與主體 */
 body.dark-mode .blog .post {
-  background: #242424;
+  background: #242424; /* 已改為 #242424 */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-body.dark-mode .post-tag {
-  background: rgba(255,255,255,0.12);
-}
-
-/* ===== 深色模式：文章卡牌 ===== */
-
-body.dark-mode .blog .post {
-  background: #1f1f1f;
-}
-
+/* 2. 文章連結文字 */
 body.dark-mode .blog .post a {
   color: #eaeaea;
 }
 
-/* 标题 */
-body.dark-mode .post-title {
+/* 3. 標題：增加選擇器權重以取代 !important */
+body.dark-mode .blog .post .post-title {
   color: #ffffff;
 }
 
-/* meta 文字 */
+/* 4. Meta 文字（日期等） */
 body.dark-mode .post-meta {
+  color: #bbbbbb; 
   opacity: 0.85;
 }
 
-/* tag 在暗色下 */
+/* 5. Tag 標籤 */
 body.dark-mode .post-tag {
-  background: rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.14);
   color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 
 /* =========================
    首页 Blog（PC / 平板）
@@ -1148,6 +1143,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
