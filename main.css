@@ -638,6 +638,38 @@ body.dark-mode .post-tag {
 }
 
 /* =========================
+   Blog Tag 匯總區
+   ========================= */
+
+.blog-tag-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+
+/* 匯總區的 tag 稍微大一點 */
+.blog-tag-summary .post-tag {
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.blog-tag-summary .post-tag:hover {
+  transform: translateY(-1px);
+}
+
+/* 當前選中 */
+.blog-tag-summary .post-tag.active {
+  outline: 2px solid rgba(0,0,0,0.15);
+}
+
+body.dark-mode .blog-tag-summary .post-tag.active {
+  outline-color: rgba(255,255,255,0.25);
+}
+
+/* =========================
    首页 Blog（PC / 平板）
    ========================= */
 
@@ -1160,6 +1192,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
