@@ -488,7 +488,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initTurnstileGuard(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
+  loadHomeLatestPosts(); // 首頁動態推薦注入
 });
+
 
 
 
