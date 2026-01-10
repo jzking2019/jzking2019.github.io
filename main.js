@@ -525,7 +525,7 @@ async function load404Recommendations() {
    404 搜索逻辑
    ========================= */
 function init404Search() {
-  if (!location.pathname.includes("404")) return;
+  /* if (!location.pathname.includes("404")) return; */
 
   const input = document.getElementById("errorSearchInput");
   if (!input) return;
@@ -564,6 +564,7 @@ document.addEventListener("DOMContentLoaded", () => {
   init404Search(); // 404搜索
   load404Recommendations(); // 404推薦
 });
+
 
 
 
