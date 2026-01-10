@@ -590,10 +590,14 @@ body {
 /* =========================
    深色模式
    ========================= */
-/* 1. 卡牌背景與主體 */
+
+/* 1. 強制覆蓋卡牌背景 */
+/* 使用 body.dark-mode 並精確定位到 .blog 內的 .post */
+body.dark-mode .blog article.post,
 body.dark-mode .blog .post {
-  background: #242424; /* 已改為 #242424 */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  background-color: #242424; /* 如果沒生效，這裡暫時保留 important 觀察，生效後再嘗試去掉 */
+  background: #242424;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
 /* 2. 文章連結文字 */
@@ -601,22 +605,21 @@ body.dark-mode .blog .post a {
   color: #eaeaea;
 }
 
-/* 3. 標題：增加選擇器權重以取代 !important */
-body.dark-mode .blog .post .post-title {
+/* 3. 標題：確保為白色 */
+body.dark-mode .blog .post .post-title,
+body.dark-mode .blog .post .post-title a {
   color: #ffffff;
 }
 
-/* 4. Meta 文字（日期等） */
+/* 4. Meta 文字與 Tag */
 body.dark-mode .post-meta {
-  color: #bbbbbb; 
+  color: #bbbbbb;
   opacity: 0.85;
 }
 
-/* 5. Tag 標籤 */
 body.dark-mode .post-tag {
   background: rgba(255, 255, 255, 0.14);
   color: #e0e0e0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 
@@ -1143,6 +1146,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
