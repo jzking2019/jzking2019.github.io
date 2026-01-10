@@ -508,110 +508,75 @@ body {
 }
 
 /* =========================
-   Blog 列表（左圖右文）
+   部落格頁面
    ========================= */
-
-.blog .blog-posts {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.blog .post {
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-}
 
 .blog .post a {
-  display: flex;              /* ⭐ 左右排列 */
-  gap: 12px;
-  padding: 10px;
+  display: flex;              
+  gap: 16px; /* 稍微增加圖片與文字的間距 */
+  padding: 12px;
   text-decoration: none;
   color: inherit;
+  align-items: flex-start; /* 確保頂部對齊 */
 }
-
-/* =========================
-   左侧封面（固定比例）
-   ========================= */
-
-.post-thumb {
-  flex: 0 0 140px;             /* ⭐ 固定宽度 */
-  aspect-ratio: 16 / 9;        /* ⭐ 固定比例 */
-  overflow: hidden;
-  border-radius: 8px;
-  background: #eee;
-}
-
-.post-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* =========================
-   右侧内容
-   ========================= */
 
 .post-content {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-direction: column; /* 讓內部元素垂直堆疊 */
+  gap: 8px;              /* 標題與日期/標籤之間的間距 */
+  justify-content: center;
 }
 
 .post-title {
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
   line-height: 1.4;
   margin: 0;
+  /* 移除可能導致並排的寬度限制 */
+  width: 100%; 
 }
 
-/* 日期 + 分类 */
+/* 日期 + 分類 (現在會自動位於標題下方) */
 .post-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
   font-size: 12px;
-  opacity: 0.75;
+  opacity: 0.8;
 }
 
 /* =========================
-   Tag 通用
+   Blog 深色模式（修正選擇器）
    ========================= */
 
-.post-tag {
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  background: rgba(0,0,0,0.06);
+/* 修正說明：
+   將 body.dark-mode.blog 改為 .dark-mode .post
+   這樣只要 body 有 .dark-mode，內部的卡片就會變色
+*/
+
+.dark-mode .post {
+  background-color: #2c2c2c !important; /* 稍微淺一點的深色，增加層次感 */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-/* =========================
-   Blog 深色模式（强制覆盖）
-   ========================= */
-
-body.dark-mode.blog .post {
-  background-color: #1f1f1f;
+.dark-mode .post a {
+  color: #eeeeee;
 }
 
-body.dark-mode.blog .post a {
-  color: #eaeaea;
-}
-
-body.dark-mode.blog .post-title {
+.dark-mode .post-title {
   color: #ffffff;
 }
 
-body.dark-mode.blog .post-meta {
-  color: #bdbdbd;
+.dark-mode .post-meta {
+  color: #bbbbbb;
 }
 
-/* tag */
-body.dark-mode.blog .post-tag {
-  background: rgba(255,255,255,0.14);
-  color: #e0e0e0;
+.dark-mode .post-tag {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ddd;
 }
+
 
 /* =========================
    首页 Blog（PC / 平板）
@@ -1136,6 +1101,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
