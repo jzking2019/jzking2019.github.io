@@ -1201,6 +1201,10 @@ body.dark-mode .error-search input::placeholder {
   color: #aaa;
 }
 
+body.dark-mode .error-search img {
+  filter: invert(1) brightness(1.2);
+}
+
 /* =========================
    Footer
    ========================= */
@@ -1266,6 +1270,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
