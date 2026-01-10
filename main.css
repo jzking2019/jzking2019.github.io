@@ -507,24 +507,13 @@ body {
   padding-top: var(--header-height);
 }
 
+或者直接把卡牌背景改成半透明？
+
 /* =========================
    Blog 列表基礎佈局
    ========================= */
-/* 定義顏色變數：方便管理且權重穩定 */
-:root {
-  --blog-card-bg: rgba(255, 255, 255, 0.8);
-  --blog-text-color: #333;
-  --blog-meta-color: #666;
-  --blog-tag-bg: rgba(0, 0, 0, 0.06);
-}
 
-body.dark-mode {
-  --blog-card-bg: rgba(36, 36, 36, 0.7); /* 深色半透明 */
-  --blog-text-color: #eee;
-  --blog-meta-color: #bbb;
-  --blog-tag-bg: rgba(255, 255, 255, 0.1);
-}
-
+/* 確保父容器有足夠寬度 */
 .blog .blog-posts {
   display: flex;
   flex-direction: column;
@@ -532,32 +521,29 @@ body.dark-mode {
 }
 
 .blog .post {
-  background-color: var(--blog-card-bg);
-  backdrop-filter: blur(8px); /* ⭐ 毛玻璃效果，讓半透明更美觀 */
-  -webkit-backdrop-filter: blur(8px);
+  background-color: #ffffff;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
 }
 
 .blog .post a {
   display: flex;
-  align-items: stretch; 
+  align-items: stretch; /* ⭐ 確保左右等高，方便底部對齊 */
   gap: 16px;
   padding: 12px;
   text-decoration: none;
-  color: var(--blog-text-color);
+  color: #333;
 }
 
 /* 封面圖固定比例 */
 .post-thumb {
-  flex: 0 0 140px;      
+  flex: 0 0 140px;      /* ⭐ 寬度絕對固定 */
   width: 140px;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 6px;
-  background-color: rgba(128, 128, 128, 0.1);
+  background-color: #f0f0f0;
 }
 
 .post-thumb img {
@@ -569,11 +555,11 @@ body.dark-mode {
 
 /* 右側內容區塊 */
 .post-content {
-  flex: 1;              
+  flex: 1;              /* ⭐ 佔滿剩餘寬度 */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* ⭐ 將內容推向頂部與底部 */
-  min-width: 0;         
+  justify-content: space-between; /* ⭐ 將內容推向兩端 */
+  min-width: 0;         /* 防止溢出 */
 }
 
 .post-title {
@@ -581,6 +567,7 @@ body.dark-mode {
   font-weight: 600;
   line-height: 1.4;
   margin: 0;
+  color: inherit;       /* 隨父層顏色變化 */
 }
 
 /* 日期與標籤容器 */
@@ -590,17 +577,16 @@ body.dark-mode {
   flex-wrap: wrap;
   gap: 8px;
   font-size: 12px;
-  color: var(--blog-meta-color);
+  opacity: 0.8;
 }
 
-/* Tag 樣式 */
+/* tag */
 .post-tag {
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 11px;
-  background: var(--blog-tag-bg);
+  background: rgba(0,0,0,0.06);
 }
-
 
 /* =========================
    深色模式修復 (提高選擇器權重)
@@ -1151,6 +1137,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
