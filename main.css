@@ -556,25 +556,24 @@ body {
    ========================= */
 
 .post-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
 .post-title {
-  margin: 0;
   font-size: 15px;
   line-height: 1.4;
+  margin: 0;
 }
 
-/* meta（日期 + 分类） */
+/* 日期 + 分类 */
 .post-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   font-size: 12px;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 /* =========================
@@ -598,6 +597,32 @@ body.dark-mode .blog .post {
 
 body.dark-mode .post-tag {
   background: rgba(255,255,255,0.12);
+}
+
+/* ===== 深色模式：文章卡牌 ===== */
+
+body.dark-mode .blog .post {
+  background: #1f1f1f;
+}
+
+body.dark-mode .blog .post a {
+  color: #eaeaea;
+}
+
+/* 标题 */
+body.dark-mode .post-title {
+  color: #ffffff;
+}
+
+/* meta 文字 */
+body.dark-mode .post-meta {
+  opacity: 0.85;
+}
+
+/* tag 在暗色下 */
+body.dark-mode .post-tag {
+  background: rgba(255,255,255,0.14);
+  color: #e0e0e0;
 }
 
 /* =========================
@@ -1123,4 +1148,5 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
