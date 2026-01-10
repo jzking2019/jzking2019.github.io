@@ -531,42 +531,42 @@ body {
 /* =========================
    2. 右側內容區：強制垂直排列
    ========================= */
+/* 1. 確保右側內容區塊撐滿高度，以便讓 meta 掉到底部 */
 .post-content {
   flex: 1;
   display: flex !important;
-  flex-direction: column !important; /* 強制標題在上，Meta在下 */
-  justify-content: flex-start;
-  gap: 10px; /* 控制標題與日期的間距 */
+  flex-direction: column !important;
+  justify-content: flex-start; /* 讓內容從頂部開始排 */
+  min-height: 80px;            /* 確保高度足以讓 meta 有下沉空間 */
 }
 
+/* 2. 標題樣式保持不變 */
 .post-title {
-  display: block !important; /* 確保它是塊狀，佔據一行 */
-  width: 100%;
   font-size: 16px;
-  font-weight: bold;
-  margin: 0;
   line-height: 1.4;
-  color: #333;
+  margin: 0 0 8px 0;
 }
 
-/* 日期 + 標籤 容器 */
+/* 3. 關鍵修正：將日期和標籤推至底部 */
 .post-meta {
+  margin-top: auto;            /* ⭐ 這行會將 meta 推到底部 */
   display: flex !important;
-  flex-direction: row !important; /* 讓日期與標籤橫向排在標題下方 */
+  flex-direction: row !important;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: #888;
+  gap: 8px;
+  padding-top: 10px;           /* 增加一點點與標題的最小間距 */
 }
 
-/* 修正您截圖中出現的長條陰影 */
+/* 4. 修正標籤內文字太靠近邊框的問題 */
 .post-tag {
-  background: rgba(0,0,0,0.05) !important;
-  padding: 3px 10px !important;
-  border-radius: 6px !important;
-  height: auto !important; /* 移除可能的固定高度 */
-  line-height: 1.2 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px !important;
+  border-radius: 4px;
+  height: 20px;                /* 統一標籤高度 */
+  line-height: 1 !important;
 }
 
 /* =========================
@@ -1121,6 +1121,7 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
 
 
 
