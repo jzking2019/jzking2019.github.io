@@ -1384,6 +1384,53 @@ body.dark-mode #privacy-policy .policy-note {
 }
 
 /* =========================
+   About 頁（對齊文章閱讀樣式）
+   ========================= */
+
+.page-about .content {
+  max-width: 720px;          /* 和文章頁一致 */
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+.page-about h1 {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.page-about h2 {
+  font-size: 20px;
+  margin-top: 36px;
+  margin-bottom: 12px;
+}
+
+.page-about p {
+  line-height: 1.8;
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+.page-about hr {
+  border: none;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  margin: 32px 0;
+}
+
+/* 連結 */
+.page-about a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* =========================
+   深色模式
+   ========================= */
+
+body.dark-mode .page-about hr {
+  border-top-color: rgba(255,255,255,0.15);
+}
+
+/* =========================
    Footer
    ========================= */
 
@@ -1448,38 +1495,3 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
