@@ -4,6 +4,8 @@
 (function loadAdSense() {
   // ❌ Turnstile / 驗證頁不載入廣告
   if (location.pathname.includes("Turnstile")) return;
+  // ❌ 明確禁止放廣告的頁面
+  if (document.body.classList.contains("no-ads")) return;
 
   // ❌ 防止重複載入（SPA / 多次 inject）
   if (window.__adsenseLoaded) return;
@@ -119,7 +121,13 @@ function initTurnstileGate() {
    ========================= */
 async function loadHomeLatestPosts() {
   // ⭐ 只在首页执行
-  if (!document.body.classList.contains("home")) return;
+if (
+  !document.body.classList.contains("home") &&
+  !document.body.classList.contains("page-404") &&
+  !document.body.classList.contains("page-coming-soon")
+) {
+  return;
+}
 
   const container = document.querySelector(".home .blog-posts");
   if (!container) return;
@@ -564,6 +572,7 @@ document.addEventListener("DOMContentLoaded", () => {
   init404Search(); // 404搜索
   load404Recommendations(); // 404推薦
 });
+
 
 
 
