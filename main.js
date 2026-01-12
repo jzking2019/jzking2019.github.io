@@ -4,8 +4,12 @@
 (function loadAdSense() {
   // ❌ Turnstile / 驗證頁不載入廣告
   if (location.pathname.includes("Turnstile")) return;
+   
   // ❌ 明確禁止放廣告的頁面
   if (document.body.classList.contains("no-ads")) return;
+
+  // ❌ 尚未完成內容載入的頁面（保險）
+  if (!document.querySelector("main, article, .blog-posts")) return;
 
   // ❌ 防止重複載入（SPA / 多次 inject）
   if (window.__adsenseLoaded) return;
@@ -572,6 +576,7 @@ document.addEventListener("DOMContentLoaded", () => {
   init404Search(); // 404搜索
   load404Recommendations(); // 404推薦
 });
+
 
 
 
