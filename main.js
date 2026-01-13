@@ -4,12 +4,6 @@
 (function loadAdSense() {
   // ❌ Turnstile / 驗證頁不載入廣告
   if (location.pathname.includes("Turnstile")) return;
-   
-  // ❌ 明確禁止放廣告的頁面
-  if (document.body.classList.contains("no-ads")) return;
-
-  // ❌ 尚未完成內容載入的頁面（保險）
-  if (!document.querySelector("main, article, .blog-posts")) return;
 
   // ❌ 防止重複載入（SPA / 多次 inject）
   if (window.__adsenseLoaded) return;
@@ -71,6 +65,8 @@ function initTurnstileGate() {
       <div class="cf-error" id="cf-error">
         驗證失敗或逾時，請從新整理頁面再試。
       </div>
+
+      <p>&copy; <span id="current-year"></span> 沈落寒</p>
     </div>
   `;
 
@@ -125,13 +121,7 @@ function initTurnstileGate() {
    ========================= */
 async function loadHomeLatestPosts() {
   // ⭐ 只在首页执行
-if (
-  !document.body.classList.contains("home") &&
-  !document.body.classList.contains("page-404") &&
-  !document.body.classList.contains("page-coming-soon")
-) {
-  return;
-}
+  if (!document.body.classList.contains("home")) return;
 
   const container = document.querySelector(".home .blog-posts");
   if (!container) return;
@@ -550,6 +540,36 @@ function init404Search() {
     }
   });
 }
+/* =========================
+   about 動畫
+   ========================= */
+function initRevealOnScroll() {
+  const sections = document.querySelectorAll(".reveal");
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+
+          // ⭐ 播一次就好（Apple 也是）
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      root: null,
+      threshold: 0.15, // 進入 15% 才觸發
+      rootMargin: "0px 0px -10% 0px"
+    }
+  );
+
+  sections.forEach((sec, i) => {
+  sec.style.transitionDelay = `${i * 0.08}s`;
+  observer.observe(sec);
+});
+
+}
 
 /* =========================
    全站入口（顺序非常重要）
@@ -575,34 +595,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initImageViewer(); // 圖片點擊放大
   init404Search(); // 404搜索
   load404Recommendations(); // 404推薦
+  initRevealOnScroll(); // about動畫
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

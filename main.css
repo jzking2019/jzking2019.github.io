@@ -1383,51 +1383,220 @@ body.dark-mode #privacy-policy .policy-note {
   }
 }
 
-/* =========================
-   About 頁（對齊文章閱讀樣式）
-   ========================= */
+    /* =========================
+       About Page – Apple-like
+       ========================= */
 
-.page-about .content {
-  max-width: 720px;          /* 和文章頁一致 */
-  margin: 0 auto;
-  padding: 24px 16px 60px;
+    .about {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 120px 20px 160px;
+    }
+
+    .about-card {
+  margin-bottom: 160px;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: 1100px;
+  margin: 120px auto;
+  padding: 0 24px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 0.8s ease;
 }
 
-.page-about h1 {
-  font-size: 28px;
-  margin-bottom: 16px;
+.about-card.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
-.page-about h2 {
-  font-size: 20px;
-  margin-top: 36px;
-  margin-bottom: 12px;
+.about-card:nth-of-type(2) { animation-delay: 0.1s; }
+.about-card:nth-of-type(3) { animation-delay: 0.2s; }
+.about-card:nth-of-type(4) { animation-delay: 0.3s; }
+.about-card:nth-of-type(5) { animation-delay: 0.4s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+    .about-hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .about-hero p {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      max-width: 720px;
+      opacity: 0.85;
+    }
+
+    .about h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    .about p {
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 720px;
+      opacity: 0.85;
+    }
+
+    .about ul {
+      margin-top: 16px;
+      padding-left: 18px;
+      max-width: 720px;
+    }
+
+    .about li {
+      margin: 8px 0;
+      line-height: 1.8;
+      opacity: 0.85;
+    }
+
+    .about a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* 深色模式 */
+    body.dark-mode .about {
+      color: #eaeaea;
+    }
+
+    body.dark-mode .about p,
+    body.dark-mode .about li {
+      opacity: 0.88;
+    }
+
+    body.dark-mode main.about section {
+  background: transparent !important;
 }
 
-.page-about p {
-  line-height: 1.8;
-  margin: 12px 0;
-  font-size: 16px;
+/* 初始狀態（尚未進入視窗） */
+.reveal {
+  opacity: 0;
+  will-change: opacity, transform;
 }
 
-.page-about hr {
-  border: none;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  margin: 32px 0;
+/* PC 版動畫 */
+@media (min-width: 768px) {
+  .reveal {
+    transform: translateY(60px);
+    transition:
+      opacity 0.9s ease,
+      transform 0.9s ease;
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 連結 */
-.page-about a {
-  color: inherit;
-  text-decoration: underline;
+@media (min-width: 768px) {
+  .about-card {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+  .about-card:nth-child(even) {
+    flex-direction: row-reverse;
+  }
 }
 
-/* =========================
-   深色模式
-   ========================= */
+.about-card.is-visible .about-media,
+.about-card.is-visible .about-text {
+  opacity: 1;
+  transform: none;
+}
 
-body.dark-mode .page-about hr {
-  border-top-color: rgba(255,255,255,0.15);
+/* 手機版動畫 */
+@media (max-width: 767px) {
+  .reveal {
+    transition: opacity 0.6s ease;
+  }
+
+  .reveal.active {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .about-card {
+    flex-direction: column;
+  }
+}
+
+/* ===== PC 版（显示图片 + 左右布局） ===== */
+@media (min-width: 768px) {
+  .about-media {
+  aspect-ratio: 4 / 3; /* 或 16 / 9 */
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.about-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+    .about-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+}
+
+  body.dark-mode .about-media {
+    background: #2a2a2a;
+  }
+
+  /* 奇偶交错 */
+  .about-card:nth-of-type(odd) .about-text {
+    order: 1;
+  }
+
+  .about-card:nth-of-type(odd) .about-media {
+    order: 2;
+  }
+
+  .about-card:nth-of-type(even) .about-text {
+    order: 2;
+  }
+
+  .about-card:nth-of-type(even) .about-media {
+    order: 1;
+  }
+
+  .about-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ⭐ 裁切而非拉伸 */
+    display: block;
+  }
+}
+
+/* ===== 手机版（隐藏图片，单栏） ===== */
+@media (max-width: 767px) {
+  .about-media {
+    display: none;
+  }
+
+  .about-card {
+    display: block;
+  }
 }
 
 /* =========================
