@@ -476,17 +476,30 @@ function initTimelineCollapse() {
    ========================= */
 function initImageViewer() {
   document.addEventListener("click", e => {
-    const img = e.target.closest(".article-image img");
+    const img = e.target.closest(
+      ".article-image img, .post-images img"
+    );
     if (!img) return;
+
+    e.stopPropagation();
 
     const viewer = document.createElement("div");
     viewer.className = "image-viewer";
-    viewer.innerHTML = `<img src="${img.src}" alt="">`;
+    viewer.innerHTML = `
+      <img src="${img.src}" alt="">
+    `;
 
+    // 點背景關閉
     viewer.addEventListener("click", () => viewer.remove());
-    document.addEventListener("keydown", esc => {
-      if (esc.key === "Escape") viewer.remove();
-    }, { once: true });
+
+    // ESC 關閉
+    document.addEventListener(
+      "keydown",
+      esc => {
+        if (esc.key === "Escape") viewer.remove();
+      },
+      { once: true }
+    );
 
     document.body.appendChild(viewer);
   });
@@ -572,6 +585,96 @@ function initRevealOnScroll() {
 }
 
 /* =========================
+   社群
+   ========================= */
+/* 初始化入口 */
+function initGroupPage() {
+  const cards = document.querySelectorAll(".post-card");
+  if (!cards.length) return;
+
+  cards.forEach(card => {
+    card.addEventListener("click", () => {
+      const id = card.dataset.id;
+      openSinglePost(card, id);
+    });
+  });
+
+  restoreGroupFromURL();
+}
+
+/* 展開單篇 */
+function openSinglePost(card, id) {
+  const single = document.getElementById("singlePost");
+  const allCards = document.querySelectorAll(".post-card");
+
+  single.innerHTML = `
+    <article class="post-single">
+      ${card.innerHTML}
+    </article>
+  `;
+
+  // 🔒 隱藏所有卡片
+  allCards.forEach(c => c.closest("section").style.display = "none");
+
+  single.hidden = false;
+  document.body.classList.add("single-view");
+
+  history.pushState({ postId: id }, "", `/group.html?post=${id}`);
+}
+
+/* 返回列表（返回鍵 / 手動） */
+function closeSinglePost() {
+  document.querySelectorAll(".post-card")
+    .forEach(c => c.closest("section").style.display = "");
+
+  document.getElementById("singlePost").hidden = true;
+  document.body.classList.remove("single-view");
+}
+
+window.addEventListener("popstate", e => {
+  if (!e.state || !e.state.postId) {
+    closeSinglePost();
+  }
+});
+
+/* */
+function restoreGroupFromURL() {
+  const params = new URLSearchParams(location.search);
+  const postId = params.get("post");
+  if (!postId) return;
+
+  const card = document.querySelector(
+    `.post-card[data-id="${postId}"]`
+  );
+
+  if (card) {
+    openSinglePost(card, postId);
+  }
+}
+
+/* =========================
+   社群列表強化（圖片 + 折疊）
+   ========================= */
+function enhanceGroupCards() {
+  document.querySelectorAll(".post-card").forEach(card => {
+    const images = card.querySelectorAll(".post-images img");
+    const wrapper = card.querySelector(".post-images");
+
+    if (!wrapper || images.length <= 2) return;
+
+    // 只顯示前 2 張
+    images.forEach((img, i) => {
+      if (i > 1) img.style.display = "none";
+    });
+
+    // 標記 +N
+    wrapper.classList.add("more");
+    wrapper.style.position = "relative";
+    wrapper.setAttribute("data-more", `+${images.length - 2}`);
+  });
+}
+
+/* =========================
    全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -596,4 +699,6 @@ document.addEventListener("DOMContentLoaded", () => {
   init404Search(); // 404搜索
   load404Recommendations(); // 404推薦
   initRevealOnScroll(); // about動畫
+  initGroupPage(); // 社群
+
 });
