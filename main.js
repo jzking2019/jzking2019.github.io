@@ -589,18 +589,22 @@ function initRevealOnScroll() {
    ========================= */
 /* 初始化入口 */
 function initGroupPage() {
-  const cards = document.querySelectorAll(".post-card");
-  if (!cards.length) return;
+document.addEventListener("click", e => {
 
-  cards.forEach(card => {
-    card.addEventListener("click", () => {
-      const id = card.dataset.id;
-      openSinglePost(card, id);
-    });
+  // ⭐ 如果點的是圖片，直接放行
+  if (e.target.closest(".post-images")) return;
+
+  // ⭐ 如果點的是操作區 icon，也放行
+  if (e.target.closest(".post-actions")) return;
+
+  const card = e.target.closest(".post-card");
+  if (!card) return;
+
+  const id = card.dataset.id;
+  openSinglePost(card, id);
   });
-
-  restoreGroupFromURL();
 }
+
 
 /* 展開單篇 */
 function openSinglePost(card, id) {
@@ -675,6 +679,47 @@ function initGroupImageGrid() {
   });
 }
 
+// 阻止 icon 點擊冒泡
+document.querySelectorAll(".post-actions").forEach(actions => {
+  actions.addEventListener("click", e => {
+    e.stopPropagation();
+  });
+});
+
+// 圖片點擊：阻止冒泡（避免觸發貼文）
+document.addEventListener("click", e => {
+  const img = e.target.closest(".post-images img");
+  if (!img) return;
+
+  e.stopPropagation(); // ⭐ 關鍵
+});
+
+document.addEventListener("contextmenu", e => {
+  if (e.target.closest(".post-images img")) {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("contextmenu", e => {
+  if (e.target.closest(".image-viewer")) {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("click", e => {
+  const viewer = e.target.closest(".image-viewer");
+  if (!viewer) return;
+
+  // 點圖片本身 → 不關閉、不冒泡
+  if (e.target.tagName === "IMG") {
+    e.stopPropagation();
+    return;
+  }
+
+  // 點黑色背景 → 關閉
+  viewer.remove();
+});
+
 
 /* =========================
    全站入口（顺序非常重要）
@@ -695,7 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogSearchAndPagination();
-  initTurnstileGate(); // Turnstile 驗證
+  //initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
   init404Search(); // 404搜索
