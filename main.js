@@ -653,26 +653,28 @@ function restoreGroupFromURL() {
 }
 
 /* =========================
-   社群列表強化（圖片 + 折疊）
+   社群圖片九宮格初始化
    ========================= */
-function enhanceGroupCards() {
-  document.querySelectorAll(".post-card").forEach(card => {
-    const images = card.querySelectorAll(".post-images img");
-    const wrapper = card.querySelector(".post-images");
+function initGroupImageGrid() {
+  document.querySelectorAll(".post-images").forEach(wrapper => {
+    const imgs = wrapper.querySelectorAll("img");
+    const count = imgs.length;
 
-    if (!wrapper || images.length <= 2) return;
+    // 加上 count-x class
+    wrapper.classList.add(`count-${Math.min(count, 9)}`);
 
-    // 只顯示前 2 張
-    images.forEach((img, i) => {
-      if (i > 1) img.style.display = "none";
-    });
+    // 超過 9 張（只在列表）
+    if (count > 9 && !document.body.classList.contains("single-view")) {
+      imgs.forEach((img, i) => {
+        if (i >= 9) img.style.display = "none";
+      });
 
-    // 標記 +N
-    wrapper.classList.add("more");
-    wrapper.style.position = "relative";
-    wrapper.setAttribute("data-more", `+${images.length - 2}`);
+      wrapper.classList.add("has-more");
+      wrapper.setAttribute("data-more", `+${count - 9}`);
+    }
   });
 }
+
 
 /* =========================
    全站入口（顺序非常重要）
@@ -700,5 +702,6 @@ document.addEventListener("DOMContentLoaded", () => {
   load404Recommendations(); // 404推薦
   initRevealOnScroll(); // about動畫
   initGroupPage(); // 社群
+  initGroupImageGrid();
 
 });

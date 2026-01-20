@@ -1651,46 +1651,67 @@ body.dark-mode #privacy-policy .policy-note {
   margin: 6px 0 12px;
 }
 
-/* 圖片 */
+/* =========================
+   社群圖片九宮格（WeChat Style）
+   ========================= */
+
 .post-images {
   display: grid;
   gap: 6px;
   margin-top: 10px;
 }
 
+/* 所有圖片：正方形 */
 .post-images img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
+/* === 不同數量的排列 === */
+
 /* 1 張 */
-.post-images img:only-child {
-  aspect-ratio: 16 / 9;
+.post-images.count-1 {
+  grid-template-columns: 1fr;
+  max-width: 70%;
 }
 
 /* 2 張 */
-.post-images.grid-2 {
-  grid-template-columns: 1fr 1fr;
+.post-images.count-2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 80%;
 }
 
 /* 3 張 */
-.post-images.grid-3 {
-  grid-template-columns: 1fr 1fr;
+.post-images.count-3 {
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.post-images.grid-3 img:first-child {
-  grid-row: span 2;
+/* 4 張（微信特例 2x2） */
+.post-images.count-4 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 80%;
 }
 
-/* 4 張 */
-.post-images.grid-4 {
-  grid-template-columns: 1fr 1fr;
+/* 5–9 張 */
+.post-images.count-5,
+.post-images.count-6,
+.post-images.count-7,
+.post-images.count-8,
+.post-images.count-9 {
+  grid-template-columns: repeat(3, 1fr);
 }
 
-/* 多圖遮罩 +N（只在列表） */
-body:not(.single-view) .post-images.more::after {
+/* =========================
+   +N 遮罩（只在列表）
+   ========================= */
+
+body:not(.single-view) .post-images.has-more {
+  position: relative;
+}
+
+body:not(.single-view) .post-images.has-more::after {
   content: attr(data-more);
   position: absolute;
   inset: 0;
@@ -1701,7 +1722,7 @@ body:not(.single-view) .post-images.more::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 /* 暗色模式 */
