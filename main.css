@@ -824,6 +824,18 @@ body.dark-mode.home .post a {
 .article li {
   margin: 6px 0;
 }
+
+/* 文字居中 */
+.text-center {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.text-center-inline {
+  display: block;      /* inline 變 block 才能居中 */
+  text-align: center;
+}
+
 /* 圖片 */
 .article-image {
   margin: 28px 0;
