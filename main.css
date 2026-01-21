@@ -1884,6 +1884,11 @@ body.single-view section {
   background: transparent;
 }
 
+.post-images img {
+  -webkit-user-drag: none; /* Safari / iOS 關鍵 */
+  user-drag: none;
+  user-select: none;
+}
 
 /* =========================
    Footer
@@ -1950,3 +1955,13 @@ body.dark-mode .dropdown-menu {
 body {
   padding-top: var(--header-height);
 } 
+
+/* =========================
+   全站禁止列印（最終版）
+   ========================= */
+@media print {
+  html,
+  body {
+    display: none !important;
+  }
+}

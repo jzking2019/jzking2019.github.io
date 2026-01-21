@@ -720,6 +720,19 @@ document.addEventListener("click", e => {
   viewer.remove();
 });
 
+document.addEventListener("click", e => {
+  const img = e.target.closest(".post-images img");
+  if (!img) return;
+
+  e.stopPropagation(); // ⭐ 阻止打開貼文
+  openImageViewer(img.src); // 你原本的 viewer
+});
+
+document.addEventListener("dragstart", e => {
+  if (e.target.closest(".post-images img")) {
+    e.preventDefault();
+  }
+});
 
 /* =========================
    全站入口（顺序非常重要）
@@ -740,7 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogSearchAndPagination();
-  initTurnstileGate(); // Turnstile 驗證
+  //initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
   init404Search(); // 404搜索
@@ -750,4 +763,3 @@ document.addEventListener("DOMContentLoaded", () => {
   initGroupImageGrid();
 
 });
-
