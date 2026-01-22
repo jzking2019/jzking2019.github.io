@@ -874,9 +874,52 @@ body.dark-mode .article hr {
   background: #333;
 }
 
+/* 區塊引用（Medium 風格） */
+blockquote {
+  margin: 28px 0;
+  padding-left: 16px;
+  border-left: 3px solid #ddd;
+  color: #555;
+}
+
+blockquote p {
+  margin: 8px 0;
+}
+
 /* 文字縮進 */
 .indent {
   margin-left: 2em;
+}
+
+/* 影片 */
+.video-card {
+  margin: 24px 0;
+  cursor: pointer;
+}
+
+.video-cover {
+  position: relative;
+  background: #000;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+}
+
+.play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #fff;
+  opacity: 0.85;
+}
+
+.video-title {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  text-align: center;
 }
 
 /* 推薦連結 */

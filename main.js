@@ -734,6 +734,24 @@ document.addEventListener("dragstart", e => {
   }
 });
 
+/* 影片 */
+document.addEventListener("click", e => {
+  const card = e.target.closest(".video-card");
+  if (!card) return;
+
+  const src = card.dataset.src;
+  card.innerHTML = `
+    <iframe
+      src="${src}"
+      width="100%"
+      height="360"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
+      allowfullscreen>
+    </iframe>
+  `;
+});
+
 /* =========================
    全站入口（顺序非常重要）
    ========================= */
@@ -763,4 +781,3 @@ document.addEventListener("DOMContentLoaded", () => {
   initGroupImageGrid();
 
 });
-
