@@ -860,6 +860,25 @@ body.dark-mode.home .post a {
   display: block;
 }
 
+/* 分割線 */
+.article hr,
+#previewArea hr {
+  border: none;
+  height: 1px;
+  background: #ddd;
+  margin: 32px auto;
+  width: 60%;
+}
+
+body.dark-mode .article hr {
+  background: #333;
+}
+
+/* 文字縮進 */
+.indent {
+  margin-left: 2em;
+}
+
 /* 推薦連結 */
 .article-link {
   display: inline-block;
