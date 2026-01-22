@@ -740,15 +740,16 @@ document.addEventListener("click", e => {
   if (!card) return;
 
   const src = card.dataset.src;
+  if (!src) return;
+
   card.innerHTML = `
     <iframe
       src="${src}"
-      width="100%"
-      height="360"
       frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
-      allowfullscreen>
-    </iframe>
+      allow="autoplay; fullscreen"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
   `;
 });
 
@@ -771,7 +772,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogSearchAndPagination();
-  initTurnstileGate(); // Turnstile 驗證
+  //initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
   init404Search(); // 404搜索
