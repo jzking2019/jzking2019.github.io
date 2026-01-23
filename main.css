@@ -891,58 +891,6 @@ blockquote p {
   margin-left: 2em;
 }
 
-/* === 影片容器 === */
-.video-card {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  background: #000;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-/* 封面 */
-.video-cover {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: #000;
-  z-index: 2;
-}
-
-/* 播放鍵 */
-.play-btn {
-  font-size: 48px;
-  color: #fff;
-  opacity: 0.85;
-}
-
-/* === iframe 核心解鎖 === */
-.video-card iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-
-  pointer-events: auto !important;
-  user-select: auto !important;
-}
-
-/* ⚠️ 關鍵：影片區域不吃任何 overlay */
-.video-card .image-shield,
-.video-card .viewer-shield {
-  display: none !important;
-}
-
-/* ⚠️ iOS Safari 必殺 */
-.video-card {
-  transform: none !important;
-  filter: none !important;
-}
-
 /* 推薦連結 */
 .article-link {
   display: inline-block;
@@ -2054,6 +2002,56 @@ body {
 /* =========================
    影片頁
    ========================= */
+
+/* === 影片容器 === */
+.video-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* 封面 */
+.video-cover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #000;
+  z-index: 2;
+}
+
+/* 播放鍵 */
+.play-btn {
+  font-size: 48px;
+  color: #fff;
+  opacity: 0.85;
+}
+
+/* === iframe 核心解鎖 === */
+.video-card iframe {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ⚠️ 關鍵：影片區域不吃任何 overlay */
+.video-card .image-shield,
+.video-card .viewer-shield {
+  display: none !important;
+}
+
+/* ⚠️ iOS Safari 必殺 */
+.video-card {
+  transform: none !important;
+  filter: none !important;
+}
+
 .video-page * {
   user-select: auto;
 }
@@ -2329,30 +2327,90 @@ body.video-page .post-actions {
   justify-content: flex-end;
 }
 
-/* 播放鍵 */
-.play-btn {
+/* 影片提示 */
+.video-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+
+/* 狀態提示層 */
+.video-status {
   position: absolute;
   inset: 0;
+  background: #000;
+  color: #fff;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  text-align: center;
+  z-index: 5;
+}
 
-  color: #ffffff;               /* 預設亮色 */
-  background: rgba(0, 0, 0, 0.35);
+.video-status.hidden {
+  display: none;
+}
+
+/* 重試按鈕 */
+.video-status button {
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
   cursor: pointer;
 }
 
-.play-icon {
-  width: 56px;
-  height: 56px;
-  fill: currentColor;           /* ⭐ 關鍵 */
-  transition: transform 0.2s ease, opacity 0.2s ease;
+.video-card.playing .video-cover {
+  pointer-events: none;
+  opacity: 0;
 }
 
-.play-btn:hover .play-icon {
-  transform: scale(1.08);
-  opacity: 0.9;
+/* 加載icon */
+.video-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #000; /* 可留黑底 */
+  color: #fff;
 }
+
+/* 圓形 loading */
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 14px;
+  opacity: .85;
+  color: #fff;
+}
+
+body:not(.dark-mode) .spinner {
+  border: 3px solid rgba(0,0,0,.15);
+  border-top-color: #000;
+}
+
+body:not(.dark-mode) .loading-text {
+  color: #000;
+}
+
 
 /* =========================
    影片頁：去除卡片背景

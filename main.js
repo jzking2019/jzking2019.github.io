@@ -735,23 +735,47 @@ document.addEventListener("dragstart", e => {
 });
 
 /* 影片 */
-document.addEventListener("click", e => {
-  const card = e.target.closest(".video-card");
-  if (!card) return;
+const videoCard = document.querySelector(".video-card");
+const statusEl = document.getElementById("videoStatus");
+const retryBtn = document.getElementById("retryVideo");
 
-  const src = card.dataset.src;
-  if (!src) return;
+let loadTimer = null;
 
-  card.innerHTML = `
-    <iframe
-      src="${src}"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-  `;
+function loadVideo(force = false) {
+  if (videoCard.classList.contains("playing") && !force) return;
+
+  videoCard.classList.add("playing");
+  statusEl.classList.add("hidden");
+
+  // 移除舊 iframe（⭐ 關鍵）
+  const oldIframe = videoCard.querySelector("iframe");
+  if (oldIframe) oldIframe.remove();
+
+  const iframe = document.createElement("iframe");
+  iframe.src = videoCard.dataset.src;
+  iframe.allow =
+    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;";
+  iframe.allowFullscreen = true;
+  iframe.style.width = "100%";
+  iframe.style.height = "100%";
+  iframe.style.border = "0";
+
+  videoCard.appendChild(iframe);
+
+  loadTimer = setTimeout(() => {
+    statusEl.classList.remove("hidden");
+  }, 8000);
+
+  iframe.addEventListener("load", () => {
+    clearTimeout(loadTimer);
+  });
+  
+
+retryBtn.addEventListener("click", () => {
+  loadVideo(true); // ⭐ 強制重新載入
 });
+
+}
 
 /* =========================
    全站入口（顺序非常重要）
@@ -780,6 +804,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initRevealOnScroll(); // about動畫
   initGroupPage(); // 社群
   initGroupImageGrid();
+  loadVideo();
 
 });
-

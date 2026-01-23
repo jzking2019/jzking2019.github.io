@@ -22,11 +22,18 @@
 <div class="video-main-col">
 <div class="video-card" data-src="https://www.ganjingworld.com/zh-TW/embed/1i4imo7jjet6ScZ8xYsd88bYZ1bi1c">
   <div class="video-cover">
-    <div class="play-btn" aria-label="播放">
-  <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M8 5v14l11-7z"></path>
-  </svg>
-</div></div></div>
+    <div class="play-btn"></div></div>
+<div class="video-loading hidden">
+  <div class="spinner"></div>
+</div>
+    <!-- ❗載入失敗提示 -->
+  <div id="videoStatus" class="video-status hidden">
+    <p>影片尚未載入</p>
+    <small>
+      請檢查網路連線，或此影片可能因地區限制暫時無法播放。
+    </small>
+    <button id="retryVideo">重新載入</button>
+  </div></div>
 
   <h1 class="video-title">落寒的vlog：越努力越幸運，我的自律學習日常</h1>
 
