@@ -2059,9 +2059,32 @@ body {
 }
 
 .video-layout {
-  max-width: 900px;
-  margin: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 16px;
+}
+
+.video-main-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.video-recommend {
+  width: 360px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .video-layout {
+    flex-direction: column;
+  }
+
+  .video-recommend {
+    width: 100%;
+  }
 }
 
 /* ===== 影片頁主佈局 ===== */
@@ -2306,13 +2329,37 @@ body.video-page .post-actions {
   justify-content: flex-end;
 }
 
+/* 播放鍵 */
+.play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;               /* 預設亮色 */
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.play-icon {
+  width: 56px;
+  height: 56px;
+  fill: currentColor;           /* ⭐ 關鍵 */
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.play-btn:hover .play-icon {
+  transform: scale(1.08);
+  opacity: 0.9;
+}
+
 /* =========================
    影片頁：去除卡片背景
    ========================= */
 
-body.video-page .video-main,
+body.video-page .video-main-col,
 body.video-page .video-meta,
-body.video-page .video-side,
 body.video-page .post,
 body.video-page .post-author,
 body.video-page .video-card {

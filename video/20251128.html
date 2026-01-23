@@ -17,13 +17,16 @@
 <body class="home video-page">
 <div id="site-header"></div>
 
-<main class="video-layout">
-<section class="video-main">
+<section class="video-layout">
 
+<div class="video-main-col">
 <div class="video-card" data-src="https://www.ganjingworld.com/zh-TW/embed/1i4imo7jjet6ScZ8xYsd88bYZ1bi1c">
   <div class="video-cover">
-    <div class="play-btn">▶</div>
-  </div></div>
+    <div class="play-btn" aria-label="播放">
+  <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M8 5v14l11-7z"></path>
+  </svg>
+</div></div></div>
 
   <h1 class="video-title">落寒的vlog：越努力越幸運，我的自律學習日常</h1>
 
@@ -41,7 +44,7 @@
     </div>
     <time class="post-time">2025-11-28</time>
   </div>
-  <div class="post-actions">
+  <div class="post-actions"><div>
   <button class="action-btn" data-like aria-label="讚">
     <svg class="icon" viewBox="0 0 24 24">
       <path d="M12 21s-6.5-4.4-9.3-7.2C.9 11.9 1 8.8 3.1 6.7c1.7-1.7 4.4-1.6 6.1.1L12 9.6l2.8-2.8c1.7-1.7 4.4-1.8 6.1-.1 2.1 2.1 2.2 5.2.4 7.1C18.5 16.6 12 21 12 21z"/>
@@ -60,15 +63,12 @@
     <p class="video-desc">
       抱歉，評論區暫時關閉。
     </p>
-</section>
 
-  <section class="video-side">
-
-  <div class="video-recommend">
+</div></div>
+  <aside class="video-recommend">
     <div class="blog-posts"></div>
-  </div>
+  </aside>
 </section>
-</main>
 
       <!-- 📱 手机底部导航（独立） -->
   <nav id="bottomNav"></nav>
