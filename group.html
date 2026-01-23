@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>社群貼文編輯器 - 沈落寒</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style>
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background: #f5f5f5;
+}
+
+header {
+  padding: 14px 18px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 48px);
+}
+
+.panel {
+  padding: 18px;
+  overflow: auto;
+}
+
+h3 {
+  font-size: 13px;
+  opacity: .7;
+  margin-top: 0;
+}
+
+textarea, input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+textarea {
+  min-height: 120px;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+input {
+  padding: 8px;
+  margin-bottom: 12px;
+}
+
+.preview {
+  background: #fafafa;
+}
+
+pre {
+  background: #eee;
+  padding: 12px;
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   社群
+   ========================= */
+
+/* 作者 */
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-line {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.author-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.author-handle {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.post-time {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* 内容 */
+.post-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 6px 0 12px;
+  padding-left: 6px;
+  padding-top: 10px;
+}
+
+/* =========================
+   社群圖片九宮格（WeChat Style）
+   ========================= */
+
+.post-images {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* 所有圖片：正方形 */
+.post-images img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* === 不同數量的排列 === */
+
+/* 1 張 */
+.post-images.count-1 {
+  grid-template-columns: 1fr;
+  max-width: 70%;
+}
+
+/* 2 張 */
+.post-images.count-2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 80%;
+}
+
+/* 3 張 */
+.post-images.count-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* 4 張（微信特例 2x2） */
+.post-images.count-4 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 80%;
+}
+
+/* 5–9 張 */
+.post-images.count-5,
+.post-images.count-6,
+.post-images.count-7,
+.post-images.count-8,
+.post-images.count-9 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.post-image-wrap {
+  position: relative;
+}
+
+.image-shield {
+  position: absolute;
+  inset: 0;
+  cursor: default;
+}
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* ⭐ Viewer 裡的圖片 */
+.image-viewer img {
+  max-width: 90vw;
+  max-height: 90vh;
+
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.viewer-shield {
+  position: absolute;
+  inset: 0;
+}
+
+/* =========================
+   +N 遮罩（只在列表）
+   ========================= */
+
+body:not(.single-view) .post-images.has-more {
+  position: relative;
+}
+
+body:not(.single-view) .post-images.has-more::after {
+  content: attr(data-more);
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+/* 暗色模式 */
+body.dark-mode .post-content,
+body.dark-mode .author-name {
+  color: #f2f2f2;
+}
+
+body.dark-mode .author-handle,
+body.dark-mode .post-time,
+body.dark-mode .post-title.subtle {
+  opacity: 0.6;
+}
+
+/* =========================
+   讚、留言、分享
+   ========================= */
+   .icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  display: block;
+}
+
+.post-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  color: #444;
+}
+
+body.dark-mode .action-btn {
+  color: #e5e5e5;
+}
+
+.action-btn:hover {
+  opacity: 0.6;
+}
+
+.post-actions {
+  pointer-events: auto;
+}
+
+.post-card {
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .post-actions {
+    right: 12px;
+    bottom: 10px;
+    gap: 14px;
+  }
+}
+
+.post-card {
+  position: relative; /* ⭐ 必須 */
+  padding-bottom: 50px; /* 給右下角 icon 留空間 */
+}
+
+.post-actions {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+
+  display: flex;
+  gap: 16px;
+
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+body:not(.single-view) .post-card {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+body:not(.single-view) .post-card .post-actions {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+}
+
+body.single-view .post-actions {
+  position: static;          /* ⭐ 關鍵 */
+  margin-top: 16px;
+  justify-content: flex-end; /* 右對齊，但不浮 */
+}
+
+
+</style>
+</head>
+
+<body>
+
+<header>社群貼文編輯器</header>
+
+<div class="wrap">
+
+<!-- 編輯區 -->
+<div class="panel">
+  <h3>貼文內容</h3>
+  <textarea id="contentInput" placeholder="輸入貼文文字"></textarea>
+
+  <h3>圖片網址（每行一張）</h3>
+  <textarea id="imageInput" placeholder="https://...\nhttps://..."></textarea>
+
+  <button id="scrollBtn">捲動到輸出</button>
+</div>
+
+<!-- 預覽區 -->
+<div class="panel preview">
+  <h3>即時預覽</h3>
+  <section id="timeline">
+    <article id="previewPost"></article>
+  </section>
+
+  <h3>輸出 HTML</h3>
+  <pre id="output"></pre>
+</div>
+
+</div>
+
+<script>
+const contentInput = document.getElementById("contentInput");
+const imageInput = document.getElementById("imageInput");
+const previewPost = document.getElementById("previewPost");
+const output = document.getElementById("output");
+
+function today() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function render() {
+  const text = contentInput.value.trim();
+  const images = imageInput.value
+    .split("\n")
+    .map(i => i.trim())
+    .filter(Boolean);
+
+  const imgHTML = images.length
+  ? `
+<div class="post-image-wrap">
+  <div class="post-images count-${images.length}">
+    ${images.map(src => `<img src="${src}">`).join("")}
+  </div>
+</div>`
+  : "";
+
+  const html = `
+<section id="timeline">
+<article class="post-card" data-id="${Date.now()}">
+
+  <div class="post-author">
+    <img class="avatar" src="https://g.fp.ps.netease.com/cg-image/file/689ea1bb09e90106b21df8cbfDIqDbmC06?fop=imageView/2/w/160/h/160" alt="沈落寒">
+    <span class="image-shield"></span>
+    <div class="author-meta">
+      <div class="author-line">
+        <strong class="author-name">沈落寒</strong>
+        <!-- <span class="author-handle">@Tung</span> -->
+      </div>
+      <time class="post-time">${today()}</time>
+    </div>
+  </div>
+
+  <p class="post-content">${text}</p>
+
+  ${imgHTML}
+
+      <div class="post-actions">
+  <button class="action-btn" data-like aria-label="讚">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path d="M12 21s-6.5-4.4-9.3-7.2C.9 11.9 1 8.8 3.1 6.7c1.7-1.7 4.4-1.6 6.1.1L12 9.6l2.8-2.8c1.7-1.7 4.4-1.8 6.1-.1 2.1 2.1 2.2 5.2.4 7.1C18.5 16.6 12 21 12 21z"/>
+    </svg>
+    <span class="count">0</span>
+  </button>
+
+  <button class="action-btn" data-comment aria-label="留言">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path d="M4 4h16v12H7l-3 4V4z"/>
+    </svg>
+    <span class="count">0</span>
+  </button>
+
+  <button class="action-btn" data-share aria-label="分享">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path d="M18 8a3 3 0 1 0-2.8-4H15a3 3 0 0 0 .2 1L7.9 9.1a3 3 0 1 0 0 5.8l7.3 4.1a3 3 0 1 0 .8-1.8l-7.3-4.1a3 3 0 0 0 0-1.8l7.3-4.1c.3.3.6.5 1 .7z"/>
+    </svg>
+  </button>
+</div>
+
+  </article>
+</section>
+`.trim();
+
+  previewPost.innerHTML = html;
+  output.textContent = html;
+}
+
+contentInput.addEventListener("input", render);
+imageInput.addEventListener("input", render);
+render();
+
+document.getElementById("scrollBtn").onclick = () =>
+  output.scrollIntoView({ behavior: "smooth" });
+</script>
+
+</body>
+</html>

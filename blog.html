@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>文章編輯器 - 沈落寒</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/jzking2019/jzking2019.github.io/main/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      background: #f5f5f5;
+    }
+
+    header {
+      padding: 14px 18px;
+      background: #111;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 48px);
+    }
+
+    .panel {
+      padding: 18px;
+      overflow: auto;
+    }
+
+    h3 {
+      font-size: 13px;
+      opacity: .7;
+      margin-top: 0;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      font-size: 20px;
+      padding: 10px;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 60vh;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 14px;
+      resize: vertical;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar button {
+      border: 1px solid #ddd;
+      background: #fff;
+      padding: 4px 8px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .toolbar button:hover {
+      background: #f0f0f0;
+    }
+
+    .preview article {
+      max-width: 720px;
+      margin: 32px auto;
+      background: #fff;
+      padding: 28px;
+      line-height: 1.8;
+    }
+
+    .preview h1 {
+      font-size: 1.9rem;
+    }
+
+    .preview h2 {
+      margin-top: 32px;
+    }
+
+    .preview p {
+      margin: 14px 0;
+    }
+
+    pre {
+      background: #eee;
+      padding: 14px;
+      white-space: pre-wrap;
+      font-size: 13px;
+    }
+
+    .text-center {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.text-center-inline {
+  display: block;      /* inline 變 block 才能居中 */
+  text-align: center;
+}
+
+    @media (max-width: 900px) {
+      .wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+/* 圖片 */
+.article-image {
+  margin: 28px 0;
+  text-align: center;
+}
+
+.article-image img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.article-image figcaption {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-top: 6px;
+}
+
+/* 🔒 文章頁圖片防爆（終極保險） */
+.article img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+body.dark-mode .article-image figcaption {
+  opacity: 0.7;
+}
+
+/* 作者 */
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-line {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.author-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.author-handle {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.post-time {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* 分割線 */
+.article hr,
+#previewArea hr {
+  border: none;
+  height: 1px;
+  background: #ddd;
+  margin: 32px auto;
+  width: 60%;
+}
+
+body.dark-mode .article hr {
+  background: #333;
+}
+
+/* 文字縮進 */
+.indent {
+  margin-left: 2em;
+}
+
+/* 區塊引用（Medium 風格） */
+blockquote {
+  margin: 28px 0;
+  padding-left: 16px;
+  border-left: 3px solid #ddd;
+  color: #555;
+}
+
+blockquote p {
+  margin: 8px 0;
+}
+
+/* 影片 */
+.video-card {
+  margin: 24px 0;
+  cursor: pointer;
+}
+
+.video-cover {
+  position: relative;
+  background: #000;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+}
+
+.play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #fff;
+  opacity: 0.85;
+}
+
+.video-title {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  text-align: center;
+}
+
+  </style>
+</head>
+
+<body>
+
+<header>文章編輯器</header>
+
+<div class="wrap">
+
+  <!-- 編輯區 -->
+  <div class="panel">
+    <h3>文章標題</h3>
+    <input id="titleInput" type="text" placeholder="輸入文章標題">
+
+    <h3>文章內容（每行一段，Markdown-lite）</h3>
+
+    <div class="toolbar">
+      <button data-action="bold"><b>B</b></button>
+      <button data-action="italic"><i>I</i></button>
+      <button data-action="strike"><s>S</s></button>
+      <button data-action="underline"><u>U</u></button>
+      <button data-action="link">🔗 連結</button>
+      <button data-action="center">居中</button>
+      <button data-action="quote">❝ 引用</button>
+      <button data-action="hr">— 分割線</button>
+      <button data-action="indent">↦ 縮進</button>
+      <button data-action="ul">• 清單</button>
+      <button data-action="ol">1. 清單</button>
+      <button data-action="h1">H1</button>
+      <button data-action="h2">H2</button>
+      <button data-action="image">🖼 圖片</button>
+      <button data-action="video">🎬 影片</button>
+
+    </div>
+
+    <textarea id="contentInput" placeholder="# 副標題
+這是一段文字
+
+- 清單項目
+- 清單項目"></textarea>
+
+    <button id="exportBtn">捲動到輸出 HTML</button>
+  </div>
+
+  <!-- 預覽區 -->
+  <div class="panel preview">
+    <h3>即時預覽</h3>
+    <article id="previewArea"></article>
+
+    <h3>輸出 HTML（貼回文章頁）</h3>
+    <pre id="outputArea"></pre>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const titleInput = document.getElementById("titleInput");
+  const contentInput = document.getElementById("contentInput");
+  const preview = document.getElementById("previewArea");
+  const output = document.getElementById("outputArea");
+  const exportBtn = document.getElementById("exportBtn");
+  
+  function parseInline(text) {
+  return text
+    .replace(/~~(.+?)~~/g, "<del>$1</del>")        // 刪除線
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") // 粗體
+    .replace(/__(.+?)__/g, "<u>$1</u>")           // ⭐ 下劃線
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")          // 斜體
+    .replace(
+      /\[(.+?)\]\((.+?)\)/g,
+      `<a href="$2" target="_blank" rel="noopener">$1</a>`
+    );
+}
+
+  function getAuthorBlock() {
+  const d = new Date();
+  const date =
+    d.getFullYear() +
+    "-" +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(d.getDate()).padStart(2, "0");
+
+  return `
+<div class="post-author">
+  <img
+    class="avatar"
+    src="https://g.fp.ps.netease.com/cg-image/file/689ea1bb09e90106b21df8cbfDIqDbmC06?fop=imageView/2/w/160/h/160"
+    alt="沈落寒"
+  >
+  <span class="image-shield"></span>
+  <div class="author-meta">
+    <div class="author-line">
+      <strong class="author-name">沈落寒</strong>
+    </div>
+    <time class="post-time">${date}</time>
+  </div>
+</div>
+`.trim();
+}
+
+  function parseImage(line) {
+  return line.replace(
+    /!\[(.*?)\]\((.*?)\)/g,
+    (_, caption, url) => `
+<figure class="article-image">
+  <img src="${url}" alt="${caption}">
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>
+`.trim()
+  );
+}
+
+function getVideoEmbed(url) {
+  // YouTube（一般）
+  if (url.includes("youtube.com/watch")) {
+    const id = new URL(url).searchParams.get("v");
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  // YouTube（短網址）
+  if (url.includes("youtu.be/")) {
+    const id = url.split("youtu.be/")[1];
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  // 乾净世界（官方 embed）
+  if (url.includes("ganjingworld.com") && url.includes("/embed/")) {
+    return url;
+  }
+
+  return null; // 不支援的來源
+}
+
+function normalizeGJW(url) {
+  // video 頁
+  const videoMatch = url.match(/ganjingworld\.com\/zh-TW\/video\/([a-zA-Z0-9]+)/);
+  if (videoMatch) {
+    return `https://www.ganjingworld.com/zh-TW/embed/${videoMatch[1]}`;
+  }
+
+  // 分享短連結（目前無法可靠轉換）
+  if (url.includes("ganjingworld.com/s/")) {
+    return null; // 明確標記「無法解析」
+  }
+
+  return url;
+}
+
+function parseVideo(line) {
+  const match = line.match(/!\[video(?::(.*?))?\]\((.*?)\)/);
+  if (!match) return null;
+
+  const title = match[1] || "";
+  const rawUrl = match[2];
+  const embedUrl = getVideoEmbed(rawUrl);
+
+  if (!embedUrl) {
+    return `<p>⚠️ 不支援的影片來源</p>`;
+  }
+
+  return `
+<div class="video-card" data-src="${embedUrl}">
+  <div class="video-cover">
+    <div class="play-btn">▶</div>
+  </div>
+  ${title ? `<div class="video-title">${title}</div>` : ""}
+</div>
+`.trim();
+}
+
+function alignCenter() {
+  document.execCommand("justifyCenter");
+}
+
+  function render() {
+    const title = titleInput.value.trim();
+    const lines = contentInput.value.split("\n");
+
+    let html = "";
+    let inUl = false;
+    let inOl = false;
+    let inQuote = false;
+
+    lines.forEach(rawLine => {
+  let line = rawLine.trim();
+  if (!line) return;
+
+  // ⭐ 區塊引用（>）
+if (line.startsWith("> ")) {
+  if (!inQuote) {
+    html += "<blockquote>";
+    inQuote = true;
+  }
+  html += `<p>${parseInline(line.slice(2))}</p>`;
+  return;
+} else if (inQuote) {
+  html += "</blockquote>";
+  inQuote = false;
+}
+if (inQuote) html += "</blockquote>";
+
+// 分割線
+if (line === "---") {
+  html += "<hr>";
+  return;
+}
+
+// ⭐ 文字縮進
+if (line.startsWith(">> ")) {
+  html += `<p class="indent">${parseInline(line.slice(3))}</p>`;
+  return;
+}
+
+// ⭐ 先處理影片
+const video = parseVideo(line);
+if (video) {
+  html += video;
+  return;
+}
+
+// ⭐ 再處理圖片
+if (line.startsWith("![")) {
+  html += parseImage(line);
+  return;
+}
+
+  if (line.startsWith("## ")) {
+    html += `<h2>${parseInline(line.slice(3))}</h2>`;
+    return;
+  }
+
+  if (line.startsWith("# ")) {
+    html += `<h1>${parseInline(line.slice(2))}</h1>`;
+    return;
+  }
+
+  if (line.startsWith("::")) {
+    html += `<div class="text-center">${parseInline(line.slice(2))}</div>`;
+    return;
+  }
+
+  if (/^\d+\.\s+/.test(line)) {
+    if (!inOl) { html += "<ol>"; inOl = true; }
+    html += `<li>${parseInline(line.replace(/^\d+\.\s+/, ""))}</li>`;
+    return;
+  }
+
+  if (line.startsWith("- ")) {
+    if (!inUl) { html += "<ul>"; inUl = true; }
+    html += `<li>${parseInline(line.slice(2))}</li>`;
+    return;
+  }
+
+  if (inUl) { html += "</ul>"; inUl = false; }
+  if (inOl) { html += "</ol>"; inOl = false; }
+
+  html += `<p>${parseInline(line)}</p>`;
+});
+
+    preview.innerHTML = `
+<h1>${title}</h1>
+${getAuthorBlock()}
+${html}
+`;
+
+output.textContent = `
+<section id="article">
+
+<h1>${title}</h1>
+
+${getAuthorBlock()}
+
+${html}
+
+</section>
+`.trim();
+
+  }
+
+  function insert(before, after = "") {
+    const el = contentInput;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = el.value.slice(start, end);
+
+    el.value =
+      el.value.slice(0, start) +
+      before + selected + after +
+      el.value.slice(end);
+
+    el.focus();
+    el.setSelectionRange(start + before.length, start + before.length + selected.length);
+    render();
+  }
+
+  document.querySelectorAll(".toolbar button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const a = btn.dataset.action;
+      if (a === "bold") insert("**", "**");
+      if (a === "italic") insert("*", "*");
+      if (a === "strike") insert("~~", "~~");
+      if (a === "underline") insert("__", "__");
+      if (a === "ul") insert("- ");
+      if (a === "ol") insert("1. ");
+      if (a === "h1") insert("# ");
+      if (a === "h2") insert("## ");
+      if (a === "center") insert("::");
+      if (a === "indent") insert(">> ");
+      if (a === "quote") insert("> ");
+      if (a === "hr") insert("\n---\n");
+      if (a === "link") {
+        const sel = contentInput.value.substring(
+          contentInput.selectionStart,
+          contentInput.selectionEnd
+        );
+        if (!sel) return alert("請先選取文字");
+        const url = prompt("輸入連結網址");
+        if (url) insert(`[${sel}](${url})`);
+      }
+      if (a === "image") {
+      const url = prompt("輸入圖片網址");
+      if (!url) return;
+
+      const caption = prompt("圖片說明（可留空）") || "";
+      insert(`![${caption}](${url})`);
+      }
+
+      if (a === "video") {
+  let url = prompt("輸入影片網址（乾净世界 / YouTube）");
+  if (!url) return;
+
+  if (url.includes("ganjingworld.com")) {
+    const embed = normalizeGJW(url);
+    if (!embed) {
+      alert("此乾净世界連結無法嵌入，請使用影片頁或 embed 連結");
+      return;
+    }
+    url = embed;
+  }
+
+  insert(`![video](${url})`);
+}
+
+    });
+  });
+
+  titleInput.addEventListener("input", render);
+  contentInput.addEventListener("input", render);
+  exportBtn.addEventListener("click", () =>
+    output.scrollIntoView({ behavior: "smooth" })
+  );
+
+  
+});
+
+/* 影片 */
+document.addEventListener("click", e => {
+  const card = e.target.closest(".video-card");
+  if (!card) return;
+
+  const src = card.dataset.src;
+  card.innerHTML = `
+    <iframe
+      src="${src}"
+      width="100%"
+      height="360"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
+      allowfullscreen>
+    </iframe>
+  `;
+});
+
+</script>
+
+</body>
+</html>
