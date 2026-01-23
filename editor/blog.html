@@ -254,6 +254,31 @@ blockquote p {
   text-align: center;
 }
 
+/* 播放鍵 */
+.play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;               /* 預設亮色 */
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.play-icon {
+  width: 56px;
+  height: 56px;
+  fill: currentColor;           /* ⭐ 關鍵 */
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.play-btn:hover .play-icon {
+  transform: scale(1.08);
+  opacity: 0.9;
+}
+
   </style>
 </head>
 
@@ -420,8 +445,11 @@ function parseVideo(line) {
   return `
 <div class="video-card" data-src="${embedUrl}">
   <div class="video-cover">
-    <div class="play-btn">▶</div>
-  </div>
+    <div class="play-btn" aria-label="播放">
+  <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M8 5v14l11-7z"></path>
+  </svg>
+</div></div></div>
   ${title ? `<div class="video-title">${title}</div>` : ""}
 </div>
 `.trim();
