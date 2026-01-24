@@ -1041,6 +1041,22 @@ body.dark-mode #pagination button.active {
   box-sizing: border-box;
 }
 
+.cf-logo {
+  width: 512px;
+  height: 512px;
+  margin-bottom: 128px;
+}
+
+.cf-box .spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid rgba(255,255,255,.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
 .cf-box h2 {
   font-size: 2rem;
   margin-bottom: 12px;
@@ -1053,11 +1069,18 @@ body.dark-mode #pagination button.active {
 
 /* 驗證錯誤提示 */
 .cf-error {
-  margin-top: 16px;
+  margin-top: 64px;
   font-size: 0.95rem;
   color: #d93025;
   display: none;
 }
+
+/* turnstile 驗證條隱藏 */
+.cf-turnstile {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+} 
 
 /* 鎖定背景 */
 body.cf-lock {

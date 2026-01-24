@@ -56,19 +56,25 @@ function initTurnstileGate() {
   overlay.id = "cf-overlay";
 
   overlay.innerHTML = `
-    <div class="cf-box">
-      <h2>請稍後…</h2>
-      <p>我們正在驗證您的連線安全性</p>
+  <div class="cf-box">
 
-      <div id="cf-turnstile"></div>
-
-      <div class="cf-error" id="cf-error">
-        驗證失敗或逾時，請從新整理頁面再試。
-      </div>
-
-      <p>&copy; <span id="current-year"></span> 沈落寒</p>
+    <!-- App 啟動畫面 -->
+    <div class="cf-loading" id="cf-loading">
+      <img src="/favicon.png" class="cf-logo" alt="loading">
+      <div class="spinner"></div>
     </div>
-  `;
+
+    <!-- Turnstile 掛載點（可隱形） -->
+    <div id="cf-turnstile" class="cf-turnstile"></div>
+
+    <!-- 失敗狀態 -->
+    <div class="cf-error" id="cf-error">
+      驗證失敗或逾時，請檢查網絡並從試。
+    </div>
+
+  </div>
+`;
+
 
   document.body.appendChild(overlay);
   document.body.classList.add("cf-lock");
