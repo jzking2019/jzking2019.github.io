@@ -6,9 +6,9 @@
   "short_name": "沈落寒",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#f2f2f2",
-  "theme_color": "#198964",
-  "description": "落寒的部落格",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "部落格文章、影片、會員專享",
   "orientation": "any",
   "prefer_related_applications": "false",
   "display_override": [
@@ -16,16 +16,19 @@
   ],
   "screenshots": [
     {
-      "src": "https://image3-us-west.cloudokyo.cloud/image/v3/49/d5/a3/49d5a38e-31fc-43c4-988e-33312e4c589e/1280.jpg"
+      "src": "https://image1-us-east.cloudokyo.cloud/image/v3/0a/f4/ae/0af4ae36-82e1-4c12-a78e-d35ea8ee94e1/1280.webp"
     },
     {
-      "src": "https://image3-us-west.cloudokyo.cloud/image/v3/10/6c/bc/106cbc2c-2e5d-47c0-bfd8-fca11253aaa8/1280.jpg"
+      "src": "https://image1-us-east.cloudokyo.cloud/image/v3/fd/7b/cc/fd7bccf0-4912-48bc-87dd-7430a2c5b507/1280.webp"
     },
     {
-      "src": "https://image3-us-west.cloudokyo.cloud/image/v3/8e/df/61/8edf6152-5041-4a01-a605-9e721cd5b060/1280.jpg"
+      "src": "https://image1-us-east.cloudokyo.cloud/image/v3/74/10/73/74107320-2371-4558-b917-b4810e8aa9a3/1280.webp"
     },
     {
-      "src": "https://image5-us-west.cloudokyo.cloud/image/v3/41/87/f5/4187f506-08c1-40d1-b778-8b867d3aa89e/1280.jpg"
+      "src": "https://image1-us-east.cloudokyo.cloud/image/v3/77/76/23/777623a4-3b40-412f-a4dd-250c0b1efcc3/1280.webp"
+    }
+    {
+      "src": "https://image1-us-east.cloudokyo.cloud/image/v3/28/12/7d/28127da2-0b8a-427b-97a9-a11f289fbdf9/1280.webp"
     }
   ],
   "icons": [
