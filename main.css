@@ -1042,14 +1042,14 @@ body.dark-mode #pagination button.active {
 }
 
 .cf-logo {
-  width: 512px;
-  height: 512px;
-  margin-bottom: 128px;
+  width: clamp(64px, 50vmin, 512px);
+  height: clamp(64px, 50vmin, 512px);
+  margin-bottom: clamp(14px, 15vmin, 128px);
 }
 
 .cf-box .spinner {
-  width: 42px;
-  height: 42px;
+  width: clamp(10px, 7vmin, 42px);
+  height: clamp(10px, 7vmin, 42px);
   border: 3px solid rgba(255,255,255,.25);
   border-top-color: #fff;
   border-radius: 50%;
@@ -1069,8 +1069,8 @@ body.dark-mode #pagination button.active {
 
 /* 驗證錯誤提示 */
 .cf-error {
-  margin-top: 64px;
-  font-size: 0.95rem;
+  margin-top: clamp(14px, 5vmin, 64px);
+  font-size: clamp(13px, 2.4vmin , 20px);
   color: #d93025;
   display: none;
 }
