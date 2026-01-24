@@ -1042,8 +1042,8 @@ body.dark-mode #pagination button.active {
 }
 
 .cf-logo {
-  width: clamp(64px, 50vmin, 512px);
-  height: clamp(64px, 50vmin, 512px);
+  width: clamp(128px, 75vmin, 512px);
+  height: clamp(128px, 75vmin, 512px);
   margin-bottom: clamp(14px, 15vmin, 128px);
 }
 
