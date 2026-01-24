@@ -70,7 +70,7 @@ function initTurnstileGate() {
 
     <!-- 失敗狀態 -->
     <div class="cf-error" id="cf-error">
-      加載失敗，請檢查網絡並從新載入。
+      加載失敗，請檢查網絡並從試。
     </div>
 
   </div>
@@ -814,4 +814,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
