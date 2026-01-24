@@ -61,6 +61,7 @@ function initTurnstileGate() {
     <!-- App 啟動畫面 -->
     <div class="cf-loading" id="cf-loading">
       <img src="/favicon.png" class="cf-logo" alt="loading">
+      <span class="image-shield"></span>
       <div class="spinner"></div>
     </div>
 
