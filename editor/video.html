@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>影片編輯器 - 沈落寒</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background: #f5f5f5;
+}
+
+header {
+  padding: 14px 18px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 48px);
+}
+
+.panel {
+  padding: 18px;
+  overflow: auto;
+}
+
+h3 {
+  font-size: 13px;
+  opacity: .7;
+  margin-top: 0;
+}
+
+input {
+  width: 100%;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+/* 作者 */
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-line {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.author-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.author-handle {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.post-time {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ===== 影片卡片 ===== */
+.video-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.video-cover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #000;
+  z-index: 2;
+}
+
+.play-btn {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  cursor: pointer;
+}
+
+.video-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.video-loading.hidden {
+  display: none;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.video-status {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.video-status.hidden {
+  display: none;
+}
+
+.video-card iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-card.playing .video-cover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+pre {
+  background: #eee;
+  padding: 12px;
+  white-space: pre-wrap;
+  font-size: 13px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: 1fr; }
+}
+
+/* 按鈕與輸出 */
+#exportBtn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+pre {
+  background: #333;
+  color: #fff;
+  padding: 12px;
+  white-space: pre-wrap;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.post-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.icon { width: 18px; height: 18px; fill: currentColor; }
+
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: 1fr; height: auto; }
+}
+</style>
+</head>
+
+<body>
+
+<header>影片編輯器</header>
+
+<div class="wrap">
+
+<!-- 左：輸入 -->
+<div class="panel">
+  <h3>影片 embed 或影片頁網址</h3>
+  <input id="videoInput" placeholder="貼上 YouTube / 乾淨世界影片網址">
+
+  <h3>影片標題</h3>
+  <input id="titleInput" placeholder="請輸入影片標題" value="這是一個影片標題">
+
+  <h3>發佈日期</h3>
+  <input id="dateInput" type="date">
+
+  <button id="exportBtn">複製 HTML 代碼</button>
+</div>
+
+<!-- 右：預覽 -->
+<div class="panel">
+  <h3>即時預覽</h3>
+  <div id="preview"></div>
+
+  <h3>輸出 HTML</h3>
+  <pre id="output"></pre>
+</div>
+
+</div>
+
+<script>
+const input = document.getElementById("videoInput");
+const preview = document.getElementById("preview");
+const titleInput = document.getElementById("titleInput");
+const dateInput = document.getElementById("dateInput");
+const output = document.getElementById("output");
+
+// 預設今天日期
+dateInput.valueAsDate = new Date();
+
+function getEmbed(url) {
+  if (!url) return null;
+  if (url.includes("youtube.com/watch")) {
+    return "https://www.youtube.com/embed/" + new URL(url).searchParams.get("v");
+  }
+  if (url.includes("youtu.be/")) {
+    return "https://www.youtube.com/embed/" + url.split("youtu.be/")[1];
+  }
+  if (url.includes("ganjingworld.com") && url.includes("/embed/")) {
+    return url;
+  }
+  const m = url.match(/ganjingworld\.com\/.*\/video\/([a-zA-Z0-9]+)/);
+  if (m) {
+    return `https://www.ganjingworld.com/zh-TW/embed/${m[1]}`;
+  }
+  return null;
+}
+
+function getEmbed(url) {
+  if (url.includes("youtube.com/watch")) {
+    return "https://www.youtube.com/embed/" +
+      new URL(url).searchParams.get("v");
+  }
+  if (url.includes("youtu.be/")) {
+    return "https://www.youtube.com/embed/" +
+      url.split("youtu.be/")[1];
+  }
+  if (url.includes("ganjingworld.com") && url.includes("/embed/")) {
+    return url;
+  }
+  const m = url.match(/ganjingworld\.com\/zh-TW\/video\/([a-zA-Z0-9]+)/);
+  if (m) {
+    return `https://www.ganjingworld.com/zh-TW/embed/${m[1]}`;
+  }
+  return null;
+}
+
+function render() {
+  const raw = input.value.trim();
+  const embed = getEmbed(raw);
+  const title = titleInput.value || "未命名影片";
+  const date = dateInput.value || "YYYY-MM-DD";
+
+  if (!embed) {
+    preview.innerHTML = "<p>⚠️ 不支援的影片來源</p>";
+    output.textContent = "";
+    return;
+  }
+
+  const html = `
+<section class="video-layout">
+
+<div class="video-main-col">
+<div class="video-card" data-src="${embed}">
+  <div class="video-cover">
+    <div class="play-btn"></div></div>
+<div class="video-loading hidden">
+  <div class="spinner"></div>
+</div>
+    <!-- ❗載入失敗提示 -->
+  <div id="videoStatus" class="video-status hidden">
+    <p>影片尚未載入</p>
+    <small>
+      請檢查網路連線，或此影片可能因地區限制暫時無法播放。
+    </small>
+    <button id="retryVideo">重新載入</button>
+  </div></div>
+
+  <h1 class="video-title">${title}</h1>
+
+<div class="post-author video-autjor-row"
+<div class="author-left">
+  <img
+    class="avatar"
+    src="https://g.fp.ps.netease.com/cg-image/file/689ea1bb09e90106b21df8cbfDIqDbmC06?fop=imageView/2/w/160/h/160"
+    alt="沈落寒"
+  >
+  <!-- <span class="image-shield"></span> -->
+  <div class="author-meta">
+    <div class="author-line">
+      <strong class="author-name">沈落寒</strong>
+    </div>
+    <time class="post-time">${date}</time>
+  </div>
+  <div class="post-actions"><div>
+  <button class="action-btn" data-like aria-label="讚">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path d="M12 21s-6.5-4.4-9.3-7.2C.9 11.9 1 8.8 3.1 6.7c1.7-1.7 4.4-1.6 6.1.1L12 9.6l2.8-2.8c1.7-1.7 4.4-1.8 6.1-.1 2.1 2.1 2.2 5.2.4 7.1C18.5 16.6 12 21 12 21z"/>
+    </svg>
+    <span class="count">0</span>
+  </button>
+
+  <button class="action-btn" data-comment aria-label="留言">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path d="M4 4h16v12H7l-3 4V4z"/>
+    </svg>
+    <span class="count">0</span>
+  </button>
+
+</div></div></div>
+    <p class="video-desc">
+      抱歉，評論區暫時關閉。
+    </p>
+
+</div></div>
+  <aside class="video-recommend">
+    <div class="blog-posts"></div>
+  </aside>
+</section>
+
+`.trim();
+
+  preview.innerHTML = html;
+  output.textContent = html;
+}
+
+input.addEventListener("input", render);
+
+function loadVideo(card, force = false) {
+  if (card.classList.contains("playing") && !force) return;
+
+  const loading = card.querySelector(".video-loading");
+  const status = card.querySelector(".video-status");
+
+  card.classList.add("playing");
+  loading.classList.remove("hidden");
+  status.classList.add("hidden");
+
+  const old = card.querySelector("iframe");
+  if (old) old.remove();
+
+  const iframe = document.createElement("iframe");
+  iframe.src = card.dataset.src;
+  iframe.allowFullscreen = true;
+  iframe.allow = "autoplay; encrypted-media";
+  card.appendChild(iframe);
+
+  const timer = setTimeout(() => {
+    loading.classList.add("hidden");
+    status.classList.remove("hidden");
+  }, 8000);
+
+  iframe.onload = () => {
+    clearTimeout(timer);
+    loading.classList.add("hidden");
+  };
+
+  status.querySelector(".retry").onclick = () =>
+    loadVideo(card, true);
+}
+
+document.addEventListener("click", e => {
+  const btn = e.target.closest(".play-btn");
+  if (!btn) return;
+  loadVideo(btn.closest(".video-card"));
+});
+
+// 點擊導出按鈕自動複製
+document.getElementById("exportBtn").onclick = () => {
+  navigator.clipboard.writeText(output.textContent);
+  alert("HTML 已複製到剪貼簿！");
+};
+</script>
+
+</body>
+</html>
