@@ -223,35 +223,24 @@ blockquote p {
   margin: 8px 0;
 }
 
-/* 影片 */
+/* 影片卡片本體 */
 .video-card {
-  margin: 24px 0;
-  cursor: pointer;
-}
-
-.video-cover {
   position: relative;
-  background: #000;
+  width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 12px;
+  background: #000;
+  overflow: hidden;
+  margin: 24px 0;
 }
 
-.play-btn {
+/* 封面 */
+.video-cover {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  color: #fff;
-  opacity: 0.85;
-}
-
-.video-title {
-  margin-top: 8px;
-  font-size: 0.9rem;
-  opacity: 0.7;
-  text-align: center;
+  display: grid;
+  place-items: center;
+  background: #000;
+  z-index: 2;
 }
 
 /* 播放鍵 */
@@ -261,22 +250,71 @@ blockquote p {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  color: #ffffff;               /* 預設亮色 */
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0,0,0,.35);
   cursor: pointer;
 }
 
 .play-icon {
   width: 56px;
   height: 56px;
-  fill: currentColor;           /* ⭐ 關鍵 */
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  fill: #fff;
 }
 
-.play-btn:hover .play-icon {
-  transform: scale(1.08);
-  opacity: 0.9;
+/* loading */
+.video-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.video-loading.hidden {
+  display: none;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* 狀態提示 */
+.video-status {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.video-status.hidden {
+  display: none;
+}
+
+.video-card iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-card.playing .video-cover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
   </style>
@@ -443,13 +481,23 @@ function parseVideo(line) {
   }
 
   return `
-<div class="video-card" data-src="${embedUrl}">
-  <div class="video-cover">
-    <div class="play-btn" aria-label="播放">
-  <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M8 5v14l11-7z"></path>
-  </svg>
-</div></div></div>
+<div class="video-main-col">
+  <div class="video-card" data-src="${embedUrl}">
+    <div class="video-cover">
+      <div class="play-btn"></div>
+      </div>
+
+    <div class="video-loading hidden">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="video-status hidden" id="videoStatus">
+      <p>影片尚未載入</p>
+      <small>請檢查網路連線，或此影片可能因地區限制暫時無法播放。</small>
+      <button id="retryVideo">重新載入</button>
+    </div>
+  </div>
+
   ${title ? `<div class="video-title">${title}</div>` : ""}
 </div>
 `.trim();
@@ -640,22 +688,47 @@ ${html}
   
 });
 
-/* 影片 */
-document.addEventListener("click", e => {
-  const card = e.target.closest(".video-card");
-  if (!card) return;
+function loadVideo(videoCard, force = false) {
+  const loadingEl = videoCard.querySelector(".video-loading");
+  const statusEl  = videoCard.querySelector(".video-status");
+  const retryBtn  = videoCard.querySelector("#retryVideo");
 
-  const src = card.dataset.src;
-  card.innerHTML = `
-    <iframe
-      src="${src}"
-      width="100%"
-      height="360"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
-      allowfullscreen>
-    </iframe>
-  `;
+  if (videoCard.classList.contains("playing") && !force) return;
+
+  videoCard.classList.add("playing");
+  loadingEl.classList.remove("hidden");
+  statusEl.classList.add("hidden");
+
+  const oldIframe = videoCard.querySelector("iframe");
+  if (oldIframe) oldIframe.remove();
+
+  const iframe = document.createElement("iframe");
+  iframe.src = videoCard.dataset.src;
+  iframe.allow =
+    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;";
+  iframe.allowFullscreen = true;
+
+  videoCard.appendChild(iframe);
+
+  const timer = setTimeout(() => {
+    loadingEl.classList.add("hidden");
+    statusEl.classList.remove("hidden");
+  }, 8000);
+
+  iframe.addEventListener("load", () => {
+    clearTimeout(timer);
+    loadingEl.classList.add("hidden");
+  });
+
+  retryBtn.onclick = () => loadVideo(videoCard, true);
+}
+
+document.addEventListener("click", e => {
+  const playBtn = e.target.closest(".play-btn");
+  if (!playBtn) return;
+
+  const card = playBtn.closest(".video-card");
+  loadVideo(card);
 });
 
 </script>
