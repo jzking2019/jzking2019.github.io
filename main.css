@@ -1047,7 +1047,7 @@ body.dark-mode #pagination button.active {
   margin-bottom: clamp(14px, 5vmin, 128px);
 }
 
-.cf-box .spinner {
+.cf-loading .spinner {
   width: clamp(10px, 7vmin, 42px);
   height: clamp(10px, 7vmin, 42px);
   border: 3px solid rgba(255,255,255,.25);
@@ -2425,7 +2425,7 @@ body.video-page .post-actions {
   color: #fff;
 }
 
-body:not(.dark-mode) .spinner {
+body:not(.dark-mode) .cf-loading .spinner {
   border: 3px solid rgba(0,0,0,.15);
   border-top-color: #000;
 }
