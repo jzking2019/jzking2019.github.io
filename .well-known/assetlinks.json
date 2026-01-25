@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "tw.jzking.tung",
+      "sha256_cert_fingerprints": [
+        "49:9E:6C:26:82:01:91:AD:27:42:44:F1:35:DE:4A:24:43:91:E3:7C:22:28:5F:80:00:1B:93:86:88:3F:2B:AA"
+      ]
+    }
+  }
+]
