@@ -4,7 +4,7 @@
   "lang": "zh-hant",
   "name": "沈落寒",
   "short_name": "沈落寒",
-  "start_url": "/?source=pwa",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
