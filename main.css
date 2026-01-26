@@ -2450,56 +2450,6 @@ body.video-page .video-card {
 }
 
 /* =========================
-   引導使用者加入主畫面
-   ========================= */
-#pwa-install {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-}
-
-.pwa-box {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #111;
-  color: #fff;
-  padding: 12px 14px;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.4);
-}
-
-.pwa-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.pwa-text span {
-  font-size: 12px;
-  opacity: .7;
-}
-
-#pwa-install-btn {
-  background: #fff;
-  color: #000;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.pwa-close {
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-/* =========================
    全站禁止列印（最終版）
    ========================= */
 @media print {
@@ -2508,3 +2458,4 @@ body.video-page .video-card {
     display: none !important;
   }
 }
+
