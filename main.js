@@ -890,7 +890,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogSearchAndPagination();
-  //initTurnstileGate(); // Turnstile 驗證
+  initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
   init404Search(); // 404搜索
@@ -907,6 +907,7 @@ if (!isStandalone() && isIOS() && isSafari()) {
 }
 
 });
+
 
 
 
