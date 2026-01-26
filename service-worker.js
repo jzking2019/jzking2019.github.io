@@ -1,12 +1,11 @@
 self.addEventListener('install', function(event) {
     event.waitUntil(
-        caches.open('v1').then(function(cache) {
+        caches.open('v2').then(function(cache) {
             return cache.addAll([
                 '/',
+                '/?source=pwa', // 👈 確保 start_url 被快取
                 '/index.html',
-                '/styles.css', // 如果有其他 CSS 文件，包含它们
-                '/manifest.json',
-                // 其他静态文件
+                '/manifest.json'
             ]);
         })
     );
