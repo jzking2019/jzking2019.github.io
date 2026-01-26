@@ -785,93 +785,6 @@ retryBtn.addEventListener("click", () => {
 }
 
 /* =========================
-   引導使用者加入主畫面
-   ========================= */
-let deferredPrompt = null;
-
-window.addEventListener("beforeinstallprompt", e => {
-  e.preventDefault(); // 阻止瀏覽器預設提示
-  deferredPrompt = e;
-  showChromeInstallGuide(); // ⭐ 唯一正確顯示時機
-});
-
-
-function isStandalone() {
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true
-  );
-}
-
-/* safari */
-function isSafari() {
-  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-}
-
-function isIOS() {
-  return /iphone|ipad|ipod/i.test(navigator.userAgent);
-}
-
-function showIOSInstallGuide() {
-  if (localStorage.getItem("ios_install_shown")) return;
-
-  const el = document.createElement("div");
-  el.className = "pwa-guide ios";
-
-  el.innerHTML = `
-    <div class="pwa-box">
-      <p>
-        點擊 Safari 的「分享」<br>
-        選擇「加入主畫面」
-      </p>
-      <button>不再提示</button>
-    </div>
-  `;
-
-  el.querySelector("button").onclick = () => {
-    localStorage.setItem("ios_install_shown", "1");
-    el.remove();
-  };
-
-  document.body.appendChild(el);
-}
-
-/* Chrome */
-function showChromeInstallGuide() {
-  // 已顯示過就不再顯示
-  if (localStorage.getItem("pwa_install_shown")) return;
-
-  const el = document.createElement("div");
-  el.className = "pwa-guide";
-
-  el.innerHTML = `
-    <div class="pwa-box">
-      <div class="pwa-text">
-        <strong>安裝 App</strong>
-        <small>加入主畫面，體驗更流暢</small>
-      </div>
-      <button id="pwaInstallBtn">安裝</button>
-      <button class="pwa-close">✕</button>
-    </div>
-  `;
-
-  document.body.appendChild(el);
-
-  el.querySelector(".pwa-close").onclick = () => el.remove();
-
-  el.querySelector("#pwaInstallBtn").onclick = async () => {
-    if (!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-
-    deferredPrompt = null;
-    localStorage.setItem("pwa_install_shown", "1");
-    el.remove();
-  };
-}
-
-/* =========================
    全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -900,13 +813,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initGroupImageGrid();
   loadVideo();
 
-  if (isStandalone()) return; // 已是 App，直接結束
-
-if (!isStandalone() && isIOS() && isSafari()) {
-  showIOSInstallGuide();
-}
-
 });
+
 
 
 
