@@ -1719,6 +1719,18 @@ body.dark-mode #privacy-policy .policy-note {
   padding-top: 10px;
 }
 
+/* 首页社群：解除卡片定位 */
+body.home .post-card {
+  position: static;
+  padding-bottom: 0;
+}
+
+body.home .post-actions {
+  position: static;
+  margin-top: 12px;
+  justify-content: flex-end;
+}
+
 /* =========================
    社群圖片九宮格（WeChat Style）
    ========================= */
@@ -2458,4 +2470,3 @@ body.video-page .video-card {
     display: none !important;
   }
 }
-

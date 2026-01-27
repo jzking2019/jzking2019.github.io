@@ -785,6 +785,43 @@ retryBtn.addEventListener("click", () => {
 }
 
 /* =========================
+   首页社群贴文注入
+   ========================= */
+async function loadHomeTimeline() {
+  if (!document.body.classList.contains("home")) return;
+
+  const container = document.querySelector(".homeTimeline");
+  if (!container) return;
+
+  try {
+    const res = await fetch("/group.html"); // 👈 社群頁
+    if (!res.ok) throw new Error("无法加载 group.html");
+
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    // 取最新 2 則（你可改 1～3）
+    const posts = Array.from(
+      doc.querySelectorAll("#timeline .post-card")
+    ).slice(0, 1);
+
+    posts.forEach(post => {
+      // ⚠️ 移除社群頁才需要的東西（避免重複 id / 事件）
+      post.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+      container.appendChild(post.cloneNode(true));
+    });
+
+    
+  } catch (err) {
+    console.error("首页社群加载失败", err);
+    container.innerHTML = `<p style="opacity:.6">最新動態載入失敗</p>`;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadHomeTimeline);
+
+/* =========================
    全站入口（顺序非常重要）
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -803,7 +840,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogSearchAndPagination();
-  initTurnstileGate(); // Turnstile 驗證
+  //initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
   init404Search(); // 404搜索
@@ -811,6 +848,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initRevealOnScroll(); // about動畫
   initGroupPage(); // 社群
   initGroupImageGrid();
+  loadHomeLatestTimeline(); // 首頁社群貼文注入
   loadVideo();
 
 });
