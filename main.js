@@ -832,8 +832,6 @@ async function loadHomeTimeline() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", loadHomeTimeline);
-
 /* =========================
    全站入口（顺序非常重要）
    ========================= */
@@ -865,6 +863,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
 
 
