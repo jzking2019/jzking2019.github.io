@@ -596,33 +596,40 @@ function initRevealOnScroll() {
    ========================= */
 /* 初始化入口 */
 function initGroupPage() {
-  document.addEventListener("click", e => {
-    const card = e.target.closest(".post-card");
-    if (!card) return;
+document.addEventListener("click", e => {
 
-    // 圖片 / 操作列放行
-    if (e.target.closest(".post-images")) return;
-    if (e.target.closest(".post-actions")) return;
+  // ⭐ 如果點的是圖片，直接放行
+  if (e.target.closest(".post-images")) return;
 
-    const id = card.dataset.id;
-    if (!id) return;
+  // ⭐ 如果點的是操作區 icon，也放行
+  if (e.target.closest(".post-actions")) return;
 
-    openSinglePostSafe(card, id);
+  const card = e.target.closest(".post-card");
+  if (!card) return;
+
+  const id = card.dataset.id;
+  openSinglePost(card, id);
   });
 }
 
+
 /* 展開單篇 */
-function openSinglePos(card, id) {
+function openSinglePost(card, id) {
   const single = document.getElementById("singlePost");
-  if (!single) return;
+  const allCards = document.querySelectorAll(".post-card");
 
-  document.querySelectorAll(".post-card")
-    .forEach(c => c.closest("section").style.display = "none");
+  single.innerHTML = `
+    <article class="post-single">
+      ${card.innerHTML}
+    </article>
+  `;
 
-  single.innerHTML = `<article>${card.innerHTML}</article>`;
+  // 🔒 隱藏所有卡片
+  allCards.forEach(c => c.closest("section").style.display = "none");
+
   single.hidden = false;
-
   document.body.classList.add("single-view");
+
   history.pushState({ postId: id }, "", `/group.html?post=${id}`);
 }
 
@@ -680,10 +687,10 @@ function initGroupImageGrid() {
 }
 
 // 阻止 icon 點擊冒泡
-document.addEventListener("click", e => {
-  const actions = e.target.closest(".post-actions");
-  if (!actions) return;
-  e.stopPropagation();
+document.querySelectorAll(".post-actions").forEach(actions => {
+  actions.addEventListener("click", e => {
+    e.stopPropagation();
+  });
 });
 
 // 圖片點擊：阻止冒泡（避免觸發貼文）
@@ -735,71 +742,88 @@ document.addEventListener("dragstart", e => {
 });
 
 /* 影片 */
-function initVideoPage() {
-  const videoCard = document.querySelector(".video-card");
-  if (!videoCard) return;
+const videoCard = document.querySelector(".video-card");
+const statusEl = document.getElementById("videoStatus");
+const retryBtn = document.getElementById("retryVideo");
 
-  const statusEl = document.getElementById("videoStatus");
-  const retryBtn = document.getElementById("retryVideo");
+let loadTimer = null;
 
-  function loadVideo(force = false) {
-    if (videoCard.classList.contains("playing") && !force) return;
+function loadVideo(force = false) {
+  if (videoCard.classList.contains("playing") && !force) return;
 
-    videoCard.classList.add("playing");
-    statusEl?.classList.add("hidden");
+  videoCard.classList.add("playing");
+  statusEl.classList.add("hidden");
 
-    const old = videoCard.querySelector("iframe");
-    if (old) old.remove();
+  // 移除舊 iframe（⭐ 關鍵）
+  const oldIframe = videoCard.querySelector("iframe");
+  if (oldIframe) oldIframe.remove();
 
-    const iframe = document.createElement("iframe");
-    iframe.src = videoCard.dataset.src;
-    iframe.allow =
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;";
-    iframe.allowFullscreen = true;
+  const iframe = document.createElement("iframe");
+  iframe.src = videoCard.dataset.src;
+  iframe.allow =
+    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;";
+  iframe.allowFullscreen = true;
+  iframe.style.width = "100%";
+  iframe.style.height = "100%";
+  iframe.style.border = "0";
 
-    videoCard.appendChild(iframe);
-  }
+  videoCard.appendChild(iframe);
 
-  retryBtn?.addEventListener("click", () => loadVideo(true));
+  loadTimer = setTimeout(() => {
+    statusEl.classList.remove("hidden");
+  }, 8000);
+
+  iframe.addEventListener("load", () => {
+    clearTimeout(loadTimer);
+  });
+  
+
+retryBtn.addEventListener("click", () => {
+  loadVideo(true); // ⭐ 強制重新載入
+});
+
 }
+
 /* =========================
    首页社群贴文注入
    ========================= */
-function initHomeTimeline() {
+async function loadHomeTimeline() {
   if (!document.body.classList.contains("home")) return;
 
   const container = document.querySelector(".homeTimeline");
   if (!container) return;
 
-  // 防止重複注入（SPA / 重複 DOMContentLoaded）
-  if (container.dataset.loaded === "true") return;
-  container.dataset.loaded = "true";
+  try {
+    const res = await fetch("group.html");
+    if (!res.ok) throw new Error("group.html fetch failed");
 
-  fetch("/group.html")
-    .then(res => {
-      if (!res.ok) throw new Error("group.html fetch failed");
-      return res.text();
-    })
-    .then(html => {
-      const doc = new DOMParser().parseFromString(html, "text/html");
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
 
-      const post = doc.querySelector("#timeline .post-card");
-      if (!post) throw new Error("no post-card found");
+    const post = doc.querySelector(".post-card");
+    if (!post) throw new Error("no post found");
 
-      const card = post.cloneNode(true);
+    const card = post.cloneNode(true);
 
-      // 移除所有 id（避免衝突）
-      card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+    // 移除所有 id，避免衝突
+    card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
 
-      container.appendChild(card);
+    const id = card.dataset.id;
+    if (id) {
+      card.style.cursor = "pointer";
+      card.addEventListener("click", () => {
+        location.href = `group.html?id=${id}`;
+      });
+    }
 
-      console.log("[homeTimeline] injected");
-    })
-    .catch(err => {
-      console.error("[homeTimeline] failed", err);
-      container.innerHTML =
-        `<p style="opacity:.6">最新動態載入失敗</p>`;
-    });
+    container.appendChild(card);
+
+    console.log("home timeline injected", id);
+
+  } catch (err) {
+    console.error("首页社群加载失败", err);
+    container.innerHTML = `<p style="opacity:.6">最新動態載入失敗</p>`;
+  }
 }
 
 /* =========================
@@ -822,7 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(syncFooterToMobileMenu, 0);
 
   initBlogSearchAndPagination();
-  initTurnstileGate(); // Turnstile 驗證
+  //initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
   initImageViewer(); // 圖片點擊放大
   init404Search(); // 404搜索
@@ -830,16 +854,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initRevealOnScroll(); // about動畫
   initGroupPage(); // 社群
   initGroupImageGrid();
-  initVideoPage();
   loadVideo();
 
 });
-
-
-
-
-
-
 
 
 
