@@ -812,7 +812,7 @@ async function loadHomeTimeline() {
     if (id) {
       card.style.cursor = "pointer";
       card.addEventListener("click", () => {
-        location.href = `group.html?id=${id}`;
+        location.href = `group?post=${id}`;
       });
     }
 
@@ -857,6 +857,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
 
 
