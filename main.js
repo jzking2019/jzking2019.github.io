@@ -845,6 +845,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadFooter();
 
   loadHomeLatestPosts(); // 首頁動態推薦注入
+  loadHomeTimeline(); // 首頁社群貼文注入
   bindGlobalMenuClose();
 
   registerServiceWorker();
@@ -861,10 +862,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initRevealOnScroll(); // about動畫
   initGroupPage(); // 社群
   initGroupImageGrid();
-  loadHomeTimeline(); // 首頁社群貼文注入
   loadVideo();
 
 });
+
 
 
 
