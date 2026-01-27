@@ -687,10 +687,10 @@ function initGroupImageGrid() {
 }
 
 // 阻止 icon 點擊冒泡
-document.querySelectorAll(".post-actions").forEach(actions => {
-  actions.addEventListener("click", e => {
-    e.stopPropagation();
-  });
+document.addEventListener("click", e => {
+  const actions = e.target.closest(".post-actions");
+  if (!actions) return;
+  e.stopPropagation();
 });
 
 // 圖片點擊：阻止冒泡（避免觸發貼文）
@@ -742,9 +742,17 @@ document.addEventListener("dragstart", e => {
 });
 
 /* 影片 */
-const videoCard = document.querySelector(".video-card");
-const statusEl = document.getElementById("videoStatus");
-const retryBtn = document.getElementById("retryVideo");
+function initVideoPage() {
+  const videoCard = document.querySelector(".video-card");
+  const statusEl = document.getElementById("videoStatus");
+  const retryBtn = document.getElementById("retryVideo");
+
+  if (!videoCard || !statusEl || !retryBtn) return;
+
+  retryBtn.addEventListener("click", () => {
+    loadVideo(true);
+  });
+}
 
 let loadTimer = null;
 
@@ -854,9 +862,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initRevealOnScroll(); // about動畫
   initGroupPage(); // 社群
   initGroupImageGrid();
+  initVideoPage();
   loadVideo();
 
 });
+
 
 
 
