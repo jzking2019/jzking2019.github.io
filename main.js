@@ -795,43 +795,41 @@ retryBtn.addEventListener("click", () => {
 /* =========================
    首页社群贴文注入
    ========================= */
-async function loadHomeTimeline() {
+function initHomeTimeline() {
   if (!document.body.classList.contains("home")) return;
 
   const container = document.querySelector(".homeTimeline");
   if (!container) return;
 
-  try {
-    const res = await fetch("group.html");
-    if (!res.ok) throw new Error("group.html fetch failed");
+  // 防止重複注入（SPA / 重複 DOMContentLoaded）
+  if (container.dataset.loaded === "true") return;
+  container.dataset.loaded = "true";
 
-    const html = await res.text();
-    const doc = new DOMParser().parseFromString(html, "text/html");
+  fetch("/group.html")
+    .then(res => {
+      if (!res.ok) throw new Error("group.html fetch failed");
+      return res.text();
+    })
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, "text/html");
 
-    const post = doc.querySelector(".post-card");
-    if (!post) throw new Error("no post found");
+      const post = doc.querySelector("#timeline .post-card");
+      if (!post) throw new Error("no post-card found");
 
-    const card = post.cloneNode(true);
+      const card = post.cloneNode(true);
 
-    // 移除所有 id，避免衝突
-    card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+      // 移除所有 id（避免衝突）
+      card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
 
-    const id = card.dataset.id;
-    if (id) {
-      card.style.cursor = "pointer";
-      card.addEventListener("click", () => {
-        location.href = `group.html?post=${id}`;
-      });
-    }
+      container.appendChild(card);
 
-    container.appendChild(card);
-
-    console.log("home timeline injected", id);
-
-  } catch (err) {
-    console.error("首页社群加载失败", err);
-    container.innerHTML = `<p style="opacity:.6">最新動態載入失敗</p>`;
-  }
+      console.log("[homeTimeline] injected");
+    })
+    .catch(err => {
+      console.error("[homeTimeline] failed", err);
+      container.innerHTML =
+        `<p style="opacity:.6">最新動態載入失敗</p>`;
+    });
 }
 
 /* =========================
@@ -866,6 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
 
 
