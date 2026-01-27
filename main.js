@@ -794,22 +794,32 @@ async function loadHomeTimeline() {
   if (!container) return;
 
   try {
-    const res = await fetch("/group.html"); // 👈 社群頁
+    const res = await fetch("/group.html", { cache: "no-store" });
     if (!res.ok) throw new Error("无法加载 group.html");
 
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, "text/html");
 
-    // 取最新 2 則（你可改 1～3）
-    const posts = Array.from(
-      doc.querySelectorAll("#timeline .post-card")
-    ).slice(0, 1);
+    // ⭐ 不用 id，直接抓所有贴文
+    const posts = Array.from(doc.querySelectorAll(".post-card")).slice(0, 1);
 
     posts.forEach(post => {
-      // ⚠️ 移除社群頁才需要的東西（避免重複 id / 事件）
-      post.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+      const id = post.dataset.id;
+      if (!id) return;
 
-      container.appendChild(post.cloneNode(true));
+      // clone 一份
+      const card = post.cloneNode(true);
+
+      // 清掉 id（避免首页重复）
+      card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+      // 首页点击 → 跳单篇
+      card.style.cursor = "pointer";
+      card.addEventListener("click", () => {
+        location.href = `/group?post=${id}`;
+      });
+
+      container.appendChild(card);
     });
 
   } catch (err) {
@@ -849,3 +859,4 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
