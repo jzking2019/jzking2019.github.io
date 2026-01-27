@@ -794,33 +794,31 @@ async function loadHomeTimeline() {
   if (!container) return;
 
   try {
-    const res = await fetch("/group.html", { cache: "no-store" });
-    if (!res.ok) throw new Error("无法加载 group.html");
+    const res = await fetch("group.html");
+    if (!res.ok) throw new Error("group.html fetch failed");
 
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, "text/html");
 
-    // ⭐ 不用 id，直接抓所有贴文
-    const posts = Array.from(doc.querySelectorAll(".post-card")).slice(0, 1);
+    const post = doc.querySelector(".post-card");
+    if (!post) throw new Error("no post found");
 
-    posts.forEach(post => {
-      const id = post.dataset.id;
-      if (!id) return;
+    const card = post.cloneNode(true);
 
-      // clone 一份
-      const card = post.cloneNode(true);
+    // 移除所有 id，避免衝突
+    card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
 
-      // 清掉 id（避免首页重复）
-      card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
-
-      // 首页点击 → 跳单篇
+    const id = card.dataset.id;
+    if (id) {
       card.style.cursor = "pointer";
       card.addEventListener("click", () => {
-        location.href = `/group.html?id=${id}`;
+        location.href = `group.html?id=${id}`;
       });
+    }
 
-      container.appendChild(card);
-    });
+    container.appendChild(card);
+
+    console.log("home timeline injected", id);
 
   } catch (err) {
     console.error("首页社群加载失败", err);
@@ -859,6 +857,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
 
 
