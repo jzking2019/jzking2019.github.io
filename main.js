@@ -794,31 +794,23 @@ async function loadHomeTimeline() {
   if (!container) return;
 
   try {
-    const res = await fetch("group.html");
-    if (!res.ok) throw new Error("group.html fetch failed");
+    const res = await fetch("/group.html"); // 👈 社群頁
+    if (!res.ok) throw new Error("无法加载 group.html");
 
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, "text/html");
 
-    const post = doc.querySelector(".post-card");
-    if (!post) throw new Error("no post found");
+    // 取最新 2 則（你可改 1～3）
+    const posts = Array.from(
+      doc.querySelectorAll("#timeline .post-card")
+    ).slice(0, 1);
 
-    const card = post.cloneNode(true);
+    posts.forEach(post => {
+      // ⚠️ 移除社群頁才需要的東西（避免重複 id / 事件）
+      post.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
 
-    // 移除所有 id，避免衝突
-    card.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
-
-    const id = card.dataset.id;
-    if (id) {
-      card.style.cursor = "pointer";
-      card.addEventListener("click", () => {
-        location.href = `group?post=${id}`;
-      });
-    }
-
-    container.appendChild(card);
-
-    console.log("home timeline injected", id);
+      container.appendChild(post.cloneNode(true));
+    });
 
   } catch (err) {
     console.error("首页社群加载失败", err);
@@ -857,17 +849,3 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
