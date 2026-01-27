@@ -596,40 +596,33 @@ function initRevealOnScroll() {
    ========================= */
 /* 初始化入口 */
 function initGroupPage() {
-document.addEventListener("click", e => {
+  document.addEventListener("click", e => {
+    const card = e.target.closest(".post-card");
+    if (!card) return;
 
-  // ⭐ 如果點的是圖片，直接放行
-  if (e.target.closest(".post-images")) return;
+    // 圖片 / 操作列放行
+    if (e.target.closest(".post-images")) return;
+    if (e.target.closest(".post-actions")) return;
 
-  // ⭐ 如果點的是操作區 icon，也放行
-  if (e.target.closest(".post-actions")) return;
+    const id = card.dataset.id;
+    if (!id) return;
 
-  const card = e.target.closest(".post-card");
-  if (!card) return;
-
-  const id = card.dataset.id;
-  openSinglePost(card, id);
+    openSinglePostSafe(card, id);
   });
 }
 
-
 /* 展開單篇 */
-function openSinglePost(card, id) {
+function openSinglePos(card, id) {
   const single = document.getElementById("singlePost");
-  const allCards = document.querySelectorAll(".post-card");
+  if (!single) return;
 
-  single.innerHTML = `
-    <article class="post-single">
-      ${card.innerHTML}
-    </article>
-  `;
+  document.querySelectorAll(".post-card")
+    .forEach(c => c.closest("section").style.display = "none");
 
-  // 🔒 隱藏所有卡片
-  allCards.forEach(c => c.closest("section").style.display = "none");
-
+  single.innerHTML = `<article>${card.innerHTML}</article>`;
   single.hidden = false;
-  document.body.classList.add("single-view");
 
+  document.body.classList.add("single-view");
   history.pushState({ postId: id }, "", `/group.html?post=${id}`);
 }
 
@@ -841,6 +834,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
 
 
