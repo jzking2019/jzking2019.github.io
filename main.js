@@ -848,10 +848,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initRevealOnScroll(); // about動畫
   initGroupPage(); // 社群
   initGroupImageGrid();
-  loadHomeLatestTimeline(); // 首頁社群貼文注入
+  loadHomeTimeline(); // 首頁社群貼文注入
   loadVideo();
 
 });
+
 
 
 
