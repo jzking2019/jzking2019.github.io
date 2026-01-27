@@ -816,7 +816,7 @@ async function loadHomeTimeline() {
       // 首页点击 → 跳单篇
       card.style.cursor = "pointer";
       card.addEventListener("click", () => {
-        location.href = `/group?post=${id}`;
+        location.href = `/group.html?post=${id}`;
       });
 
       container.appendChild(card);
@@ -859,4 +859,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
