@@ -812,6 +812,19 @@ async function loadHomeTimeline() {
       container.appendChild(post.cloneNode(true));
     });
 
+ posts.forEach(post => {
+  const id = post.dataset.id;
+  if (!id) return;
+
+  const card = post.cloneNode(true);
+
+  card.style.cursor = "pointer";
+  card.addEventListener("click", () => {
+    location.href = `/group.html?id=${id}`;
+  });
+
+  container.appendChild(card);
+});
     
   } catch (err) {
     console.error("首页社群加载失败", err);
@@ -852,6 +865,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideo();
 
 });
+
 
 
 
