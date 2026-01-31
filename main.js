@@ -820,25 +820,21 @@ async function loadHomeTimeline() {
 /* =========================
   點擊標籤跳轉搜尋結果頁
    ========================= */
-
 function initBlogTagJump() {
-  const tags = document.querySelectorAll(".blog-tag-summary .post-tag");
-  if (!tags.length) return;
+  document.addEventListener("click", e => {
+    const tag = e.target.closest(".blog-tag-summary .post-tag");
+    if (!tag) return;
 
-  tags.forEach(tag => {
-    tag.addEventListener("click", () => {
-      const category = tag.dataset.category;
-      if (!category) return;
+    const category = tag.dataset.category;
+    if (!category) return;
 
-      // 「全部」直接回 blog 首頁
-      if (category === "全部") {
-        location.href = "/blog.html";
-        return;
-      }
+    if (category === "全部") {
+      location.href = "/blog.html";
+      return;
+    }
 
-      location.href =
-        `/blog.html?q=${encodeURIComponent(category)}&page=1`;
-    });
+    location.href =
+      `/blog.html?q=${encodeURIComponent(category)}&page=1`;
   });
 }
 
@@ -874,6 +870,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBlogTagJump(); // 點擊標籤跳轉搜尋結果頁
 
 });
+
 
 
 
