@@ -507,20 +507,6 @@ body {
   padding-top: var(--header-height);
 }
 
-/* 連結 */
-a {
-  color: #1a73e8;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-body.dark-mode a {
-  color: #8ab4f8;
-}
-
 /* =========================
    Blog 列表（左圖右文，上文下 meta）
    ========================= */
@@ -2542,5 +2528,6 @@ body.video-page .video-card {
     display: none !important;
   }
 }
+
 
 
