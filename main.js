@@ -817,6 +817,30 @@ async function loadHomeTimeline() {
     container.innerHTML = `<p style="opacity:.6">最新動態載入失敗</p>`;
   }
 }
+/* =========================
+  點擊標籤跳轉搜尋結果頁
+   ========================= */
+
+function initBlogTagJump() {
+  const tags = document.querySelectorAll(".blog-tag-summary .post-tag");
+  if (!tags.length) return;
+
+  tags.forEach(tag => {
+    tag.addEventListener("click", () => {
+      const category = tag.dataset.category;
+      if (!category) return;
+
+      // 「全部」直接回 blog 首頁
+      if (category === "全部") {
+        location.href = "/blog.html";
+        return;
+      }
+
+      location.href =
+        `/blog.html?q=${encodeURIComponent(category)}&page=1`;
+    });
+  });
+}
 
 /* =========================
    全站入口（顺序非常重要）
@@ -847,8 +871,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initGroupPage(); // 社群
   initGroupImageGrid();
   loadVideo();
+  initBlogTagJump(); // 點擊標籤跳轉搜尋結果頁
 
 });
+
 
 
 
