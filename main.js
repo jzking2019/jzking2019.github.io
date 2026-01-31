@@ -857,6 +857,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ⭐ 最终兜底
   setTimeout(syncFooterToMobileMenu, 0);
 
+  initBlogTagJump(); // 點擊標籤跳轉搜尋結果頁
   initBlogSearchAndPagination();
   initTurnstileGate(); // Turnstile 驗證
   initTimelineCollapse(); // 時間節點摺疊
@@ -867,9 +868,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initGroupPage(); // 社群
   initGroupImageGrid();
   loadVideo();
-  initBlogTagJump(); // 點擊標籤跳轉搜尋結果頁
 
 });
+
 
 
 
